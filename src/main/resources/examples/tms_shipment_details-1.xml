@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CISDocument>
+   <ApiHeader>
+      <OperationName>processShipmentOrderCreate</OperationName>
+   </ApiHeader>
+   <Shipment>
+      <ShipmentNumber />
+      <ShipmentDescription>Test_item</ShipmentDescription>
+      <ShipmentEntryModeEnumVal>TOM_ITEM_LEVEL_SUMMARY</ShipmentEntryModeEnumVal>
+      <CommodityCode>ESTANDAR</CommodityCode>
+      <ShipToAppointmentRequiredFlag>TRUE</ShipToAppointmentRequiredFlag>
+      <CustomerCode>0201000554</CustomerCode>
+      <ShipmentEntryVersionCode>03</ShipmentEntryVersionCode>
+      <ShipmentEntryTypeCode>02</ShipmentEntryTypeCode>
+      <LogisticsGroupCode />
+      <DivisionCode>TXL</DivisionCode>
+      <ProfitCenterCode>010104</ProfitCenterCode>
+      <SystemPlanID>1000</SystemPlanID>
+      <EligibleForInterDivisionTransferFlag>TRUE</EligibleForInterDivisionTransferFlag>
+      <EligibleForLogisticsGroupReassignmentFlag>TRUE</EligibleForLogisticsGroupReassignmentFlag>
+      <CommodityPickSequenceRequiredFlag>FALSE</CommodityPickSequenceRequiredFlag>
+      <FreightTermsEnumVal>FT_PRE_PAID</FreightTermsEnumVal>
+      <UrgentFlag>FALSE</UrgentFlag>
+      <ShipFromLocationTypeEnumVal>SFT_HUB</ShipFromLocationTypeEnumVal>
+      <ShipFromLocationCode>TOLUC_EM_50000</ShipFromLocationCode>
+      <ShipToLocationTypeEnumVal>STT_HUB</ShipToLocationTypeEnumVal>
+      <ShipToLocationCode>1003005</ShipToLocationCode>
+      <PickupFromDateTime>2021-05-05T00:00:00</PickupFromDateTime>
+      <PickupToDateTime>2021-06-10T23:58:00</PickupToDateTime>
+      <DeliveryFromDateTime>2021-05-05T00:01:00</DeliveryFromDateTime>
+      <DeliveryToDateTime>2021-06-10T23:59:00</DeliveryToDateTime>
+      <DeferAPRatingFlag>TRUE</DeferAPRatingFlag>
+      <DeferARRatingFlag>TRUE</DeferARRatingFlag>
+      <ItemGroupCode>ITEMG</ItemGroupCode>
+      <IgnoreReferenceNumbersFlag>FALSE</IgnoreReferenceNumbersFlag>
+      <ReferenceNumberStructure>
+         <ReferenceNumberTypeCode>Service_Type</ReferenceNumberTypeCode>
+         <ReferenceNumber>0030105048</ReferenceNumber>
+      </ReferenceNumberStructure>
+      <ReferenceNumberStructure>
+         <ReferenceNumberTypeCode>WM_ORDNUM_</ReferenceNumberTypeCode>
+         <ReferenceNumber>DUMMY</ReferenceNumber>
+      </ReferenceNumberStructure>
+      <ReferenceNumberStructure>
+         <ReferenceNumberTypeCode>Project_Name</ReferenceNumberTypeCode>
+         <ReferenceNumber>Contract_logistics</ReferenceNumber>
+      </ReferenceNumberStructure>
+      <IgnoreContainersFlag>FALSE</IgnoreContainersFlag>
+      <Container>
+         <ItemNumber>1968624</ItemNumber>
+         <NumberOfUnits>2</NumberOfUnits>
+         <ItemDescription />
+         <Quantity>2</Quantity>
+         <Width />
+         <Length />
+         <Height />
+         <IgnoreShipmentItemsFlag>FALSE</IgnoreShipmentItemsFlag>
+         <ContainerTypeCode />
+         <IgnoreWeightByFreightClassFlag>TRUE</IgnoreWeightByFreightClassFlag>
+         <WeightByFreightClass>
+            <FreightClassNominalWeight>1</FreightClassNominalWeight>
+            <FreightClassCode>*FAK</FreightClassCode>
+         </WeightByFreightClass>
+         <IgnoreReferenceNumbersFlag>FALSE</IgnoreReferenceNumbersFlag>
+         <ReferenceNumberStructure>
+            <ReferenceNumberTypeCode>WM_ORDLIN_</ReferenceNumberTypeCode>
+            <ReferenceNumber>1</ReferenceNumber>
+         </ReferenceNumberStructure>
+         <ContentLevelTypeCode />
+         <ItemPackageLevelIDCode>100</ItemPackageLevelIDCode>
+         <Is3DLoadingRequiredFlag>FALSE</Is3DLoadingRequiredFlag>
+         <IgnoreContainerOrientationsFlag>TRUE</IgnoreContainerOrientationsFlag>
+      </Container>
+       <Container>
+         <ItemNumber>1968624</ItemNumber>
+         <NumberOfUnits>2</NumberOfUnits>
+         <ItemDescription />
+         <Quantity>2</Quantity>
+         <Width />
+         <Length />
+         <Height />
+         <IgnoreShipmentItemsFlag>FALSE</IgnoreShipmentItemsFlag>
+         <ContainerTypeCode />
+         <IgnoreWeightByFreightClassFlag>TRUE</IgnoreWeightByFreightClassFlag>
+         <WeightByFreightClass>
+            <FreightClassNominalWeight>1</FreightClassNominalWeight>
+            <FreightClassCode>*FAK</FreightClassCode>
+         </WeightByFreightClass>
+         <IgnoreReferenceNumbersFlag>FALSE</IgnoreReferenceNumbersFlag>
+         <ReferenceNumberStructure>
+            <ReferenceNumberTypeCode>WM_ORDLIN_</ReferenceNumberTypeCode>
+            <ReferenceNumber>1</ReferenceNumber>
+         </ReferenceNumberStructure>
+         <ContentLevelTypeCode />
+         <ItemPackageLevelIDCode>100</ItemPackageLevelIDCode>
+         <Is3DLoadingRequiredFlag>FALSE</Is3DLoadingRequiredFlag>
+         <IgnoreContainerOrientationsFlag>TRUE</IgnoreContainerOrientationsFlag>
+      </Container>
+   </Shipment>
+   <IgnoreAllShipmentReferenceNumbersFlag>FALSE</IgnoreAllShipmentReferenceNumbersFlag>
+</CISDocument>

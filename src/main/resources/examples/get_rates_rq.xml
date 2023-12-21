@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<processRateQuotation>
+	<ApiHeader>
+		<OperationName>processRateQuotation</OperationName>
+	</ApiHeader>
+	<RateCriteria>
+		<ProcessARSideFlag>True</ProcessARSideFlag>
+		<CustomerCode>TXP</CustomerCode>
+		<ShipFromLocationTypeEnumVal>SPT_HUB</ShipFromLocationTypeEnumVal>
+		<ShipFromLocationCode>50003</ShipFromLocationCode>
+		<ShipToLocationTypeEnumVal>SPT_HUB</ShipToLocationTypeEnumVal>
+		<ShipToLocationCode>45503</ShipToLocationCode>
+		<CommodityCode>ESTANDAR</CommodityCode>
+		<DivisionCode>TXP</DivisionCode>
+		<SystemUnitOfMeasureEnumVal>UMS_METRIC</SystemUnitOfMeasureEnumVal>
+		<WeightUnitOfMeasureEnumVal>UMW_KG</WeightUnitOfMeasureEnumVal>
+		<LengthUnitOfMeasureEnumVal>UML_METER</LengthUnitOfMeasureEnumVal>
+		<CurrencyCode>MXN</CurrencyCode>
+		<Distance></Distance>
+		<FreightDetail>
+			<WeightByFreightClass>
+			<FreightClassNominalWeight>1000</FreightClassNominalWeight>
+			<FreightClassCode>*FAK</FreightClassCode>
+			</WeightByFreightClass>
+		</FreightDetail>
+	</RateCriteria>
+	<ReturnDiagnosticsFlag>True</ReturnDiagnosticsFlag>
+</processRateQuotation>

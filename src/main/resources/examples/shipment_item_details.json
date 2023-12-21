@@ -1,0 +1,27 @@
+{
+  "order_number": "1234567",
+  "reference_number": "1238549",
+  "cedis_code": "AD12345",
+  "customer_code": "1234567",
+  "city_source_code": "GDL",
+  "city_dest_code": "QRO",
+  "shipment_origin": "GDL",
+  "shipment_destination": "QRO",
+  "load_datetime": "01/01/2021 12:00:00",
+  "appointment_datetime": "01/01/2021 12:00:00",
+  "load_volume": "1000",
+  "load_weight": "1000",
+  "project_name":"ejemplo",
+  "detail": [
+    {
+      "item_number": "123",
+      "customer_ship_to": "123",
+      "shipment_delivery_sequence": "1",
+      "commodity": "123",
+      "commodity_description": "description",
+      "sku": "UGG-BB-PUR-06",
+      "quantity": "1",
+      "measurement_units": "Kg"
+    }
+  ]
+}

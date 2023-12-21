@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<wsc:config name="TMS_Web_services_consumer_config"   doc:name="Web Service Consumer Config" doc:id="830a221c-59ed-48e1-b1b2-e36aa74302e7" >
+		<wsc:connection wsdlLocation="wsdls\tms-unigis.wsdl" service="Service" port="ServiceSoap" address="https://cloud-test.unigis.com/AVIOR/mapi/soap/logistic/service.asmx">
+			<reconnection >
+				<reconnect-forever />
+			</reconnection>
+			<wsc:custom-transport-configuration >
+				<wsc:http-transport-configuration requesterConfig="BasicAuth" />
+			</wsc:custom-transport-configuration>
+			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+
+		</wsc:connection>
+	</wsc:config>
+	<http:request-config name="BasicAuth" doc:name="HTTP Request configuration" doc:id="39fef23e-4bee-411d-9f76-44556fa167d9" responseTimeout="120000">
+		<http:request-connection protocol="HTTPS" host="${consume.host.auth}" port="${consume.port.auth}" connectionIdleTimeout="${consume.timeout.auth}">
+			<http:authentication >
+				<http:basic-authentication username="${consume.username}" password="${consume.passwd}" />
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
+		<wsc:config name="TMS_Web_services_consumer_config_TXP" doc:name="Web Service Consumer Config" doc:id="afeb8556-3911-481a-9893-dfe6aee273c1" >
+		<wsc:connection wsdlLocation="wsdls\TransportationManager.wsdl" service="${consume.txp.service}" port="${consume.txp.port}" address="${consume.txp.address}">
+			<wsc:custom-transport-configuration >
+				<wsc:http-transport-configuration requesterConfig="BasicAuth_TXP" />
+			</wsc:custom-transport-configuration>
+			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+
+		</wsc:connection>
+	</wsc:config>
+	<http:request-config name="BasicAuth_TXP" doc:name="HTTP Request configuration" doc:id="e2947be5-df23-4502-be2f-26f112ca82d9" responseTimeout="120000">
+		<http:request-connection protocol="HTTPS" host="${consume.txp.host.auth}" port="${consume.txp.port.auth}" connectionIdleTimeout="${consume.txp.timeout.auth}">
+			<http:authentication >
+				<http:basic-authentication username="${consume.txp.username}" password="${consume.txp.passwd}" />
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
+</mule>

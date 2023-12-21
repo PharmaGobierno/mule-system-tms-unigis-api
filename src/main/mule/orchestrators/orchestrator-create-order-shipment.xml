@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="orchestrator-create-order-shipment-main" doc:id="02516b96-d24b-4de4-bf0a-e72396d59de0" >
+		<flow-ref doc:name="orchestrator-create-order-shipment-prepare-request" doc:id="f5aedb2f-3514-4145-b695-52380721f959" name="orchestrator-create-order-shipment-prepare-request"/>
+		<flow-ref doc:name="client-create-order-shipment-call-ws-create-order-shipment" doc:id="1fbf546b-1a4a-41bd-bc5c-f81ef1df44aa" name="client-create-order-shipment-call-ws-create-order-shipment"/>
+	</sub-flow>
+	<sub-flow name="orchestrator-create-order-shipment-prepare-request" doc:id="f8e7152d-6e4a-4893-a746-b58ec72bae7d" >
+		<ee:transform doc:name="Transform Message" doc:id="82b15b01-906d-4f25-9e02-604b8facd06f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output appplication/xml
+ns unis http://unisolutions.com.ar/
+ns soapenv http://schemas.xmlsoap.org/soap/envelope/
+---
+ {
+  soapenv#"Envelope": {
+    soapenv#"Header": null,
+    soapenv#"Body":{
+      unis#"CrearOrdenesEntrega": {
+      unis#"apiKey": "786868",
+        unis#"entregas": {
+          unis#"pOrdenEntrega": {
+            unis#"Sucursal": "E442",
+            unis#"Operacion": "1",
+            unis#"RefDocumento": "811137641_test1",
+            unis#"RefDocumentoAdicional": "902367",
+            unis#"Tipo": "No Determinado",
+            unis#"TipoOrden": "No Determinado",
+            unis#"TipoParada": "No Determinado",
+            unis#"Estado": "Inicial",
+            unis#"FechaJornada": "2021-12-09T11:46:00Z",
+            unis#"Cliente": {
+              unis#"RefCliente": "9010909",
+              unis#"RazonSocial": "Cliente ECATEPEC",
+              unis#"Telefono": "6666666666",
+              unis#"EMail": "test@ejemplo.com",
+              unis#"Direccion": "GUADALUPE VICTORIA",
+              unis#"Calle": "GUADALUPE VICTORIA",
+              unis#"NumeroPuerta": "1",
+              unis#"Barrio": "ECATEPEC",
+              unis#"Localidad": "ECATEPEC",
+              unis#"Partido": "ECATEPEC",
+              unis#"Provincia": "ESTADO DE MEXICO",
+              unis#"Pais": "MEXICO",
+              unis#"Latitud": "19.61775",
+              unis#"Longitud": "-99.00456",
+              unis#"RefDomicilioExterno": "9010909",
+              unis#"DomicilioDescripcion": "ejemplo ECATEPEC",
+              unis#"InicioHorario1": "800",
+              unis#"FinHorario1": "1700",
+              unis#"TiempoEspera": "30",
+              unis#"Varchar1": "VC1",
+              unis#"Varchar2": "VC2",
+              unis#"Contacto": "CONTACTO TEST",
+              unis#"Int1": "-1",
+              unis#"Int2": "-1",
+              unis#"Float1": "-1",
+              unis#"Float2": "-1",
+              unis#"CargaExclusiva": "false",
+              unis#"IgnorarOperacion": "false",
+              unis#"IgnorarOperacionDomicilioOrden": "true",
+              unis#"CrearDomicilioOrden": "true",
+              unis#"ActualizarDomicilioOrden": "true",
+              unis#"ValidarDomicilioOrden": "false"
+            },
+            unis#"Descripcion": "ejemplo ECATEPEC",
+            unis#"Direccion": "GUADALUPE VICTORIA",
+            unis#"Calle": "GUADALUPE VICTORIA",
+            unis#"NroPuerta": "1",
+            unis#"Barrio": "ECATEPEC",
+            unis#"Localidad": "ECATEPEC",
+            unis#"Partido": "ECATEPEC",
+            unis#"Provincia": "ESTADO DE MEXICO",
+            unis#"Pais": "MEXICO",
+            unis#"InicioHorario1": "800",
+            unis#"FinHorario1": "1700",
+            unis#"TiempoEspera": "30",
+            unis#"CrearDomicilio": "true",
+            unis#"Orden": "81112920",
+            unis#"Volumen": "0",
+            unis#"Peso": "4",
+            unis#"Bulto": "1",
+            unis#"Pallets": "0",
+            unis#"Latitud": "19.61775",
+            unis#"Longitud": "-99.00456",
+            unis#"Observaciones": "TEST OBS.",
+            unis#"Email": "test@ejemplo.com",
+            unis#"Telefono": "6666666666",
+            unis#"Varchar1": "Numero de transporte_I1",
+            unis#"Varchar2": "Fecha_I1",
+            unis#"Varchar3": "Agencia_I1",
+            unis#"Varchar4": "TBD_I1",
+            unis#"Int1": "1",
+            unis#"Int2": "1",
+            unis#"DepositoSalida": {
+              unis#"RefDepositoExterno": "E442",
+              unis#"Descripcion": "AG DIST ejemplo",
+              unis#"Direccion": "Avenida Industria 179 301",
+              unis#"NroPuerta": "179",
+              unis#"Ciudad": "Tlalnepantla",
+              unis#"Municipio": "Tlalnepantla",
+              unis#"Colonia": "Los Reyes Ixtacala",
+              unis#"InicioHorario": "630",
+              unis#"FinHorario": "2359",
+              unis#"TiempoEspera": "30",
+              unis#"Latitud": "19.522958",
+              unis#"Longitud": "-99.194987",
+              unis#"Calle": "Avenida Industria 179 30",
+              unis#"Barrio": "Los Reyes Ixtacala",
+              unis#"Localidad": "Tlalnepantla",
+              unis#"Partido": "Tlalnepantla",
+              unis#"Provincia": "Estado de Mexico",
+              unis#"Pais": "MEXICO",
+              unis#"Eliminado": "false"
+            },
+            unis#"DepositoLlegada": {
+              unis#"RefDepositoExterno": "E442",
+              unis#"Descripcion": "AG DIST ejemplo",
+              unis#"Direccion": "Avenida Industria 179 301",
+              unis#"NroPuerta": "179",
+              unis#"Ciudad": "Tlalnepantla",
+              unis#"Municipio": "Tlalnepantla",
+              unis#"Colonia": "Los Reyes Ixtacala",
+              unis#"InicioHorario": "630",
+              unis#"FinHorario": "2359",
+              unis#"TiempoEspera": "30",
+              unis#"Latitud": "19.522958",
+              unis#"Longitud": "-99.194987",
+              unis#"Calle": "Avenida Industria 179 301",
+              unis#"Barrio": "Los Reyes Ixtacala",
+              unis#"Localidad": "Tlanepantla",
+              unis#"Partido": "Tlalnepantla",
+              unis#"Provincia": "Estado de Mexico",
+              unis#"Pais": "MEXICO",
+              unis#"DistanciaMaxima": "-1",
+              unis#"Eliminado": "false"
+            },
+            unis#"Items": {
+              unis#"pOrdenEntregaItem": {
+                unis#"Descripcion": "PECHUGA MEDIA MARIPOSA",
+                unis#"RefDocumentoAdicional": "902356",
+                unis#"Producto": {
+                  unis#"RefProducto": "51425",
+                  unis#"Descripcion": "PECHUGA MEDIA MARIPOSA ",
+                  unis#"Volumen": "1",
+                  unis#"Peso": "4",
+                  unis#"Bultos": "1",
+                  unis#"Alto": "1",
+                  unis#"Ancho": "1",
+                  unis#"Profundidad": "1",
+                  unis#"Apilable": "1",
+                  unis#"Rotacion": "V",
+                  unis#"Codigo": "9010909",
+                  unis#"RazonSocial": "cliente ECATEPEC",
+                  unis#"RotacionesPermitidas": "3",
+                  unis#"Linea": "FERT",
+                  unis#"SubLinea": "5002",
+                  unis#"UnidadMedida": "m",
+                  unis#"TiempoDescarga": "15",
+                  unis#"Ordenamiento": "-1"
+                },
+                unis#"Cantidad": "10",
+                unis#"Volumen": "1",
+                unis#"Peso": "4",
+                unis#"Bulto": "10",
+                unis#"Varchar1": "?",
+                unis#"Varchar2": "?",
+                unis#"LPN": "?",
+                unis#"Unidades": "-1",
+                unis#"Int1": "-1",
+                unis#"Int2": "-1",
+                unis#"ReferenciaCantidad": "-1",
+                unis#"ReferenciaValor": "-1",
+                unis#"ProcesarVolumetria": "true"
+              }
+            },
+            unis#"usarProductos": "false",
+            unis#"Fecha": "2021-12-09",
+            unis#"FechaOrden": "2021-12-09",
+            unis#"Datetime1": "2021-12-09T11:46:00",
+            unis#"Datetime2": "2021-12-09T11:46:00",
+            unis#"Unidades": "-1"
+          }
+        }
+      }
+    }
+   } 
+  } ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>
