@@ -125,15 +125,5 @@ output application/json
     </flow>
     <flow name="post:\tms\shipments:application\json:system-tms-unigis-api-config">
         <flow-ref doc:name="orchestrator-create-order-shipment-main" doc:id="43ec55d5-1cb6-4420-8fac-9e3ef0ca9d3a" name="orchestrator-create-order-shipment-main"/>
-		<ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  message: "Success"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
     </flow>
 </mule>

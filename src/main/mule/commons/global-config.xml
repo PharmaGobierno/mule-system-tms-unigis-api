@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
 http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
 	<configuration-properties doc:name="Configuration properties" doc:id="8583c189-8d90-43a8-9660-bdaa65612f46" file="system-tms-unigis-${env}.properties" />
-	<global-property doc:name="Global Property" doc:id="75bf8f95-4a33-416c-82f0-79fbe9093195" name="env" value="pro" />
+	<global-property doc:name="Global Property" doc:id="75bf8f95-4a33-416c-82f0-79fbe9093195" name="env" value="uat" />
 	<tls:context name="TLS_Context" doc:name="TLS Context" doc:id="a547ceba-b5ad-4ceb-87c2-4f8e9df64ffc" >
 		<tls:key-store type="pkcs12" path="Traxion_Logistics.p12" keyPassword="wWpg9LfX6nxh9Ke3u1L0wxSmYr5y3YKTjAWiTMEa9dww" password="wWpg9LfX6nxh9Ke3u1L0wxSmYr5y3YKTjAWiTMEa9dww" />
 	</tls:context>

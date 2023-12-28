@@ -5,6 +5,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 	<sub-flow name="client-create-order-shipment-call-ws-create-order-shipment" doc:id="f6021928-11de-498f-adb9-296361792a0e" >
-		<wsc:consume doc:name="Consume" doc:id="c54a893b-3616-455a-9a87-157229694be2" config-ref="TMS_Web_services_consumer_config" operation="CrearOrdenesPedido"/>
+		<wsc:consume doc:name="Consume" doc:id="c54a893b-3616-455a-9a87-157229694be2" config-ref="TMS_Web_services_consumer_config" operation="CrearOrdenesEntrega"/>
 	</sub-flow>
 </mule>
