@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
     <http:listener-config name="system-tms-connection-httpListenerConfig">
         <http:listener-connection host="${https.listener.host}" port="${https.listener.port}" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="system-tms-unigis-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:system-tms-unigis-api:1.0.0:raml:zip:system-tms-unigis-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="system-tms-unigis-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:system-tms-unigis-api:1.0.2:raml:zip:system-tms-unigis-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="system-tms-unigis-api-main">
         <http:listener config-ref="system-tms-connection-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -124,6 +124,72 @@ output application/json
         </error-handler>
     </flow>
     <flow name="post:\tms\shipments:application\json:system-tms-unigis-api-config">
-        <flow-ref doc:name="orchestrator-create-order-shipment-main" doc:id="43ec55d5-1cb6-4420-8fac-9e3ef0ca9d3a" name="orchestrator-create-order-shipment-main"/>
+        <flow-ref doc:name="orchestrator-create-order-shipment-main" doc:id="43ec55d5-1cb6-4420-8fac-9e3ef0ca9d3a" name="orchestrator-create-order-shipment-main" />
+    </flow>
+    <flow name="post:\tms\shipments\dispacher:application\json:system-tms-unigis-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+	{
+    "traxion_response": {
+        "completed_succesfully": "true",
+        "response": {
+            "message": "shipment dispacher successful",
+            "data": {}
+        }
+    }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\tms\shipments\events:application\json:system-tms-unigis-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+	{
+    "traxion_response": {
+        "completed_succesfully": "true",
+        "response": {
+            "message": "update event successful",
+            "data": {}
+        }
+    }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\tms\shipments\test\delivery:application\json:system-tms-unigis-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+	{
+    "traxion_response": {
+        "completed_succesfully": "true",
+        "response": {
+            "message": "successful POD",
+            "data": {}
+        }
+    }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\tms\client:application\json:system-tms-unigis-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "Success"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
     </flow>
 </mule>
