@@ -1,0 +1,8 @@
+%dw 2.0
+
+type auto_0774fb6d_c8e4_45c8_b121_2e39f775ab18_Output_Attributes = {|
+  protocolHeaders: { _?: String }, 
+  additionalTransportData: { _?: String }
+|} {"typeAlias": "SoapAttributes",
+"typeId": "org.mule.extension.ws.api.SoapAttributes"}
+

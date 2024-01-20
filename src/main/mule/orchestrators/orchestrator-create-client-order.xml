@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<sub-flow name="orchestrator-create-client-order-main" doc:id="cca775ca-1964-48f9-a014-0fb6a2210e28" >
+		<flow-ref doc:name="orchestrator-create-client-order-prepare-xml-request" doc:id="b10abb58-3f9c-4140-9af4-879a13358ed2" name="orchestrator-create-client-order-prepare-xml-request"/>
+		<flow-ref doc:name="orchestrator-create-client-order-validate-system-source" doc:id="8a90ea90-4095-4b45-be92-c5eada656dc1" name="orchestrator-create-client-order-validate-system-source"/>
+		<flow-ref doc:name="orchestrator-create-client-order-prepare-response" doc:id="842797fa-b7e6-4c6a-8cbd-f50d739124b2" name="orchestrator-create-client-order-prepare-response"/>
+		<flow-ref doc:name="orchestrator-create-client-order-validate-error" doc:id="fe19ff32-7b1a-4ff3-9c86-3c296ee51691" name="orchestrator-create-client-order-validate-error"/>
+	</sub-flow>
+	<sub-flow name="orchestrator-create-client-order-prepare-xml-request" doc:id="ab6482c9-6474-4f04-a6a8-0d0ac144a661" >
+		<ee:transform doc:name="Transform Message" doc:id="f99cb1b0-2b1a-4370-a23c-a8d21d1de72e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns unis http://unisolutions.com.ar/
+---
+{
+  unis#"CrearClientesOrden": {
+    unis#"clientes": {
+      unis#"pCliente": {
+        unis#"RefCliente": payload.ref_cliente,
+        unis#"RazonSocial": payload.razon_social,
+        unis#"DomicilioFiscal": {
+          unis#"Direccion": payload.domicilio_fiscal.direccion,
+          unis#"Calle": payload.domicilio_fiscal.calle,
+          unis#"NumeroPuerta": payload.domicilio_fiscal.numero_puerta,
+          unis#"EntreCalle": payload.domicilio_fiscal.entre_calle,
+          unis#"Barrio": payload.domicilio_fiscal.colonia,
+          unis#"Localidad": payload.domicilio_fiscal.ciudad,
+          unis#"Partido": payload.domicilio_fiscal.municipio,
+          unis#"Provincia": payload.domicilio_fiscal.estado,
+          unis#"Pais": payload.domicilio_fiscal.pais,
+          unis#"Latitud": payload.domicilio_fiscal.latitud,
+          unis#"Longitud": payload.domicilio_fiscal.longitud,
+          unis#"CodigoPostal": payload.domicilio_fiscal.codigo_postal,
+          unis#"EMail": payload.domicilio_fiscal.email,
+          unis#"IdentificadorFiscal": payload.domicilio_fiscal.identificador_fiscal
+        },
+        unis#"RefDomicilioExterno": payload.ref_domicilio_externo,
+        unis#"DomicilioDescripcion": payload.domicilio_descripcion,
+        unis#"Telefono": payload.telefono,
+        unis#"Telefono2": payload.telefono2,
+        unis#"Telefono3": payload.telefono3,
+        unis#"EMail": payload.email,
+        unis#"Direccion": payload.direccion,
+        unis#"Calle": payload.calle,
+        unis#"NumeroPuerta": payload.numero_puerta,
+        unis#"EntreCalle": payload.entre_calle,
+        unis#"Barrio": payload.colonia,
+        unis#"Localidad": payload.ciudad,
+        unis#"Partido": payload.municipio,
+        unis#"Provincia": payload.estado,
+        unis#"Pais": payload.pais,
+        unis#"Latitud": payload.latitud,
+        unis#"Longitud": payload.longitud,
+        unis#"InicioHorario1": payload.inicio_horario1,
+        unis#"InicioHorario2": payload.inicio_horario2,
+        unis#"FinHorario1": payload.fin_horario1,
+        unis#"FinHorario2": payload.fin_horario2,
+        unis#"TiempoEspera": payload.tiempo_espera,
+        unis#"Grupo":payload.grupo,
+        unis#"DomicilioCodigoPostal": payload.domicilio_codigo_postal,
+        unis#"Contacto": payload.contacto,
+        unis#"CargaExclusiva": "false",
+        unis#"IgnorarOperacion": "true",
+        unis#"IgnorarOperacionDomicilioOrden": "true",
+        unis#"CrearDomicilioOrden": "true",
+        unis#"ActualizarDomicilioOrden": "true",
+        unis#"ValidarDomicilioOrden": "true"
+      }
+    },
+    unis#"apiKey": "24-11-5E-6F-5A-6"
+  }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="a59a7f4d-35fe-4d83-9140-27ed04d2e4e8" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="orchestrator-create-client-order-validate-system-source" doc:id="1be8ad0e-f3d8-42ba-a5da-3bdd035271a6" >
+		<choice doc:name="Choice" doc:id="0f19e974-354a-44cb-9eda-ce544d18b09f" >
+			<when expression='#[vars.source_system == "VMODAL"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="c56a95fc-2650-4798-b512-74d463630bc2" />
+				<flow-ref doc:name="client-create-order-shipment-call-ws-create-client-order-vmodal" doc:id="6ad0b7b2-1719-4ba5-9d71-c507ea64e65c" name="client-create-order-shipment-call-ws-create-client-order-vmodal"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="b9973f36-d33d-4b4d-838b-1940a6a5ef32" />
+				<flow-ref doc:name="client-create-order-shipment-call-ws-create-client-order-medistik" doc:id="20931473-4dc2-40e7-bb4a-a57f26a6fdf9" name="client-create-order-shipment-call-ws-create-client-order-medistik"/>
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<sub-flow name="orchestrator-create-client-order-prepare-response" doc:id="1a5aa333-ee57-4c21-86af-be93ae7343bc" >
+		<ee:transform doc:name="Transform Message" doc:id="00fb575e-9c5f-4999-b504-d598ce699705" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="orchestrator-create-client-order-validate-error" doc:id="f1e6f680-f565-4042-941b-76d3b6192d43" >
+		<validation:is-true doc:name="Is true" doc:id="4661875c-fe9e-4bf0-949d-5168b7b93bce" expression="#[payload.Body.CrearClientesOrdenResponse.CrearClientesOrdenResult as Number == 1]" message="ERROR AL CREAR EL CLIENTE"/>
+	</sub-flow>
+</mule>

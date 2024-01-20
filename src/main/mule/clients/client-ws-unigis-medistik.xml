@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<sub-flow name="client-create-order-shipment-call-ws-create-order-shipment-medistik" doc:id="f6021928-11de-498f-adb9-296361792a0e" >
+		<wsc:consume doc:name="Consume" doc:id="c54a893b-3616-455a-9a87-157229694be2" config-ref="tms-unigis-avior-Web_services_consumer_config" operation="CrearOrdenesEntrega"/>
+	</sub-flow>	
+		<sub-flow name="client-create-order-shipment-call-ws-create-client-order-medistik" doc:id="2fd9be2d-719c-4f3e-b707-47542e0444d0" >
+		<wsc:consume doc:name="Consume" doc:id="ffbcc9c2-9ed6-4cc8-9de4-715986c3405e" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="CrearClientesOrden"/>
+	</sub-flow>	
+		<sub-flow name="client-create-order-shipment-call-ws-create-transportista-medistik" doc:id="74bff1b4-2b01-4491-a762-a53dba3e3249" >
+		<wsc:consume doc:name="Consume" doc:id="46158650-9328-44bb-935c-d0ece468870a" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="CrearTransportes"/>
+	</sub-flow>			
+</mule>

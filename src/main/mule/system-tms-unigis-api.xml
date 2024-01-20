@@ -3,7 +3,7 @@
     <http:listener-config name="system-tms-connection-httpListenerConfig">
         <http:listener-connection host="${https.listener.host}" port="${https.listener.port}" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="system-tms-unigis-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:system-tms-unigis-api:1.0.3:raml:zip:system-tms-unigis-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="system-tms-unigis-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:system-tms-unigis-api:1.0.6:raml:zip:system-tms-unigis-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="system-tms-unigis-api-main">
         <http:listener config-ref="system-tms-connection-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -123,10 +123,23 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
+    <sub-flow name="system-tms.unigis-api-set-var-system-source" doc:id="859ef673-1a5b-437f-a7f0-0116c56c8619">
+        <ee:transform doc:name="Transform Message" doc:id="3b1a4f8b-5d59-4910-a0bd-039ab3f6d2b9">
+            <ee:message />
+            <ee:variables>
+                <ee:set-variable variableName="source_system"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.source_system]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+    </sub-flow>
     <flow name="post:\tms\shipments:application\json:system-tms-unigis-api-config">
+        <flow-ref doc:name="system-tms.unigis-api-set-var-system-source" doc:id="b345d8b4-b70b-45e2-833f-128afab36773" name="system-tms.unigis-api-set-var-system-source" />
         <flow-ref doc:name="orchestrator-create-order-shipment-main" doc:id="43ec55d5-1cb6-4420-8fac-9e3ef0ca9d3a" name="orchestrator-create-order-shipment-main" />
     </flow>
     <flow name="post:\tms\shipments\dispacher:application\json:system-tms-unigis-api-config">
+        <flow-ref doc:name="system-tms.unigis-api-set-var-system-source" doc:id="1d59e46f-94bd-4378-af69-2ed4c6823196" name="system-tms.unigis-api-set-var-system-source" />
         <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
@@ -145,6 +158,7 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="post:\tms\shipments\events:application\json:system-tms-unigis-api-config">
+        <flow-ref doc:name="system-tms.unigis-api-set-var-system-source" doc:id="a4c33ef1-6e3e-4d9c-90b7-68650bb9cbcb" name="system-tms.unigis-api-set-var-system-source" />
         <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
@@ -163,6 +177,7 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="post:\tms\shipments\test\delivery:application\json:system-tms-unigis-api-config">
+        <flow-ref doc:name="system-tms.unigis-api-set-var-system-source" doc:id="3a12c81b-37d1-4163-b9dd-0a6cc9dcdfed" name="system-tms.unigis-api-set-var-system-source" />
         <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
@@ -181,32 +196,11 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="post:\tms\client:application\json:system-tms-unigis-api-config">
-        <ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  message: "Success"
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="system-tms.unigis-api-set-var-system-source" doc:id="25d852b7-61f5-421a-ad25-ef25aeb388a6" name="system-tms.unigis-api-set-var-system-source" />
+        <flow-ref doc:name="orchestrator-create-client-order-main" doc:id="9a1a3005-e76a-4270-8cba-18c82d285a15" name="orchestrator-create-client-order-main" />
     </flow>
     <flow name="post:\tms\create-carrier:application\json:system-tms-unigis-api-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  traxion_response: {
-    completed_successfully: "true",
-    response: {
-      message: "Carrier created successfully"
-    }
-  }
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+        <flow-ref doc:name="system-tms.unigis-api-set-var-system-source" doc:id="5849686c-4f04-4d81-83cc-60eeb4117869" name="system-tms.unigis-api-set-var-system-source" />
+        <flow-ref doc:name="orchestrator-create-transportes" doc:id="c4548209-475e-42dd-9060-ba4bcd195ed7" name="orchestrator-create-transportes" />
     </flow>
 </mule>

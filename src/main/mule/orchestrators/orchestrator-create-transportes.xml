@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<sub-flow name="orchestrator-create-transportes" doc:id="cca775ca-1964-48f9-a014-0fb6a2210e28" >
+		<flow-ref doc:name="orchestrator-create-client-order-prepare-xml-request" doc:id="b10abb58-3f9c-4140-9af4-879a13358ed2" name="orchestrator-create-client-order-prepare-xml-request"/>
+		<flow-ref doc:name="orchestrator-create-transportes-validate-system-source" doc:id="8a90ea90-4095-4b45-be92-c5eada656dc1" name="orchestrator-create-transportes-validate-system-source"/>
+		<flow-ref doc:name="orchestrator-create-transportes-prepare-response" doc:id="2a12715d-5801-4e68-8f19-6f5a8d1e554c" name="orchestrator-create-transportes-prepare-response"/>
+		<flow-ref doc:name="orchestrator-create-transporte-validate-error" doc:id="c52c6930-1fb3-45e7-99d0-d9dbdabf302a" name="orchestrator-create-transporte-validate-error"/>
+	</sub-flow>
+	<sub-flow name="orchestrator-create-transportes-prepare-xml-request" doc:id="ab6482c9-6474-4f04-a6a8-0d0ac144a661" >
+		<ee:transform doc:name="Transform Message" doc:id="f99cb1b0-2b1a-4370-a23c-a8d21d1de72e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns unis http://unisolutions.com.ar/
+---
+ {
+      unis#"CrearTransportes": {
+        unis#"apiKey": "24-11-5E-6F-5A-6",
+        unis#"transportes": {
+          unis#"pTransporte": {
+            unis#"Referencia": payload.referencia,
+            unis#"RazonSocial": payload.razon_social,
+            unis#"NombreFantasia": payload.nombre_corto,
+            unis#"Cuit": payload.cuit,
+            unis#"Direccion": payload.direccion,
+            unis#"Partido": payload.municipio,
+            unis#"Provincia": payload.estado,
+            unis#"Localidad": payload.ciudad,
+            unis#"CodigoPostal": payload.codigo_postal,
+            unis#"Telefono1": payload.telefono1,
+            unis#"Telefono2": payload.telefono2,
+            unis#"Email": payload.email,
+            unis#"Contacto": payload.contacto,
+            unis#"TipoTransporte": payload.tipo_transporte,
+            unis#"RefernciaExternaEstadoTransporte": "ACTIVO",
+            unis#"DescripcionEstado": "ACTIVO",
+            unis#"HabilitadoAdministrativo": "1",
+            unis#"HabilitadoOperativo": "1",
+            unis#"IdEstado": "1",
+            unis#"HabilitadoTendering": "true"
+          }
+        }
+      }
+    }]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="a59a7f4d-35fe-4d83-9140-27ed04d2e4e8" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="orchestrator-create-transportes-validate-system-source" doc:id="1be8ad0e-f3d8-42ba-a5da-3bdd035271a6" >
+		<choice doc:name="Choice" doc:id="0f19e974-354a-44cb-9eda-ce544d18b09f" >
+			<when expression='#[vars.source_system == "VMODAL"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="08fc99e1-2712-4375-a62e-1d11ba498c11" />
+				<flow-ref doc:name="client-create-order-shipment-call-ws-create-transportista-vmodal" doc:id="635ff2d0-3aa0-4271-b79b-4b0daf921eb3" name="client-create-order-shipment-call-ws-create-transportista-vmodal"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="04206f5f-26f4-400f-8561-a960920c72d5" />
+				<flow-ref doc:name="client-create-order-shipment-call-ws-create-transportista-medistik" doc:id="2aca9825-e6e9-4c36-87f7-b57cc1ac45a0" name="client-create-order-shipment-call-ws-create-transportista-medistik" />
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<sub-flow name="orchestrator-create-transportes-prepare-response" doc:id="1a5aa333-ee57-4c21-86af-be93ae7343bc" >
+		<ee:transform doc:name="Transform Message" doc:id="00fb575e-9c5f-4999-b504-d598ce699705" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="orchestrator-create-transporte-validate-error" doc:id="f1e6f680-f565-4042-941b-76d3b6192d43" >
+		<validation:is-true doc:name="Is true" doc:id="4661875c-fe9e-4bf0-949d-5168b7b93bce" message="ERROR AL CREAR EL TRANSPORTISTA" expression="#[payload.Body.CrearTransportesResponse.CrearTransportesResult as Number == 1]"/>
+	</sub-flow>
+</mule>

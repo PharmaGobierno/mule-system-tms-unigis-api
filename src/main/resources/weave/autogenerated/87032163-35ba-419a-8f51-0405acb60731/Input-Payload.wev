@@ -1,6 +1,6 @@
 %dw 2.0
 
-type auto_02516b96_d24b_4de4_bf0a_e72396d59de0_Output_Payload = {|
+type auto_87032163_35ba_419a_8f51_0405acb60731_Input_Payload = {|
   CrearOrdenesEntrega: {|
     apiKey: String, 
     entregas: {|
