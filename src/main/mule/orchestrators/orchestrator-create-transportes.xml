@@ -72,8 +72,9 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="d49259ae-2453-4d30-a2b1-f4a0aaad09ba" message="#[payload]"/>
 	</sub-flow>
 	<sub-flow name="orchestrator-create-transporte-validate-error" doc:id="f1e6f680-f565-4042-941b-76d3b6192d43" >
-		<validation:is-true doc:name="Is true" doc:id="4661875c-fe9e-4bf0-949d-5168b7b93bce" message="ERROR AL CREAR EL TRANSPORTISTA" expression="#[payload.Body.CrearTransportesResponse.CrearTransportesResult as Number == 1]"/>
+		<validation:is-true doc:name="Is true" doc:id="4661875c-fe9e-4bf0-949d-5168b7b93bce" message="ERROR AL CREAR EL TRANSPORTISTA" expression="#[(payload.body.CrearTransportesResponse.CrearTransportesResult default 0) as Number == 1]"/>
 	</sub-flow>
 </mule>

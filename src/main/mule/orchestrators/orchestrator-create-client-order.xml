@@ -83,11 +83,11 @@ ns unis http://unisolutions.com.ar/
 	<sub-flow name="orchestrator-create-client-order-validate-system-source" doc:id="1be8ad0e-f3d8-42ba-a5da-3bdd035271a6" >
 		<choice doc:name="Choice" doc:id="0f19e974-354a-44cb-9eda-ce544d18b09f" >
 			<when expression='#[vars.source_system == "VMODAL"]'>
-				<logger level="INFO" doc:name="Logger" doc:id="c56a95fc-2650-4798-b512-74d463630bc2" />
+				<logger level="INFO" doc:name="Logger" doc:id="c56a95fc-2650-4798-b512-74d463630bc2" message="VMODAL"/>
 				<flow-ref doc:name="client-create-order-shipment-call-ws-create-client-order-vmodal" doc:id="6ad0b7b2-1719-4ba5-9d71-c507ea64e65c" name="client-create-order-shipment-call-ws-create-client-order-vmodal"/>
 			</when>
 			<otherwise >
-				<logger level="INFO" doc:name="Logger" doc:id="b9973f36-d33d-4b4d-838b-1940a6a5ef32" />
+				<logger level="INFO" doc:name="Logger" doc:id="b9973f36-d33d-4b4d-838b-1940a6a5ef32" message="MEDISTIK"/>
 				<flow-ref doc:name="client-create-order-shipment-call-ws-create-client-order-medistik" doc:id="20931473-4dc2-40e7-bb4a-a57f26a6fdf9" name="client-create-order-shipment-call-ws-create-client-order-medistik"/>
 			</otherwise>
 		</choice>
@@ -101,8 +101,9 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="bf48a497-affe-4e64-b3ef-bf7ea4dca9e7" message="#[payload]"/>
 	</sub-flow>
 	<sub-flow name="orchestrator-create-client-order-validate-error" doc:id="f1e6f680-f565-4042-941b-76d3b6192d43" >
-		<validation:is-true doc:name="Is true" doc:id="4661875c-fe9e-4bf0-949d-5168b7b93bce" expression="#[payload.Body.CrearClientesOrdenResponse.CrearClientesOrdenResult as Number == 1]" message="ERROR AL CREAR EL CLIENTE"/>
+		<validation:is-true doc:name="Is true" doc:id="4661875c-fe9e-4bf0-949d-5168b7b93bce" expression="#[(payload.body.CrearClientesOrdenResponse.CrearClientesOrdenResult default 0 ) as Number  == 1]" message="ERROR AL CREAR EL CLIENTE"/>
 	</sub-flow>
 </mule>
