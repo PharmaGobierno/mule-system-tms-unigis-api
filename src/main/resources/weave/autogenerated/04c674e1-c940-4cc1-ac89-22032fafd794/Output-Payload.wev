@@ -1,0 +1,63 @@
+%dw 2.0
+// namespaces
+ns ns0 http://unisolutions.com.ar/
+
+type auto_04c674e1_c940_4cc1_ac89_22032fafd794_Output_Payload = {|
+  ns0#CrearClientesOrden: {|
+    ns0#clientes: {|
+      ns0#pCliente: {|
+        ns0#RefCliente: String, 
+        ns0#RazonSocial: String, 
+        ns0#DomicilioFiscal: {|
+          ns0#Direccion: String, 
+          ns0#Calle: String, 
+          ns0#NumeroPuerta: String, 
+          ns0#EntreCalle: String, 
+          ns0#Barrio: String, 
+          ns0#Localidad: String, 
+          ns0#Partido: String, 
+          ns0#Provincia: String, 
+          ns0#Pais: String, 
+          ns0#Latitud: String, 
+          ns0#Longitud: String, 
+          ns0#CodigoPostal: String, 
+          ns0#EMail: String, 
+          ns0#IdentificadorFiscal: String
+        |}, 
+        ns0#RefDomicilioExterno: String, 
+        ns0#DomicilioDescripcion: String, 
+        ns0#Telefono: String, 
+        ns0#Telefono2: String, 
+        ns0#Telefono3: String, 
+        ns0#EMail: String, 
+        ns0#Direccion: String, 
+        ns0#Calle: String, 
+        ns0#NumeroPuerta: String, 
+        ns0#EntreCalle: String, 
+        ns0#Barrio: String, 
+        ns0#Localidad: String, 
+        ns0#Partido: String, 
+        ns0#Provincia: String, 
+        ns0#Pais: String, 
+        ns0#Latitud: String, 
+        ns0#Longitud: String, 
+        ns0#InicioHorario1: String, 
+        ns0#InicioHorario2: String, 
+        ns0#FinHorario1: String, 
+        ns0#FinHorario2: String, 
+        ns0#TiempoEspera: String, 
+        ns0#Grupo: String, 
+        ns0#DomicilioCodigoPostal: String, 
+        ns0#Contacto: Null, 
+        ns0#CargaExclusiva: String, 
+        ns0#IgnorarOperacion: String, 
+        ns0#IgnorarOperacionDomicilioOrden: String, 
+        ns0#CrearDomicilioOrden: String, 
+        ns0#ActualizarDomicilioOrden: String, 
+        ns0#ValidarDomicilioOrden: String
+      |}
+    |}, 
+    ns0#apiKey: String
+  |}
+|}
+

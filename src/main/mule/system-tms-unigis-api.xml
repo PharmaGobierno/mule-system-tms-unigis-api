@@ -3,7 +3,7 @@
     <http:listener-config name="system-tms-connection-httpListenerConfig">
         <http:listener-connection host="${https.listener.host}" port="${https.listener.port}" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="system-tms-unigis-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:system-tms-unigis-api:1.0.6:raml:zip:system-tms-unigis-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="system-tms-unigis-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:system-tms-unigis-api:1.0.8:raml:zip:system-tms-unigis-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="system-tms-unigis-api-main">
         <http:listener config-ref="system-tms-connection-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -127,7 +127,7 @@ output application/json
         <ee:transform doc:name="Transform Message" doc:id="3b1a4f8b-5d59-4910-a0bd-039ab3f6d2b9">
             <ee:message />
             <ee:variables>
-                <ee:set-variable variableName="source_system"><![CDATA[%dw 2.0
+				<ee:set-variable variableName="source_system" ><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.queryParams.source_system]]></ee:set-variable>
@@ -202,5 +202,23 @@ output application/json
     <flow name="post:\tms\create-carrier:application\json:system-tms-unigis-api-config">
         <flow-ref doc:name="system-tms.unigis-api-set-var-system-source" doc:id="5849686c-4f04-4d81-83cc-60eeb4117869" name="system-tms.unigis-api-set-var-system-source" />
         <flow-ref doc:name="orchestrator-create-transportes" doc:id="c4548209-475e-42dd-9060-ba4bcd195ed7" name="orchestrator-create-transportes" />
+    </flow>
+    <flow name="patch:\tms\journeys\(id_journey):application\json:system-tms-unigis-api-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="id_journey">attributes.uriParams.'id_journey'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <flow-ref doc:name="system-tms.unigis-api-set-var-system-source" doc:id="9e6853f1-294e-4613-a884-aad5ccff279e" name="system-tms.unigis-api-set-var-system-source" />
+		<flow-ref doc:name="orchestrator-modifica-estado-viaje" doc:id="6ecb5633-cf2c-4853-9b54-860ecd400c51" name="orchestrator-modifica-estado-viaje"/>
+    </flow>
+    <flow name="patch:\tms\guides\(id_guide):application\json:system-tms-unigis-api-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="id_guide">attributes.uriParams.'id_guide'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <flow-ref doc:name="system-tms.unigis-api-set-var-system-source" doc:id="540eafab-3351-4107-8bab-022e524cfb8c" name="system-tms.unigis-api-set-var-system-source" />
+		<flow-ref doc:name="orchestrator-modifica-estado-guia" doc:id="bc813008-3bf0-413d-8e55-370cabf6047a" name="orchestrator-modifica-estado-guia"/>
     </flow>
 </mule>

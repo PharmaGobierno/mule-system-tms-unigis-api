@@ -12,5 +12,11 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 	</sub-flow>
 	<sub-flow name="client-create-order-shipment-call-ws-create-transportista-vmodal" doc:id="018a2e49-d780-432e-93c8-c6a9f0124e54" >
 		<wsc:consume doc:name="Consume" doc:id="22debefb-f7ac-41c4-a4c3-178c10bf2f4b" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="CrearTransportes"/>
-	</sub-flow>			
+	</sub-flow>	
+	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-guia-vmodal" doc:id="3c125474-25d6-4ac8-a219-ede9e8cc7b69" >
+		<wsc:consume doc:name="Consume" doc:id="59541091-d0c0-4f73-aac2-fad868eea839" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="ModificarEstadoGuia"/>
+	</sub-flow>
+	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-viaje-vmodal" doc:id="01f9c74b-6c55-4926-8076-e119cbb39e64" >
+		<wsc:consume doc:name="Consume" doc:id="08eb5cfb-d3d2-48be-b4c8-19ef2f947237" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="ModificarEstadoViaje"/>
+	</sub-flow>						
 </mule>

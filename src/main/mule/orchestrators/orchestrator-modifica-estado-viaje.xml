@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="orchestrator-modifica-estado-viaje" doc:id="19756118-b6d0-4253-8650-e91cf32d3370" >
+		<flow-ref doc:name="orchestrator-modifica-estado-viaje-prepare-xml-request" doc:id="f27d3ad3-07a3-4d50-8136-9ebf165dfd7a" name="orchestrator-modifica-estado-viaje-prepare-xml-request"/>
+		<flow-ref doc:name="orchestrator-modifica-estado-viaje-validate-system-source" doc:id="a15edab6-8dda-4bb5-95cc-f7e348c88dbc" name="orchestrator-modifica-estado-viaje-validate-system-source"/>
+		<flow-ref doc:name="orchestrator-modifica-estado-viaje-prepare-response" doc:id="b9975ccf-1454-4538-884c-94fc4c687038" name="orchestrator-modifica-estado-viaje-prepare-response"/>
+		<flow-ref doc:name="orchestrator-modifica-estado-viaje-validate-error" doc:id="595e9f2c-edc6-4ed2-9a63-3ff22097b7dd" name="orchestrator-modifica-estado-viaje-validate-error"/>
+	</sub-flow>
+	<sub-flow name="orchestrator-modifica-estado-viaje-prepare-xml-request" doc:id="04c674e1-c940-4cc1-ac89-22032fafd794" >
+		<ee:transform doc:name="Transform Message" doc:id="24bc2286-ca26-4484-afd1-e2f6bbf7c38e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns unis http://unisolutions.com.ar/
+---
+{
+  unis#"ModificarEstadoViaje": {
+    unis#"ApiKey": p('tms.unigis.api.key'),
+    unis#"IdViaje": vars.id_journey,
+    unis#"Estado": payload.status,
+    unis#"ValidarTransicion": "true",
+    unis#"FechaCambioEstado": payload.transaction_date
+  }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="7377f428-ee8b-4251-896b-d28e420e7c52" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="orchestrator-modifica-estado-viaje-validate-system-source" doc:id="497d92f9-0227-4f56-9e09-d3349fc61710" >
+		<choice doc:name="Choice" doc:id="12995cfd-88b1-40d5-a5d9-362585b127c8" >
+			<when expression='#[vars.source_system == "VMODAL"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="a7954ff6-459b-4341-9740-228d8a4e40ef" />
+				<flow-ref doc:name="client-create-order-shipment-call-ws-modificar-estado-viaje-vmodal" doc:id="c89b2431-9a56-45ba-afc6-6b7cc924f85d" name="client-create-order-shipment-call-ws-modificar-estado-viaje-vmodal"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="d4ce4f26-7376-43e7-9c6b-09deca84da85" />
+				<flow-ref doc:name="client-create-order-shipment-call-ws-modificar-estado-viaje-medistik" doc:id="1c8e4cc7-287f-4856-a71c-115b79981eba" name="client-create-order-shipment-call-ws-modificar-estado-viaje-medistik" />
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<sub-flow name="orchestrator-modifica-estado-viaje-prepare-response" doc:id="34abbf0a-9c81-460a-ac30-01a74203db4f" >
+		<ee:transform doc:name="Transform Message" doc:id="4f19c0bc-46be-4a52-919c-0fe7a32ee31e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="314babeb-d45a-49fc-a027-15b7b682b671" message="#[payload]"/>
+	</sub-flow>
+	<sub-flow name="orchestrator-modifica-estado-viaje-validate-error" doc:id="87968358-cf20-4e8b-9b2a-6e83ae0cccb8" >
+		<validation:is-true doc:name="Is true" doc:id="ceb241af-9189-4901-a2e5-2bc37e6e3ae6" message="ERROR UPDATING STATUS" expression="#[(payload.body.ModificarEstadoViajeResponse.ModificarEstadoViajeResult default 0) as Number == 1]"/>
+	</sub-flow>
+</mule>

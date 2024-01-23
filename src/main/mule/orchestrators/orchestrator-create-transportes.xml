@@ -6,7 +6,7 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	<sub-flow name="orchestrator-create-transportes" doc:id="cca775ca-1964-48f9-a014-0fb6a2210e28" >
-		<flow-ref doc:name="orchestrator-create-client-order-prepare-xml-request" doc:id="b10abb58-3f9c-4140-9af4-879a13358ed2" name="orchestrator-create-client-order-prepare-xml-request"/>
+		<flow-ref doc:name="orchestrator-create-transportes-prepare-xml-request" doc:id="b10abb58-3f9c-4140-9af4-879a13358ed2" name="orchestrator-create-transportes-prepare-xml-request"/>
 		<flow-ref doc:name="orchestrator-create-transportes-validate-system-source" doc:id="8a90ea90-4095-4b45-be92-c5eada656dc1" name="orchestrator-create-transportes-validate-system-source"/>
 		<flow-ref doc:name="orchestrator-create-transportes-prepare-response" doc:id="2a12715d-5801-4e68-8f19-6f5a8d1e554c" name="orchestrator-create-transportes-prepare-response"/>
 		<flow-ref doc:name="orchestrator-create-transporte-validate-error" doc:id="c52c6930-1fb3-45e7-99d0-d9dbdabf302a" name="orchestrator-create-transporte-validate-error"/>

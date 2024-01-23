@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="orchestrator-modifica-estado-guia" doc:id="ee84b70d-18e6-4d2a-82bf-8b66ecd5200d" >
+		<flow-ref doc:name="orchestrator-modifica-estado-guia-prepare-xml-request" doc:id="55ab7168-faa0-4805-98b0-bcc970273d61" name="orchestrator-modifica-estado-guia-prepare-xml-request"/>
+		<flow-ref doc:name="orchestrator-modifica-estado-guia-validate-system-source" doc:id="41c4ebb8-6908-4f72-bc14-8a01cd412af4" name="orchestrator-modifica-estado-guia-validate-system-source"/>
+		<flow-ref doc:name="orchestrator-modifica-estado-guia-prepare-response" doc:id="6fc3c431-7b54-4726-aee3-b4e468e46db9" name="orchestrator-modifica-estado-guia-prepare-response"/>
+		<flow-ref doc:name="orchestrator-modifica-estado-guia-validate-error" doc:id="209f6bff-91f4-43da-948c-90d0e7be8e04" name="orchestrator-modifica-estado-guia-validate-error"/>
+	</sub-flow>
+	<sub-flow name="orchestrator-modifica-estado-guia-prepare-xml-request" doc:id="49fec8c8-21b2-4b9b-a787-ac62bfc3d48f" >
+		<ee:transform doc:name="Transform Message" doc:id="42e5d6d5-4004-447f-bd86-91de6a7365a9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns unis http://unisolutions.com.ar/
+---
+ {
+  unis#"ModificarEstadoGuia": {
+    unis#"ApiKey": p('tms.unigis.api.key'),
+    unis#"estado": {
+      unis#"IdGuia": vars.id_guide,
+      unis#"Estado": payload.status,
+      unis#"Observaciones": payload.observations
+    }
+  }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="45f4fa0a-63d0-4b74-ad6e-e6c85e62b04f" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="orchestrator-modifica-estado-guia-validate-system-source" doc:id="05cde2f4-ad10-461f-b94b-dbe92cfa9a42" >
+		<choice doc:name="Choice" doc:id="a84bbda3-6363-4d20-82ae-46b5d3766f34" >
+			<when expression='#[vars.source_system == "VMODAL"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="e89898b1-e277-4a55-b9f7-a6df6c8c7a2f" />
+				<flow-ref doc:name="client-create-order-shipment-call-ws-modificar-estado-guia-vmodal" doc:id="d0327031-4d73-45db-9327-7fb374b43004" name="client-create-order-shipment-call-ws-modificar-estado-guia-vmodal"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="b2d314de-678a-4a9a-bb93-44af8bf4f83d" />
+				<flow-ref doc:name="client-create-order-shipment-call-ws-modificar-estado-guia-medistik" doc:id="1d620419-ac30-4143-8fe6-d7c4dc8d9f00" name="client-create-order-shipment-call-ws-modificar-estado-guia-medistik" />
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<sub-flow name="orchestrator-modifica-estado-guia-prepare-response" doc:id="7b3deed9-b67c-40d8-b638-63ac62face6e" >
+		<ee:transform doc:name="Transform Message" doc:id="9b00e793-8aff-4be3-8ff9-d076aed5b46a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="29be6f26-78a7-4144-b6e5-5b658fb5d2b5" message="#[payload]"/>
+	</sub-flow>
+	<sub-flow name="orchestrator-modifica-estado-guia-validate-error" doc:id="58e3b479-a14c-4619-8f4a-59ba701c3a2b" >
+		<validation:is-true doc:name="Is true" doc:id="83b1e91a-a4ee-4e86-8fb4-62ef82a8f308" message="ERROR UPDATING STATUS" expression="#[(payload.body.ModificarEstadoGuiaResponse.ModificarEstadoGuiaResult default 0) as Number == 1]"/>
+	</sub-flow>
+</mule>

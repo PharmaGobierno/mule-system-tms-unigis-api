@@ -13,4 +13,10 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 		<sub-flow name="client-create-order-shipment-call-ws-create-transportista-medistik" doc:id="74bff1b4-2b01-4491-a762-a53dba3e3249" >
 		<wsc:consume doc:name="Consume" doc:id="46158650-9328-44bb-935c-d0ece468870a" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="CrearTransportes"/>
 	</sub-flow>			
+	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-guia-medistik" doc:id="49084fdf-f62b-41e8-a9af-f5fee13fc199" >
+		<wsc:consume doc:name="Consume" doc:id="decb7911-2076-4a2f-b48b-0dc31f321deb" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="ModificarEstadoGuia"/>
+	</sub-flow>
+	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-viaje-medistik" doc:id="ba6d5d4c-06c5-4288-9e40-fcd7c9e54cab" >
+		<wsc:consume doc:name="Consume" doc:id="5667af6a-c22d-4b2c-a2b0-df2e9dbf57f3" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="ModificarEstadoViaje"/>
+	</sub-flow>		
 </mule>
