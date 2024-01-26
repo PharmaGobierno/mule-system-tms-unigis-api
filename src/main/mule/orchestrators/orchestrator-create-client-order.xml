@@ -18,64 +18,35 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 output application/xml
 ns unis http://unisolutions.com.ar/
 ---
-{
-  unis#"CrearClientesOrden": {
-    unis#"clientes": {
-      unis#"pCliente": {
-        unis#"RefCliente": payload.ref_cliente,
-        unis#"RazonSocial": payload.razon_social,
-        unis#"DomicilioFiscal": {
-          unis#"Direccion": payload.domicilio_fiscal.direccion,
-          unis#"Calle": payload.domicilio_fiscal.calle,
-          unis#"NumeroPuerta": payload.domicilio_fiscal.numero_puerta,
-          unis#"EntreCalle": payload.domicilio_fiscal.entre_calle,
-          unis#"Barrio": payload.domicilio_fiscal.colonia,
-          unis#"Localidad": payload.domicilio_fiscal.ciudad,
-          unis#"Partido": payload.domicilio_fiscal.municipio,
-          unis#"Provincia": payload.domicilio_fiscal.estado,
-          unis#"Pais": payload.domicilio_fiscal.pais,
-          unis#"Latitud": payload.domicilio_fiscal.latitud,
-          unis#"Longitud": payload.domicilio_fiscal.longitud,
-          unis#"CodigoPostal": payload.domicilio_fiscal.codigo_postal,
-          unis#"EMail": payload.domicilio_fiscal.email,
-          unis#"IdentificadorFiscal": payload.domicilio_fiscal.identificador_fiscal
-        },
-        unis#"RefDomicilioExterno": payload.ref_domicilio_externo,
-        unis#"DomicilioDescripcion": payload.domicilio_descripcion,
-        unis#"Telefono": payload.telefono,
-        unis#"Telefono2": payload.telefono2,
-        unis#"Telefono3": payload.telefono3,
-        unis#"EMail": payload.email,
-        unis#"Direccion": payload.direccion,
-        unis#"Calle": payload.calle,
-        unis#"NumeroPuerta": payload.numero_puerta,
-        unis#"EntreCalle": payload.entre_calle,
-        unis#"Barrio": payload.colonia,
-        unis#"Localidad": payload.ciudad,
-        unis#"Partido": payload.municipio,
-        unis#"Provincia": payload.estado,
-        unis#"Pais": payload.pais,
-        unis#"Latitud": payload.latitud,
-        unis#"Longitud": payload.longitud,
-        unis#"InicioHorario1": payload.inicio_horario1,
-        unis#"InicioHorario2": payload.inicio_horario2,
-        unis#"FinHorario1": payload.fin_horario1,
-        unis#"FinHorario2": payload.fin_horario2,
-        unis#"TiempoEspera": payload.tiempo_espera,
-        unis#"Grupo":payload.grupo,
-        unis#"DomicilioCodigoPostal": payload.domicilio_codigo_postal,
-        unis#"Contacto": payload.contacto,
-        unis#"CargaExclusiva": "false",
-        unis#"IgnorarOperacion": "true",
-        unis#"IgnorarOperacionDomicilioOrden": "true",
-        unis#"CrearDomicilioOrden": "true",
-        unis#"ActualizarDomicilioOrden": "true",
-        unis#"ValidarDomicilioOrden": "true"
+ {
+      unis#"CrearClientesDadores": {
+        unis#"apiKey": p('tms.unigis.api.key'),
+        unis#"clientes": {
+          unis#"pClienteDador": {
+            unis#"ReferenciaExterna": payload.referencia_externa,
+            unis#"RazonSocial": payload.razon_social,
+            unis#"NombreFantasia": payload.nombre_fantasia,
+            unis#"Cuit": payload.cuit,
+            unis#"Telefono1": payload.telefono1,
+            unis#"Telefono2": payload.telefono2,
+            unis#"Direccion": payload.direccion,
+            unis#"Localidad": payload.localidad,
+            unis#"eMailGestorDeFlota": payload.email_gestor_flota,
+            unis#"CentroDeCosto": payload.centro_Costo,
+            unis#"operaciones": {
+              unis#"pOperacion": {
+                unis#"Descripcion": payload.operacion.descripcion,
+                unis#"IdOperacion": payload.operacion.id_operacion,
+                unis#"Referencia": payload.operacion.referencia,
+                unis#"Sucursal": payload.operacion.sucursal,
+                unis#"ReferenciaExterna": payload.operacion.referencia_externa
+              }
+            },
+            unis#"IdEstado": payload.id_estado
+          }
+        }
       }
-    },
-    unis#"apiKey": p('tms.unigis.api.key')
-  }
-}]]></ee:set-payload>
+    }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="a59a7f4d-35fe-4d83-9140-27ed04d2e4e8" message="#[payload]" />
@@ -104,6 +75,6 @@ payload]]></ee:set-payload>
 		<logger level="INFO" doc:name="Logger" doc:id="bf48a497-affe-4e64-b3ef-bf7ea4dca9e7" message="#[payload]"/>
 	</sub-flow>
 	<sub-flow name="orchestrator-create-client-order-validate-error" doc:id="f1e6f680-f565-4042-941b-76d3b6192d43" >
-		<validation:is-true doc:name="Is true" doc:id="4661875c-fe9e-4bf0-949d-5168b7b93bce" expression="#[(payload.body.CrearClientesOrdenResponse.CrearClientesOrdenResult default 0 ) as Number  == 1]" message="ERROR AL CREAR EL CLIENTE"/>
+		<validation:is-true doc:name="Is true" doc:id="4661875c-fe9e-4bf0-949d-5168b7b93bce" expression="#[(payload.body.CrearClientesDadoresResponse.CrearClientesDadoresResult default 0 ) as Number  == 1]" message="ERROR AL CREAR EL CLIENTE"/>
 	</sub-flow>
 </mule>
