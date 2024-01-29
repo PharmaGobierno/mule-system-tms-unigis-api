@@ -8,7 +8,7 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 		<wsc:consume doc:name="Consume" doc:id="930b06fe-6d56-4c02-a31d-3408a14a4247" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="CrearOrdenesEntrega"/>
 	</sub-flow>	
 	<sub-flow name="client-create-order-shipment-call-ws-create-client-order-vmodal" doc:id="c32d1eef-79ab-4bef-a9a2-1962c7c7e5a9" >
-		<wsc:consume doc:name="Consume" doc:id="81b69c76-a0f5-46a6-9fd6-146ca002287e" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="CrearClientesOrden"/>
+		<wsc:consume doc:name="Consume" doc:id="81b69c76-a0f5-46a6-9fd6-146ca002287e" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="CrearClientesDadores"/>
 	</sub-flow>
 	<sub-flow name="client-create-order-shipment-call-ws-create-transportista-vmodal" doc:id="018a2e49-d780-432e-93c8-c6a9f0124e54" >
 		<wsc:consume doc:name="Consume" doc:id="22debefb-f7ac-41c4-a4c3-178c10bf2f4b" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="CrearTransportes"/>

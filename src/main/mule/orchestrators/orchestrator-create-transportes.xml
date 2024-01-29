@@ -75,6 +75,16 @@ payload]]></ee:set-payload>
 		<logger level="INFO" doc:name="Logger" doc:id="d49259ae-2453-4d30-a2b1-f4a0aaad09ba" message="#[payload]"/>
 	</sub-flow>
 	<sub-flow name="orchestrator-create-transporte-validate-error" doc:id="f1e6f680-f565-4042-941b-76d3b6192d43" >
-		<validation:is-true doc:name="Is true" doc:id="4661875c-fe9e-4bf0-949d-5168b7b93bce" message="ERROR AL CREAR EL TRANSPORTISTA" expression="#[(payload.body.CrearTransportesResponse.CrearTransportesResult default 0) as Number == 1]"/>
+		<ee:transform doc:name="Transform Message" doc:id="05ed56ce-0337-416c-b491-f49c97787a60">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable variableName="error_messages"><![CDATA[%dw 2.0
+import modules::code_errors_unigis
+output application/json
+---
+write(code_errors_unigis::error(payload.body.CrearTransportesResponse.CrearTransportesResult))]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<validation:is-true doc:name="Is true" doc:id="4661875c-fe9e-4bf0-949d-5168b7b93bce" message="#[vars.error_messages]" expression="#[(payload.body.CrearTransportesResponse.CrearTransportesResult default 0) as Number &gt; 1]"/>
 	</sub-flow>
 </mule>

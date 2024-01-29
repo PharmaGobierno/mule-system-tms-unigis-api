@@ -59,6 +59,16 @@ payload]]></ee:set-payload>
 		<logger level="INFO" doc:name="Logger" doc:id="29be6f26-78a7-4144-b6e5-5b658fb5d2b5" message="#[payload]"/>
 	</sub-flow>
 	<sub-flow name="orchestrator-modifica-estado-guia-validate-error" doc:id="58e3b479-a14c-4619-8f4a-59ba701c3a2b" >
-		<validation:is-true doc:name="Is true" doc:id="83b1e91a-a4ee-4e86-8fb4-62ef82a8f308" message="ERROR UPDATING STATUS" expression="#[(payload.body.ModificarEstadoGuiaResponse.ModificarEstadoGuiaResult default 0) as Number == 1]"/>
+		<ee:transform doc:name="Transform Message" doc:id="91a012cb-9493-434e-9d0d-871e1f7246c2">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable variableName="error_messages"><![CDATA[%dw 2.0
+import modules::code_errors_unigis
+output application/json
+---
+write(code_errors_unigis::error(payload.body.ModificarEstadoGuiaResponse.ModificarEstadoGuiaResult))]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<validation:is-true doc:name="Is true" doc:id="83b1e91a-a4ee-4e86-8fb4-62ef82a8f308" message="#[vars.error_messages]" expression="#[(payload.body.ModificarEstadoGuiaResponse.ModificarEstadoGuiaResult default 0) as Number &gt; 1]"/>
 	</sub-flow>
 </mule>
