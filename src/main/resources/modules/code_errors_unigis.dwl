@@ -159,4 +159,9 @@ fun error (error_code: String) = error_code match{
             "ORIGEN ENTIDAD": "ERROR_API_KEY",
             "DESCRIPCIÓN": "ApiKey Incorrecto"
         }
+        else -> {
+            "CODIGO": "500",
+            "ORIGEN ENTIDAD": "ERROR_API_SYS",
+            "DESCRIPCIÓN": "CODIGO DE ERROR NO CONTROLADO"
+        }
     }
