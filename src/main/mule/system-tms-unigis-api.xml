@@ -362,7 +362,7 @@ output application/json
 } as Object {encoding: "UTF-8", mediaType: "application/json"}&#93;&#93;></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
-		<ee:transform doc:name="Set source system and variables for mapping requests xml and pdf documents" doc:id="d10251b9-7764-4450-8233-c6071e77117e" >
+		<ee:transform doc:name="Set source system" doc:id="d10251b9-7764-4450-8233-c6071e77117e" >
 			<ee:message >
 			</ee:message>
 			<ee:variables >

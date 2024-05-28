@@ -18,7 +18,10 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		</wsc:connection>
 	</wsc:config>
 	<wsc:config name="tms-unigis-medistik-Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="aeca016c-c2b4-4d41-a06d-310220e40669" >
-		<wsc:connection wsdlLocation="wsdls\tms-unigis-medistik.wsdl" service="Service" port="ServiceSoap" address="https://cloud-test.unigis.com/MEDISTIK/mapi/Soap/Logistic/service.asmx">
+		<wsc:connection wsdlLocation="wsdls\tms-unigis-medistik.wsdl" service="Service" port="ServiceSoap" address="${consume.medistik.address}">
+			<wsc:custom-transport-configuration >
+				<wsc:default-http-transport-configuration timeout="#[p('consume.medistik.transport.timeout')]" />
+			</wsc:custom-transport-configuration>
 			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
 		</wsc:connection>
 	</wsc:config>
