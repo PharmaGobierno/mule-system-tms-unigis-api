@@ -332,11 +332,11 @@ output application/json
         <flow-ref doc:name="orchestrator-modifica-estado-guia" doc:id="bc813008-3bf0-413d-8e55-370cabf6047a" name="orchestrator-modifica-estado-guia" />
     </flow>
     <flow name="post:\tms\bill_lading:application\json:system-tms-unigis-api-config">
-        <ee:transform doc:name="Transform Message">
+        <!-- [STUDIO:"Transform Message"]<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   traxion_response: {
     completed_succesfully: true,
@@ -359,8 +359,19 @@ output application/json
       }
     }
   }
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+} as Object {encoding: "UTF-8", mediaType: "application/json"}&#93;&#93;></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
+		<ee:transform doc:name="Set source system and variables for mapping requests xml and pdf documents" doc:id="d10251b9-7764-4450-8233-c6071e77117e" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="source_system" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.source_system]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis" doc:id="bf5ae486-634b-4408-b428-bcb370d3fcaa" name="orchestrator-send-bill-lading-unigis"/>
     </flow>
 </mule>

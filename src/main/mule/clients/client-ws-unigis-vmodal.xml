@@ -18,5 +18,8 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 	</sub-flow>
 	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-viaje-vmodal" doc:id="01f9c74b-6c55-4926-8076-e119cbb39e64" >
 		<wsc:consume doc:name="Consume" doc:id="08eb5cfb-d3d2-48be-b4c8-19ef2f947237" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="ModificarEstadoViaje"/>
+	</sub-flow>
+	<sub-flow name="client-ws-unigis-vmodal-send-document-pdf-and-xml" doc:id="5ce5fb66-1bde-45d0-910b-c0f7055d633a" >
+		<wsc:consume doc:name="Consume" doc:id="60a801a4-d5c0-4a12-b616-a10cd27a1677" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="CrearDocumentos"/>
 	</sub-flow>						
 </mule>

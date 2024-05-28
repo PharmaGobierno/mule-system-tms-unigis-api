@@ -18,5 +18,8 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 	</sub-flow>
 	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-viaje-medistik" doc:id="ba6d5d4c-06c5-4288-9e40-fcd7c9e54cab" >
 		<wsc:consume doc:name="Consume" doc:id="5667af6a-c22d-4b2c-a2b0-df2e9dbf57f3" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="ModificarEstadoViaje"/>
+	</sub-flow>
+	<sub-flow name="client-ws-unigis-medistik-send-document-pdf-and-xml" doc:id="dd0b5474-374d-45bc-84d6-642980cd1fcd" >
+		<wsc:consume doc:name="Consume" doc:id="14086a68-73ee-4c23-b071-dbc24999e0e1" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="CrearDocumentos"/>
 	</sub-flow>		
 </mule>

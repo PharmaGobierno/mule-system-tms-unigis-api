@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="orchestrator-send-bill-lading-unigis" doc:id="a6c1fa88-fb07-48e4-86a8-5c20d0b1e32d" >
+		<flow-ref doc:name="Call-orchestrator-prepare-xml-request-send-bill-lading-unigis-pdf" doc:id="8b2f7536-377d-445a-a045-f11e631b12aa" name="orchestrator-prepare-xml-request-send-bill-lading-unigis-pdf"/>
+		<flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis-validate-source-system" doc:id="b79cc3cd-e39a-4efc-ae40-c367d2d055b5" name="orchestrator-send-bill-lading-unigis-validate-source-system"/>
+		<flow-ref doc:name="Call-orchestrator-prepare-xml-request-send-bill-lading-unigis-xml" doc:id="a2c93a52-fb82-4c3b-b501-b4e7ce717bac" name="orchestrator-prepare-xml-request-send-bill-lading-unigis-xml"/>
+		<flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis-validate-source-system" doc:id="4ec6809b-6c26-4212-bf67-fb33129361e9" name="orchestrator-send-bill-lading-unigis-validate-source-system"/>
+		<flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis-prepare-response-for-sending-documents" doc:id="c1f066a4-9bab-405e-8aad-f71daafd3d8b" name="orchestrator-send-bill-lading-unigis-prepare-response-for-sending-documents"/>
+	</sub-flow>
+	<sub-flow name="orchestrator-prepare-xml-request-send-bill-lading-unigis-pdf" doc:id="82237174-6579-4c50-bca6-2f335c08365e" >
+		<ee:transform doc:name="Set request for pdf document" doc:id="0166a84d-f6d0-48d7-829a-a5a783b776ce" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+ns unis http://unisolutions.com.ar/
+output application/xml  
+---
+{
+  unis#"crearDocumentos": {
+    unis#"apiKey": vars.pdfToSendRequest.apiKey,
+    unis#"Documentos": {
+      unis#"pDocumento": {
+        unis#"tipoDocumento": vars.pdfToSendRequest.tipoDocumento,
+        unis#"referencia": vars.pdfToSendRequest.referencia,
+        unis#"fechaEmision": vars.pdfToSendRequest.fechaEmision,
+        unis#"fechaExpiracion": vars.pdfToSendRequest.fechaExpiracion,
+        unis#"categoria": vars.pdfToSendRequest.categoria,
+        unis#"clase": vars.pdfToSendRequest.clase,
+        unis#"observaciones": vars.pdfToSendRequest.observaciones,
+        unis#"referenciaEstadoDocumento": vars.pdfToSendRequest.referenciaEstadoDocumento,
+        unis#"forzarActualizacion": vars.pdfToSendRequest.forzarActualizacion,
+        unis#"asociaciones": {
+          unis#"referenciaViaje": vars.pdfToSendRequest.referenciaViaje
+        },
+        unis#"archivosAsociados": {
+          unis#"pArchivoDoc": {
+            unis#"descripcion": vars.pdfToSendRequest.descripcion,
+            unis#"tipoArchivo": vars.pdfToSendRequest.tipoArchivo,
+            unis#"contenido": vars.pdfToSendRequest.contenido,
+            unis#"clasificacionArchivo": vars.pdfToSendRequest.clasificacionArchivo
+          }
+        },
+        unis#"crearDocumentoRequeridoViaje": vars.pdfToSendRequest.crearDocumentoRequeridoViaje,
+        unis#"idViaje": vars.pdfToSendRequest.idViaje,
+        unis#"esDocumentoRequerido": vars.pdfToSendRequest.esDocumentoRequerido
+      }
+    }
+  }
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="orchestrator-prepare-xml-request-send-bill-lading-unigis-xml" doc:id="c02f5aab-6c43-4126-8b02-3e6fcb266e40" >
+		<ee:transform doc:name="Set request for xml document" doc:id="ee0359be-7aa6-44cc-9951-372de4f2d773">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+ns unis http://unisolutions.com.ar/
+output application/xml  
+---
+{
+  unis#"crearDocumentos": {
+    unis#"apiKey": vars.xmlToSendRequest.apiKey,
+    unis#"Documentos": {
+      unis#"pDocumento": {
+        unis#"tipoDocumento": vars.xmlToSendRequest.tipoDocumento,
+        unis#"referencia": vars.xmlToSendRequest.referencia,
+        unis#"fechaEmision": vars.xmlToSendRequest.fechaEmision,
+        unis#"fechaExpiracion": vars.xmlToSendRequest.fechaExpiracion,
+        unis#"categoria": vars.xmlToSendRequest.categoria,
+        unis#"clase": vars.xmlToSendRequest.clase,
+        unis#"observaciones": vars.xmlToSendRequest.observaciones,
+        unis#"referenciaEstadoDocumento": vars.xmlToSendRequest.referenciaEstadoDocumento,
+        unis#"forzarActualizacion": vars.xmlToSendRequest.forzarActualizacion,
+        unis#"asociaciones": {
+          unis#"referenciaViaje": vars.xmlToSendRequest.referenciaViaje
+        },
+        unis#"archivosAsociados": {
+          unis#"pArchivoDoc": {
+            unis#"descripcion": vars.xmlToSendRequest.descripcion,
+            unis#"tipoArchivo": vars.xmlToSendRequest.tipoArchivo,
+            unis#"contenido": vars.xmlToSendRequest.contenido,
+            unis#"clasificacionArchivo": vars.xmlToSendRequest.clasificacionArchivo
+          }
+        },
+        unis#"crearDocumentoRequeridoViaje": vars.xmlToSendRequest.crearDocumentoRequeridoViaje,
+        unis#"idViaje": vars.xmlToSendRequest.idViaje,
+        unis#"esDocumentoRequerido": vars.xmlToSendRequest.esDocumentoRequerido
+      }
+    }
+  }
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="orchestrator-send-bill-lading-unigis-validate-source-system" doc:id="a5778f8a-5ac6-4938-952b-0e2eac989b92" >
+		<choice doc:name="Choice" doc:id="9a2a83cd-aeb2-4122-bb59-04ddeb1486ac" >
+			<when expression='#[vars.source_system == "MD"]'>
+				<flow-ref doc:name="Call-client-ws-unigis-medistik-send-document-pdf-and-xml" doc:id="d0ea49ab-1ddc-44d8-b29b-ab4732b3fe59" name="client-ws-unigis-medistik-send-document-pdf-and-xml"/>
+			</when>
+			<when expression='#[vars.source_system == "VM"]'>
+				<flow-ref doc:name="Call-client-ws-unigis-vmodal-send-document-pdf-and-xml" doc:id="6d3fbc1a-6c48-49b8-96bd-db98724fa4f2" name="client-ws-unigis-vmodal-send-document-pdf-and-xml" />
+			</when>
+			<otherwise>
+				<logger level="INFO" doc:name="Logger" doc:id="dee21c56-a1a7-46bc-a585-cd6cbb603304" message="#[payload]"/>
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<sub-flow name="orchestrator-send-bill-lading-unigis-prepare-response-for-sending-documents" doc:id="dcfc898d-6d31-4780-a1e9-575a2f9987fc" >
+		<ee:transform doc:name="Transform Message" doc:id="cac334f8-97cc-4571-a3bf-649a9d8b7b58" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="b03cf1c3-94c1-4c2e-b6a2-5022e8635cbe" message="#[payload]"/>
+	</sub-flow>
+</mule>
