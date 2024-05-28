@@ -7,11 +7,83 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<sub-flow name="orchestrator-send-bill-lading-unigis" doc:id="a6c1fa88-fb07-48e4-86a8-5c20d0b1e32d" >
 		<flow-ref doc:name="Call-orchestrator-prepare-xml-request-send-bill-lading-unigis-documents" doc:id="8b2f7536-377d-445a-a045-f11e631b12aa" name="orchestrator-prepare-xml-request-send-bill-lading-unigis-documents"/>
 		<flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis-validate-source-system" doc:id="b79cc3cd-e39a-4efc-ae40-c367d2d055b5" name="orchestrator-send-bill-lading-unigis-validate-source-system"/>
-		<!-- [STUDIO:"Call-orchestrator-prepare-xml-request-send-bill-lading-unigis-xml"]<flow-ref doc:name="Call-orchestrator-prepare-xml-request-send-bill-lading-unigis-xml" doc:id="a2c93a52-fb82-4c3b-b501-b4e7ce717bac" name="orchestrator-prepare-xml-request-send-bill-lading-unigis-xml"/> [STUDIO] -->
-		<!-- [STUDIO:"Call-orchestrator-send-bill-lading-unigis-validate-source-system"]<flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis-validate-source-system" doc:id="4ec6809b-6c26-4212-bf67-fb33129361e9" name="orchestrator-send-bill-lading-unigis-validate-source-system"/> [STUDIO] -->
 		<flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis-prepare-response-for-sending-documents" doc:id="c1f066a4-9bab-405e-8aad-f71daafd3d8b" name="orchestrator-send-bill-lading-unigis-prepare-response-for-sending-documents"/>
 	</sub-flow>
 	<sub-flow name="orchestrator-prepare-xml-request-send-bill-lading-unigis-documents" doc:id="82237174-6579-4c50-bca6-2f335c08365e" >
+		<!-- [STUDIO:"Define type document request xml or pdf"]<ee:transform doc:name="Define type document request xml or pdf" doc:id="373a75ac-f72c-4a5d-aa6e-18dfd1af9aff">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+ns unis http://unisolutions.com.ar/
+output application/xml
+&#45;&#45;-
+	if ( payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.tipoArchivo == ".PDF" ) {
+	unis#"CrearDocumentos": {
+		unis#"ApiKey": payload.crearDocumentos.apiKey,
+		unis#"Documentos": {
+			unis#"pDocumento": {
+				unis#"TipoDocumento": payload.crearDocumentos.Documentos.pDocumento.tipoDocumento,
+				unis#"Referencia": payload.crearDocumentos.Documentos.pDocumento.referencia,
+				unis#"FechaEmision": payload.crearDocumentos.Documentos.pDocumento.fechaEmision,
+				unis#"FechaExpiracion": payload.crearDocumentos.Documentos.pDocumento.fechaExpiracion,
+				unis#"Categoria": payload.crearDocumentos.Documentos.pDocumento.categoria,
+				unis#"Clase": payload.crearDocumentos.Documentos.pDocumento.clase,
+				unis#"Observaciones": payload.crearDocumentos.Documentos.pDocumento.observaciones,
+				unis#"ReferenciaEstadoDocumento": payload.crearDocumentos.Documentos.pDocumento.referenciaEstadoDocumento,
+				unis#"ForzarActualizacion": payload.crearDocumentos.Documentos.pDocumento.forzarActualizacion,
+				unis#"Asociaciones": {
+					unis#"ReferenciaViaje": payload.crearDocumentos.Documentos.pDocumento.asociaciones.referenciaViaje
+				},
+				unis#"ArchivosAsociados": {
+					unis#"pArchivoDoc": {
+						unis#"Descripcion": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.descripcion,
+						unis#"TipoArchivo": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.tipoArchivo,
+						unis#"Contenido": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.contenido,
+						unis#"ClasificacionArchivo": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.clasificacionArchivo
+					}
+				},
+				unis#"CrearDocumentoRequeridoViaje": payload.crearDocumentos.Documentos.pDocumento.crearDocumentoRequeridoViaje,
+				unis#"IdViaje": payload.crearDocumentos.Documentos.pDocumento.idViaje,
+				unis#"EsDocumentoRequerido": payload.crearDocumentos.Documentos.pDocumento.esDocumentoRequerido
+			}
+		}
+	}
+}
+else if ( payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.tipoArchivo == ".XML" ) {
+	unis#"CrearDocumentos": {
+		unis#"ApiKey": payload.crearDocumentos.apiKey,
+		unis#"Documentos": {
+			unis#"pDocumento": {
+				unis#"TipoDocumento": payload.crearDocumentos.Documentos.pDocumento.tipoDocumento,
+				unis#"Referencia": payload.crearDocumentos.Documentos.pDocumento.referencia,
+				unis#"FechaEmision": payload.crearDocumentos.Documentos.pDocumento.fechaEmision,
+				unis#"FechaExpiracion": payload.crearDocumentos.Documentos.pDocumento.fechaExpiracion,
+				unis#"Categoria": payload.crearDocumentos.Documentos.pDocumento.categoria,
+				unis#"Clase": payload.crearDocumentos.Documentos.pDocumento.clase,
+				unis#"Observaciones": payload.crearDocumentos.Documentos.pDocumento.observaciones,
+				unis#"ReferenciaEstadoDocumento": payload.crearDocumentos.Documentos.pDocumento.referenciaEstadoDocumento,
+				unis#"ForzarActualizacion": payload.crearDocumentos.Documentos.pDocumento.forzarActualizacion,
+				unis#"Asociaciones": {
+					unis#"ReferenciaViaje": payload.crearDocumentos.Documentos.pDocumento.asociaciones.referenciaViaje
+				},
+				unis#"ArchivosAsociados": {
+					unis#"pArchivoDoc": {
+						unis#"Descripcion": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.descripcion,
+						unis#"TipoArchivo": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.tipoArchivo,
+						unis#"Contenido": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.contenido,
+						unis#"ClasificacionArchivo": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.clasificacionArchivo
+					}
+				},
+				unis#"CrearDocumentoRequeridoViaje": payload.crearDocumentos.Documentos.pDocumento.crearDocumentoRequeridoViaje,
+				unis#"IdViaje": payload.crearDocumentos.Documentos.pDocumento.idViaje,
+				unis#"EsDocumentoRequerido": payload.crearDocumentos.Documentos.pDocumento.esDocumentoRequerido
+			}
+		}
+	}
+}
+else
+""&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform> [STUDIO] -->
 		<choice doc:name="Choice" doc:id="5afef839-c270-472f-9ef3-a75baf14fbe9" >
 			<when expression='#[payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.tipoArchivo == ".PDF"]'>
 				<ee:transform doc:name="Set request for pdf document" doc:id="0166a84d-f6d0-48d7-829a-a5a783b776ce">
