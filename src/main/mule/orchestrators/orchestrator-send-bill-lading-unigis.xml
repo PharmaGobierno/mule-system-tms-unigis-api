@@ -9,8 +9,51 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis-validate-source-system" doc:id="b79cc3cd-e39a-4efc-ae40-c367d2d055b5" name="orchestrator-send-bill-lading-unigis-validate-source-system"/>
 		<flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis-prepare-response-for-sending-documents" doc:id="c1f066a4-9bab-405e-8aad-f71daafd3d8b" name="orchestrator-send-bill-lading-unigis-prepare-response-for-sending-documents"/>
 	</sub-flow>
-	<sub-flow name="orchestrator-prepare-xml-request-send-bill-lading-unigis-documents" doc:id="82237174-6579-4c50-bca6-2f335c08365e" >
-		<!-- [STUDIO:"Define type document request xml or pdf"]<ee:transform doc:name="Define type document request xml or pdf" doc:id="373a75ac-f72c-4a5d-aa6e-18dfd1af9aff">
+	<sub-flow name="orchestrator-prepare-xml-request-send-bill-lading-unigis-documents" doc:id="9965e6cf-3a62-4958-a5e0-64a2aa6b4942" >
+		<ee:transform doc:name="Set request for pdf document" doc:id="430125ca-f142-4d93-bd1d-fbad33311767" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+ns unis http://unisolutions.com.ar/
+output application/xml  
+---
+{
+  unis#"CrearDocumentos": {
+    unis#"ApiKey": p('tms.unigis.api.key'),
+    unis#"Documentos": {
+      unis#"pDocumento": {
+        unis#"TipoDocumento": payload.crearDocumentos.Documentos.pDocumento.tipoDocumento,
+        unis#"Referencia": payload.crearDocumentos.Documentos.pDocumento.referencia,
+        unis#"FechaEmision": payload.crearDocumentos.Documentos.pDocumento.fechaEmision,
+        unis#"FechaExpiracion": payload.crearDocumentos.Documentos.pDocumento.fechaExpiracion,
+        unis#"Categoria": payload.crearDocumentos.Documentos.pDocumento.categoria,
+        unis#"Clase": payload.crearDocumentos.Documentos.pDocumento.clase,
+        unis#"Observaciones": payload.crearDocumentos.Documentos.pDocumento.observaciones,
+        unis#"ReferenciaEstadoDocumento": payload.crearDocumentos.Documentos.pDocumento.referenciaEstadoDocumento,
+        unis#"ForzarActualizacion": payload.crearDocumentos.Documentos.pDocumento.forzarActualizacion,
+        unis#"Asociaciones": {
+          unis#"ReferenciaViaje": payload.crearDocumentos.Documentos.pDocumento.asociaciones.referenciaViaje
+        },
+        unis#"ArchivosAsociados": {
+          unis#"pArchivoDoc": {
+            unis#"Descripcion": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.descripcion,
+            unis#"TipoArchivo": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.tipoArchivo,
+            unis#"Contenido": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.contenido,
+            unis#"ClasificacionArchivo": payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.clasificacionArchivo
+          }
+        },
+        unis#"CrearDocumentoRequeridoViaje": payload.crearDocumentos.Documentos.pDocumento.crearDocumentoRequeridoViaje,
+        unis#"IdViaje": payload.crearDocumentos.Documentos.pDocumento.idViaje,
+        unis#"EsDocumentoRequerido": payload.crearDocumentos.Documentos.pDocumento.esDocumentoRequerido
+      }
+    }
+  }
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables />
+		</ee:transform>
+	</sub-flow>
+	<!-- [STUDIO:"orchestrator-prepare-xml-request-send-bill-lading-unigis-documents"]<sub-flow name="orchestrator-prepare-xml-request-send-bill-lading-unigis-documents" doc:id="82237174-6579-4c50-bca6-2f335c08365e" >
+		<ee:transform doc:name="Define type document request xml or pdf" doc:id="373a75ac-f72c-4a5d-aa6e-18dfd1af9aff">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 ns unis http://unisolutions.com.ar/
@@ -83,18 +126,18 @@ else if ( payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchi
 else
 ""&#93;&#93;></ee:set-payload>
 			</ee:message>
-		</ee:transform> [STUDIO] -->
+		</ee:transform>
 		<choice doc:name="Choice" doc:id="5afef839-c270-472f-9ef3-a75baf14fbe9" >
-			<when expression='#[payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.tipoArchivo == ".PDF"]'>
+			<when expression='#[payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.tipoArchivo == ".PDF"&#93;'>
 				<ee:transform doc:name="Set request for pdf document" doc:id="0166a84d-f6d0-48d7-829a-a5a783b776ce">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 ns unis http://unisolutions.com.ar/
 output application/xml  
----
+&#45;&#45;-
 {
   unis#"CrearDocumentos": {
-    unis#"ApiKey": payload.crearDocumentos.apiKey,
+    unis#"ApiKey": p('tms.unigis.api.key'),
     unis#"Documentos": {
       unis#"pDocumento": {
         unis#"TipoDocumento": payload.crearDocumentos.Documentos.pDocumento.tipoDocumento,
@@ -123,22 +166,22 @@ output application/xml
       }
     }
   }
-}]]></ee:set-payload>
+}&#93;&#93;></ee:set-payload>
 			</ee:message>
 			<ee:variables>
 			</ee:variables>
 		</ee:transform>
 			</when>
-			<when expression='#[payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.tipoArchivo == ".XML"]'>
+			<when expression='#[payload.crearDocumentos.Documentos.pDocumento.archivosAsociados.pArchivoDoc.tipoArchivo == ".XML"&#93;'>
 				<ee:transform doc:name="Set request for xml document" doc:id="ee0359be-7aa6-44cc-9951-372de4f2d773">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 ns unis http://unisolutions.com.ar/
 output application/xml  
----
+&#45;&#45;-
 {
   unis#"CrearDocumentos": {
-    unis#"ApiKey": payload.crearDocumentos.apiKey,
+    unis#"ApiKey": p('tms.unigis.api.key'),
     unis#"Documentos": {
       unis#"pDocumento": {
         unis#"TipoDocumento": payload.crearDocumentos.Documentos.pDocumento.tipoDocumento,
@@ -167,17 +210,17 @@ output application/xml
       }
     }
   }
-}]]></ee:set-payload>
+}&#93;&#93;></ee:set-payload>
 			</ee:message>
 			<ee:variables>
 			</ee:variables>
 		</ee:transform>
 			</when>
 			<otherwise >
-				<logger level="INFO" doc:name="Logger" doc:id="52461ebe-d5d9-45f7-824a-e09950848a14" message="#[payload]"/>
+				<logger level="INFO" doc:name="Logger" doc:id="52461ebe-d5d9-45f7-824a-e09950848a14" message="#[payload&#93;"/>
 			</otherwise>
 		</choice>
-	</sub-flow>
+	</sub-flow> [STUDIO] -->
 	<sub-flow name="orchestrator-send-bill-lading-unigis-validate-source-system" doc:id="a5778f8a-5ac6-4938-952b-0e2eac989b92" >
 		<choice doc:name="Choice" doc:id="9a2a83cd-aeb2-4122-bb59-04ddeb1486ac" >
 			<when expression='#[vars.source_system == "MD"]'>
