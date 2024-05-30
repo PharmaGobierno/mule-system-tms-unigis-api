@@ -167,7 +167,53 @@ output application/json
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
-            <on-error-propagate enableNotifications="true" logException="true" doc:name="ANY On Error Propagate" doc:id="1630ab27-56bd-40fd-ac89-aff78e873aa0" type="ANY">
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="cbf340c1-8a88-40c2-83e4-caf4e1bb9092" type="ERROR:UNIGISCREATEDOCUMENT">
+				<ee:transform doc:name="Set structure error response" doc:id="302367ca-1dd8-4e1d-a9f4-380707997fb2" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+if(vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "1")
+{
+	"traxion_response": {
+		"completed_succesfully": "false",
+		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+		"error": "ERROR_OPERACION: Validar el código de Operación enviado en las estructuras. Algun campo está vacío, no se está enviando o su formato es incorrecto."
+	}
+}
+else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "99")
+{
+	"traxion_response": {
+		"completed_succesfully": "false",
+		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+		"error": "EXCEPCION_GENERAL: Error no controlado."
+	}
+}
+else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-100")
+{
+	"traxion_response": {
+		"completed_succesfully": "false",
+		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+		"error": "ERROR_API_KEY: ApiKey Incorrecto."
+	}
+}
+else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-44")
+{
+	"traxion_response": {
+		"completed_succesfully": "false",
+		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+		"error": "Hace falta llenar el campo referencia."
+	}
+}
+else
+""]]></ee:set-payload>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="httpStatus" ><![CDATA[400]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="ANY On Error Propagate" doc:id="1630ab27-56bd-40fd-ac89-aff78e873aa0" type="ANY">
                 <ee:transform doc:name="Create error" doc:id="ef1f0c92-9674-40d1-94cb-2e9f0812a051">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0

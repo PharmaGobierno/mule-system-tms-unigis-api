@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="client-create-order-shipment-call-ws-create-order-shipment-medistik" doc:id="f6021928-11de-498f-adb9-296361792a0e" >
 		<wsc:consume doc:name="Consume" doc:id="c54a893b-3616-455a-9a87-157229694be2" config-ref="tms-unigis-avior-Web_services_consumer_config" operation="CrearOrdenesEntrega"/>
 	</sub-flow>	
@@ -20,6 +21,14 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 		<wsc:consume doc:name="Consume" doc:id="5667af6a-c22d-4b2c-a2b0-df2e9dbf57f3" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="ModificarEstadoViaje"/>
 	</sub-flow>
 	<sub-flow name="client-ws-unigis-medistik-send-document-pdf-and-xml" doc:id="dd0b5474-374d-45bc-84d6-642980cd1fcd" >
-		<wsc:consume doc:name="Consume" doc:id="14086a68-73ee-4c23-b071-dbc24999e0e1" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="CrearDocumentos"/>
+		<wsc:consume doc:name="Consume" doc:id="14086a68-73ee-4c23-b071-dbc24999e0e1" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="CrearDocumentos" target="createDocResp"/>
+		<choice doc:name="Choice" doc:id="9b73a894-eb0f-43bd-9e0c-9af24a588231" >
+			<when expression='#[vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "1" or&#10;vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "99" or&#10;vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-100" or&#10;vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-44"]'>
+				<raise-error doc:name="Raise error" doc:id="72604df3-5b91-4f5f-b35b-8ac1f27ef832" type="ERROR:UNIGISCREATEDOCUMENT" description="Error al crear el documento"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="b6e1e529-61fe-4175-963f-cd19816fc8c8" message="#[payload]"/>
+			</otherwise>
+		</choice>
 	</sub-flow>		
 </mule>

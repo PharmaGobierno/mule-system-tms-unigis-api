@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 ns unis http://unisolutions.com.ar/
-output application/xml  
+output application/xml
 ---
 {
   unis#"CrearDocumentos": {
