@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
-	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
-	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:slack="http://www.mulesoft.org/schema/mule/slack" xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
-http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
 	<configuration-properties doc:name="Configuration properties" doc:id="8583c189-8d90-43a8-9660-bdaa65612f46" file="system-tms-unigis-${env}.properties" />
 	<global-property doc:name="Global Property" doc:id="75bf8f95-4a33-416c-82f0-79fbe9093195" name="env" value="uat" />
 	<tls:context name="TLS_Context" doc:name="TLS Context" doc:id="a547ceba-b5ad-4ceb-87c2-4f8e9df64ffc" >
 		<tls:key-store type="pkcs12" path="Traxion_Logistics.p12" keyPassword="wWpg9LfX6nxh9Ke3u1L0wxSmYr5y3YKTjAWiTMEa9dww" password="wWpg9LfX6nxh9Ke3u1L0wxSmYr5y3YKTjAWiTMEa9dww" />
 	</tls:context>
 	<api-gateway:autodiscovery apiId="${anypoint.platform.autodiscovery}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="ac9f2c2b-1626-41b9-a4a1-c0235fadfc3a" flowRef="system-tms-unigis-api-main" />
+	<slack:config name="Slack_Connector_Config" doc:name="Slack Connector Config" doc:id="c6eff13d-c4d1-4395-838c-9a4a809deb07" responseTimeout="${slack.response.timeout}">
+		<slack:slack-auth-connection baseUri="${slack.connection.base.uri}" connectionTimeout="${slack.connection.timeout}" maxConnections="${slack.max.connections}" connectionIdleTimeout="${slack.connection.idle.timeout}" responseBufferSize="${slack.response.buffer.size}">
+			<slack:oauth-authorization-code consumerKey="${slack.connection.client_id}" consumerSecret="${slack.connection.client_secret}" authorizationUrl="${slack.connection.authorization.url}" accessTokenUrl="${slack.connection.token.url}" scopes="${slack.connection.scopes}" />
+			<slack:oauth-callback-config listenerConfig="system-tms-connection-httpListenerConfig" callbackPath="${slack.connection.callback.path}" authorizePath="${slack.connection.authorize.path}" externalCallbackUrl="${slack.connection.external.callback.url.test}"/>
+			<slack:oauth-store-config objectStore="Object_store_slack" />
+		</slack:slack-auth-connection>
+	</slack:config>
+	<os:config name="ObjectStore_Config_Slack" doc:name="ObjectStore Config" doc:id="24e8a4f2-a869-44a4-8d9a-c4557cea2c28" >
+		<os:connection >
+			<reconnection >
+				<reconnect-forever />
+			</reconnection>
+		</os:connection>
+	</os:config>
+	<os:object-store name="Object_store_slack" doc:name="Object store" doc:id="5c95d6fb-f3e0-4a62-9da3-1f22071a8f50" maxEntries="10" entryTtlUnit="DAYS" expirationInterval="0" expirationIntervalUnit="DAYS" config-ref="ObjectStore_Config_Slack" />
 </mule>
