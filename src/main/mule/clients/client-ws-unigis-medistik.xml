@@ -37,41 +37,44 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
 									<ee:set-variable variableName="httpStatus" ><![CDATA[400]]></ee:set-variable>
 									<ee:set-variable variableName="sendToSlack" ><![CDATA[%dw 2.0
 output application/json
+import modules::code_errors_unigis
 ---
-write(if(vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "1")
-{
-	"traxion_response": {
-		"completed_succesfully": "false",
-		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
-		"error": "ERROR_OPERACION: Validar el código de Operación enviado en las estructuras. Algun campo está vacío, no se está enviando o su formato es incorrecto."
-	}
-}
-else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "99")
-{
-	"traxion_response": {
-		"completed_succesfully": "false",
-		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
-		"error": "EXCEPCION_GENERAL: Error no controlado."
-	}
-}
-else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-100")
-{
-	"traxion_response": {
-		"completed_succesfully": "false",
-		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
-		"error": "ERROR_API_KEY: ApiKey Incorrecto."
-	}
-}
-else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-44")
-{
-	"traxion_response": {
-		"completed_succesfully": "false",
-		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
-		"error": "Hace falta llenar el campo referencia."
-	}
-}
-else
-"")]]></ee:set-variable>
+write(code_errors_unigis::error(vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult))
+
+//write(if(vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "1")
+//		{
+//			"traxion_response": {
+//					"completed_succesfully": "false",
+//					"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+//					"error": "ERROR_OPERACION: Validar el código de Operación enviado en las estructuras. Algun campo está vacío, no se está enviando o su formato es incorrecto."
+//				}
+//		}
+//	else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "99")
+//		{
+//			"traxion_response": {
+//					"completed_succesfully": "false",
+//					"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+//					"error": "EXCEPCION_GENERAL: Error no controlado."
+//				}
+//		}
+//	else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-100")
+//		{
+//			"traxion_response": {
+//					"completed_succesfully": "false",
+//					"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+//					"error": "ERROR_API_KEY: ApiKey Incorrecto."
+//				}
+//		}
+//	else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-44")
+//		{
+//			"traxion_response": {
+//					"completed_succesfully": "false",
+//					"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+//					"error": "Hace falta llenar el campo referencia."
+//				}
+//		}
+//	else
+//		"")]]></ee:set-variable>
 								</ee:variables>
 							</ee:transform>
 							<slack:create-chatpost-message doc:name="Send Message" doc:id="bf88b9b6-127d-40a2-9f60-6eba9fb76001" config-ref="Slack_Connector_Config">
@@ -92,41 +95,44 @@ output application/json
 								<ee:message >
 									<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
+import modules::code_errors_unigis
 ---
-if(vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "1")
-{
-	"traxion_response": {
-		"completed_succesfully": "false",
-		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
-		"error": "ERROR_OPERACION: Validar el código de Operación enviado en las estructuras. Algun campo está vacío, no se está enviando o su formato es incorrecto."
-	}
-}
-else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "99")
-{
-	"traxion_response": {
-		"completed_succesfully": "false",
-		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
-		"error": "EXCEPCION_GENERAL: Error no controlado."
-	}
-}
-else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-100")
-{
-	"traxion_response": {
-		"completed_succesfully": "false",
-		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
-		"error": "ERROR_API_KEY: ApiKey Incorrecto."
-	}
-}
-else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-44")
-{
-	"traxion_response": {
-		"completed_succesfully": "false",
-		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
-		"error": "Hace falta llenar el campo referencia."
-	}
-}
-else
-""]]></ee:set-payload>
+code_errors_unigis::error(vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult)
+
+//if(vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "1")
+//{
+//	"traxion_response": {
+//		"completed_succesfully": "false",
+//		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+//		"error": "ERROR_OPERACION: Validar el código de Operación enviado en las estructuras. Algun campo está vacío, no se está enviando o su formato es incorrecto."
+//	}
+//}
+//else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "99")
+//{
+//	"traxion_response": {
+//		"completed_succesfully": "false",
+//		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+//		"error": "EXCEPCION_GENERAL: Error no controlado."
+//	}
+//}
+//else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-100")
+//{
+//	"traxion_response": {
+//		"completed_succesfully": "false",
+//		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+//		"error": "ERROR_API_KEY: ApiKey Incorrecto."
+//	}
+//}
+//else if (vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "-44")
+//{
+//	"traxion_response": {
+//		"completed_succesfully": "false",
+//		"error_code": vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult,
+//		"error": "Hace falta llenar el campo referencia."
+//	}
+//}
+//else
+//""]]></ee:set-payload>
 								</ee:message>
 								<ee:variables >
 									<ee:set-variable variableName="httpStatus" ><![CDATA[400]]></ee:set-variable>

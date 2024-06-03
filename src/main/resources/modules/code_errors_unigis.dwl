@@ -2,7 +2,7 @@ fun error (error_code: String) = error_code match{
         case "1" -> {
             "CODIGO": "1",
             "ORIGEN ENTIDAD": "ERROR_OPERACION",
-            "DESCRIPCIÓN": "Validar el código de Operación enviado en las estructuras."
+            "DESCRIPCIÓN": "Validar el código de Operación enviado en las estructuras. Algun campo está vacío, no se está enviando o su formato es incorrecto."
         }
         case "2" -> {
             "CODIGO": "2",
@@ -154,10 +154,15 @@ fun error (error_code: String) = error_code match{
             "ORIGEN ENTIDAD": "EXCEPCION_GENERAL",
             "DESCRIPCIÓN": "Error no controlado"
         }
-        case "100" -> {
+        case "-100" -> {
             "CODIGO": "100",
             "ORIGEN ENTIDAD": "ERROR_API_KEY",
             "DESCRIPCIÓN": "ApiKey Incorrecto"
+        }
+        case "-44" -> {
+        	"CODIGO": "44",
+            "ORIGEN ENTIDAD": "",
+            "DESCRIPCIÓN": "Hace falta llenar el campo referencia."
         }
         else -> {
             "CODIGO": "500",
