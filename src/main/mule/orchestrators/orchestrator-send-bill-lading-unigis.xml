@@ -235,7 +235,7 @@ output application/xml
 		</choice>
 	</sub-flow>
 	<sub-flow name="orchestrator-send-bill-lading-unigis-prepare-response-for-sending-documents" doc:id="dcfc898d-6d31-4780-a1e9-575a2f9987fc" >
-		<ee:transform doc:name="Transform Message" doc:id="cac334f8-97cc-4571-a3bf-649a9d8b7b58" >
+		<ee:transform doc:name="Set final response" doc:id="cac334f8-97cc-4571-a3bf-649a9d8b7b58" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
