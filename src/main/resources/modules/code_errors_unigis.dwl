@@ -2,7 +2,7 @@ fun error (error_code: String) = error_code match{
         case "-1" -> {
             "CODIGO": "-1",
             "ORIGEN ENTIDAD": "ERROR_OPERACION",
-            "DESCRIPCIÓN": "Validar el código de Operación enviado en las estructuras. Algun campo está vacío, no se está enviando o su formato es incorrecto."
+            "DESCRIPCIÓN": "Validar el código de Operación enviado en las estructuras."
         }
         case "-2" -> {
             "CODIGO": "-2",
@@ -217,7 +217,7 @@ fun error (error_code: String) = error_code match{
         case "-44" -> {
         	"CODIGO": "-44",
             "ORIGEN ENTIDAD": "ERROR_DATOS_FALTANTES",
-            "DESCRIPCIÓN": "Hace falta llenar algún campo obligatorio. Revisar campo referencia u otro."
+            "DESCRIPCIÓN": "Algun campo obligatorio está vacío o no contiene el formato correcto."
         }
         case "-45" -> {
         	"CODIGO": "-45",
