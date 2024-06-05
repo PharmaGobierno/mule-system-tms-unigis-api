@@ -3,7 +3,7 @@
     <http:listener-config name="system-tms-connection-httpListenerConfig">
         <http:listener-connection host="${https.listener.host}" port="${https.listener.port}" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="system-tms-unigis-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:system-tms-unigis-api:1.0.10:raml:zip:system-tms-unigis-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="system-tms-unigis-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:system-tms-unigis-api:1.0.11:raml:zip:system-tms-unigis-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="system-tms-unigis-api-main">
         <http:listener config-ref="system-tms-connection-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -167,7 +167,7 @@ output application/json
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
-			<!-- [STUDIO:"On Error Propagate"]<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="cbf340c1-8a88-40c2-83e4-caf4e1bb9092" type="ERROR:UNIGISCREATEDOCUMENT">
+            <!-- [STUDIO:"On Error Propagate"]<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="cbf340c1-8a88-40c2-83e4-caf4e1bb9092" type="ERROR:UNIGISCREATEDOCUMENT">
 				<ee:transform doc:name="Set structure error response" doc:id="302367ca-1dd8-4e1d-a9f4-380707997fb2" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
@@ -213,7 +213,7 @@ else
 					</ee:variables>
 				</ee:transform>
 			</on-error-propagate> [STUDIO] -->
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="ANY On Error Propagate" doc:id="1630ab27-56bd-40fd-ac89-aff78e873aa0" type="ANY">
+            <on-error-propagate enableNotifications="true" logException="true" doc:name="ANY On Error Propagate" doc:id="1630ab27-56bd-40fd-ac89-aff78e873aa0" type="ANY">
                 <ee:transform doc:name="Create error" doc:id="ef1f0c92-9674-40d1-94cb-2e9f0812a051">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
@@ -408,16 +408,15 @@ output application/json
 } as Object {encoding: "UTF-8", mediaType: "application/json"}&#93;&#93;></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
-		<ee:transform doc:name="Set source system" doc:id="d10251b9-7764-4450-8233-c6071e77117e" >
-			<ee:message >
-			</ee:message>
-			<ee:variables >
-				<ee:set-variable variableName="source_system" ><![CDATA[%dw 2.0
+        <ee:transform doc:name="Set source system" doc:id="d10251b9-7764-4450-8233-c6071e77117e">
+            <ee:message />
+            <ee:variables>
+                <ee:set-variable variableName="source_system"><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.queryParams.source_system]]></ee:set-variable>
-			</ee:variables>
-		</ee:transform>
-		<flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis" doc:id="bf5ae486-634b-4408-b428-bcb370d3fcaa" name="orchestrator-send-bill-lading-unigis"/>
+            </ee:variables>
+        </ee:transform>
+        <flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis" doc:id="bf5ae486-634b-4408-b428-bcb370d3fcaa" name="orchestrator-send-bill-lading-unigis" />
     </flow>
 </mule>
