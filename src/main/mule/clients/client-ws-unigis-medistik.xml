@@ -138,6 +138,7 @@ code_errors_unigis::error(vars.createDocResp.body.CrearDocumentosResponse.CrearD
 									<ee:set-variable variableName="httpStatus" ><![CDATA[400]]></ee:set-variable>
 								</ee:variables>
 							</ee:transform>
+							<logger level="WARN" doc:name="Logger" doc:id="aa441145-b129-4cce-9182-653f95f87e47" message="#[payload]"/>
 						</on-error-continue>
 					</error-handler>
 				</try>
