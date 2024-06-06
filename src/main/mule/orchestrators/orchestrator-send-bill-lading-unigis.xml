@@ -51,6 +51,7 @@ output application/xml
 			</ee:message>
 			<ee:variables />
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="22e4c315-125f-49e7-a998-01aa84f4322d" message="#[payload]"/>
 	</sub-flow>
 	<!-- [STUDIO:"orchestrator-prepare-xml-request-send-bill-lading-unigis-documents"]<sub-flow name="orchestrator-prepare-xml-request-send-bill-lading-unigis-documents" doc:id="82237174-6579-4c50-bca6-2f335c08365e" >
 		<ee:transform doc:name="Define type document request xml or pdf" doc:id="373a75ac-f72c-4a5d-aa6e-18dfd1af9aff">
