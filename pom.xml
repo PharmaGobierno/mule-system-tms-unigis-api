@@ -13,9 +13,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<app.runtime>4.3.0</app.runtime>
+		<app.runtime>4.7-e-java8</app.runtime>
 		<mule.maven.plugin.version>4.2.0</mule.maven.plugin.version>
-		<munit.version>2.3.13</munit.version>
+		<munit.version>3.2.0</munit.version>
 	</properties>
 
 	<build>
@@ -23,7 +23,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.2.0</version>
 			</plugin>
 			<plugin>
 				<groupId>org.mule.tools.maven</groupId>
@@ -41,13 +41,19 @@
 							<artifactId>mssql-jdbc</artifactId>
 						</sharedLibrary>
 					</sharedLibraries>
+					<classifier>mule-application</classifier>
 					<cloudHubDeployment>
 						<uri>https://anypoint.mulesoft.com</uri>
-						<businessGroupId>${businessGroupId}</businessGroupId>
+				    	<businessGroupId>${businessGroupId}</businessGroupId>
 						<muleVersion>${mule.version}</muleVersion>
-						<username>${anypoint.username}</username>
-						<password>${anypoint.password}</password>
+						<!-- <releaseChannel>EDGE</releaseChannel> -->
+						<!-- <username>${anypoint.username}</username>
+						<password>${anypoint.password}</password> -->
+						<connectedAppClientId>${client.id}</connectedAppClientId>
+						<connectedAppClientSecret>${client.secret}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
 						<applicationName>${appname}</applicationName>
+						<!-- <artifact>${artifact}</artifact> -->
 						<environment>${env}</environment>
 						<workerType>${vCore}</workerType>
 						<workers>${workers}</workers>
@@ -59,7 +65,6 @@
 							<anypoint.platform.autodiscovery>${prop.autodiscovery}</anypoint.platform.autodiscovery>
 						</properties>
 					</cloudHubDeployment>
-					<classifier>mule-application</classifier>
 				</configuration>
 			</plugin>
 			<plugin>
