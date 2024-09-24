@@ -78,20 +78,20 @@ write(code_errors_unigis::error(vars.createDocResp.body.CrearDocumentosResponse.
 //		"")]]></ee:set-variable>
 								</ee:variables>
 							</ee:transform>
-							<slack:create-chatpost-message doc:name="Send Message" doc:id="bf88b9b6-127d-40a2-9f60-6eba9fb76001" config-ref="Slack_Connector_Config">
+							<!-- [STUDIO:"Send Message"]<slack:create-chatpost-message doc:name="Send Message" doc:id="bf88b9b6-127d-40a2-9f60-6eba9fb76001" config-ref="Slack_Connector_Config">
 								<slack:chatpost-message-content ><![CDATA[#[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
 	"channel": Mule::p('slack.connection.channel'),
 	"text": "`Attention!` <!channel> There was an error in a mule app-> :warning: "
-	++ "\n -----------------------------------------------------"
+	++ "\n &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-"
 	++ "\n `ERROR DE CREACIÓN DE DOCUMENTO EN SISTEMA UNIGIS`"
-	++ "\n -----------------------------------------------------"
+	++ "\n &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-"
 	++ "\n Fecha y hora ->" ++ now() as String
 	++ "\n" ++ (vars.sendToSlack)
-}]]]></slack:chatpost-message-content>
-							</slack:create-chatpost-message>
+}&#93;&#93;&#93;></slack:chatpost-message-content>
+							</slack:create-chatpost-message> [STUDIO] -->
 							<ee:transform doc:name="Set structure error for payload" doc:id="c3e20178-7d14-4a6a-8e1e-cf7f52d9f4c9" >
 								<ee:message >
 									<ee:set-payload ><![CDATA[%dw 2.0
