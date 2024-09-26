@@ -4623,4 +4623,5 @@ type: string]]></types:shape>
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
+  <types:enrichment select="#c3e20178-7d14-4a6a-8e1e-cf7f52d9f4c9"/>
 </types:mule>
