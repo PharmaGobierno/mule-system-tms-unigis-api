@@ -8,22 +8,22 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
 	<sub-flow name="client-create-order-shipment-call-ws-create-order-shipment-medistik" doc:id="f6021928-11de-498f-adb9-296361792a0e" >
-		<wsc:consume doc:name="Consume" doc:id="c54a893b-3616-455a-9a87-157229694be2" config-ref="tms-unigis-avior-Web_services_consumer_config" operation="CrearOrdenesEntrega"/>
+		<wsc:consume doc:name="Consume" doc:id="c54a893b-3616-455a-9a87-157229694be2" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearOrdenesEntrega"/>
 	</sub-flow>	
 		<sub-flow name="client-create-order-shipment-call-ws-create-client-order-medistik" doc:id="2fd9be2d-719c-4f3e-b707-47542e0444d0" >
-		<wsc:consume doc:name="Consume" doc:id="ffbcc9c2-9ed6-4cc8-9de4-715986c3405e" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="CrearClientesDadores"/>
+		<wsc:consume doc:name="Consume" doc:id="ffbcc9c2-9ed6-4cc8-9de4-715986c3405e" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearClientesDadores"/>
 	</sub-flow>	
 		<sub-flow name="client-create-order-shipment-call-ws-create-transportista-medistik" doc:id="74bff1b4-2b01-4491-a762-a53dba3e3249" >
-		<wsc:consume doc:name="Consume" doc:id="46158650-9328-44bb-935c-d0ece468870a" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="CrearTransportes"/>
+		<wsc:consume doc:name="Consume" doc:id="46158650-9328-44bb-935c-d0ece468870a" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearTransportes"/>
 	</sub-flow>			
 	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-guia-medistik" doc:id="49084fdf-f62b-41e8-a9af-f5fee13fc199" >
-		<wsc:consume doc:name="Consume" doc:id="decb7911-2076-4a2f-b48b-0dc31f321deb" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="ModificarEstadoGuia"/>
+		<wsc:consume doc:name="Consume" doc:id="decb7911-2076-4a2f-b48b-0dc31f321deb" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="ModificarEstadoGuia"/>
 	</sub-flow>
 	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-viaje-medistik" doc:id="ba6d5d4c-06c5-4288-9e40-fcd7c9e54cab" >
-		<wsc:consume doc:name="Consume" doc:id="5667af6a-c22d-4b2c-a2b0-df2e9dbf57f3" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="ModificarEstadoViaje"/>
+		<wsc:consume doc:name="Consume" doc:id="5667af6a-c22d-4b2c-a2b0-df2e9dbf57f3" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="ModificarEstadoViaje"/>
 	</sub-flow>
 	<sub-flow name="client-ws-unigis-medistik-send-document-pdf-and-xml" doc:id="dd0b5474-374d-45bc-84d6-642980cd1fcd" >
-		<wsc:consume doc:name="Consume" doc:id="14086a68-73ee-4c23-b071-dbc24999e0e1" config-ref="tms-unigis-medistik-Web_Service_Consumer_Config" operation="CrearDocumentos" target="createDocResp"/>
+		<wsc:consume doc:name="Consume" doc:id="14086a68-73ee-4c23-b071-dbc24999e0e1" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearDocumentos" target="createDocResp"/>
 		<logger level="INFO" doc:name="Logger" doc:id="1304998c-d347-4002-9b3d-4e101aa6d178" message="#[vars.createDocResp]"/>
 		<choice doc:name="Choice" doc:id="9b73a894-eb0f-43bd-9e0c-9af24a588231" >
 			<when expression='#[vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult &lt; "0" or&#10;vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "99"]'>

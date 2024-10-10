@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="orchestrator-create-order-main" doc:id="02516b96-d24b-4de4-bf0a-e72396d59de0" >
+		<flow-ref doc:name="orchestrator-create-order-prepare-request" doc:id="f5aedb2f-3514-4145-b695-52380721f959" name="orchestrator-create-order-prepare-request"/>
+		<flow-ref doc:name="orchestrator-create-order-validate-source-system" doc:id="1fbf546b-1a4a-41bd-bc5c-f81ef1df44aa" name="orchestrator-create-order-validate-source-system"/>
+		<flow-ref doc:name="Call to orchestrator-create-order-set-response" doc:id="325963b7-0531-4190-bb20-d9c0553d04a2" name="orchestrator-create-order-set-response"/>
+	</sub-flow>
+	<sub-flow name="orchestrator-create-order-prepare-request" doc:id="f8e7152d-6e4a-4893-a746-b58ec72bae7d" >
+		<ee:transform doc:name="Transform Message" doc:id="82b15b01-906d-4f25-9e02-604b8facd06f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns unis http://unisolutions.com.ar/
+---
+{
+    unis#CrearViajeCompleto: {
+        unis#crearviaje:{
+            unis#CrearViajeNumero: "6",
+            unis#ApiKey: "C6-8B-95-4C-EC-4",
+            unis#Dominio: "No Determinado",
+            unis#FechaViaje: payload.fechaViaje,
+            unis#FechaInicioPlan: payload.fechaInicioPlan,
+            unis#FechaFinPlan: payload.fechaFinPlan,
+            unis#Referencia: payload.referencia,
+            unis#Descripcion: payload.descripcion,
+            unis#transporte:  {
+                unis#RazonSocial:"No Determinado",
+                unis#NombreFantasia:"No Determinado"
+            },
+            unis#cliente:  {
+                unis#RefCliente:payload.refCliente,
+                unis#RazonSocial:payload.razonSocialCliente,
+                unis#Direccion:payload.direccionCliente
+            },
+            unis#depositoSalida:  {
+                unis#RefDepositoExterno:payload.depositoSalida
+            },
+            unis#depositoLlegada:  {
+                unis#RefDepositoExterno:payload.depositoLlegada
+            },
+            unis#conductor:  {
+                unis#Nombre:"No Determinado",
+                unis#ReferenciaExterna:"1234"
+            },
+            unis#Paradas:  (payload.paradas map(parada)->{
+                unis#pParada:{
+                    unis#Secuencia:parada.secuencia,
+                    unis#RefDocumento:parada.secuencia,
+                    unis#RefDocumentoAdicional:parada.secuencia,
+                    unis#TipoParada:"Delivery",
+                    unis#Descripcion:parada.descripcion,
+                    unis#InicioHorarioPlanificado:parada.inicioHorarioPlanificado,
+                    unis#FinHorarioPlanificado:parada.finHorarioPlanificado,
+                    unis#cliente:{
+                        unis#RefCliente:parada.refCliente,
+                        unis#RazonSocial:parada.razonSocialCliente,
+                        unis#Direccion:parada.direccionCliente,
+                    },
+                    unis#Items:(parada.items map(item)->{
+                         unis#pParadaItem:{
+                            unis#RefDocumento:item.refDocumento,
+                            unis#RefDocumentoAdicional:item.refDocumentoAdicional,
+                            unis#Descripcion:item.descripcion,
+                            unis#Cantidad:item.cantidad,
+                            unis#Volumen:item.volumen,
+                            unis#Peso:item.peso,
+                            unis#Pallets:item.pallets,
+                            unis#ProductoLinea:item.productoLinea,
+                            unis#Apilable_Permitido:item.apilablePermitido,
+                        }
+                    })
+                }
+            }),
+            unis#Sucursal: payload.sucursal,
+            unis#Operacion: payload.operacion,
+            unis#Empresa: payload.empresa,
+            unis#TipoViaje: payload.tipoViaje,
+        }
+    }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="7bf02503-3983-43cc-9b0d-cbd24e4a2707" message="#[payload]"/>
+	</sub-flow>
+	<sub-flow name="orchestrator-create-order-validate-source-system" doc:id="87032163-35ba-419a-8f51-0405acb60731" >
+		<choice doc:name="Choice" doc:id="593ad818-9f84-4640-9d25-690812335028" >
+			<when expression='#[vars.source_system == "IMSS"]' >
+				<logger level="INFO" doc:name="Logger" doc:id="343b9c8c-18a4-4e96-8179-8e65a406fd7f" />
+				<flow-ref doc:name="Call to client-create-call-ws-create-order-imss" doc:id="b43727e7-05f0-4666-8eb5-0fcd00c74a54" name="client-create-call-ws-create-order-imss" />
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="4af1f986-64ec-449b-9a28-266945fb26fe" />
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<sub-flow name="orchestrator-create-order-set-response" doc:id="ce4affd3-51b2-4f26-9c1b-ded0bc8b726e" >
+		<ee:transform doc:name="Transform Message" doc:id="5c7701b0-aae8-469a-ac04-0de64614da48" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+if (!isEmpty(payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult))
+	{
+    "traxion_response": {
+        "completed_succesfully": "true",
+        "response": {
+            "message": "successful",
+            "data": {
+            	id_viaje:payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.IdViaje,
+            	ultimo_reporte:payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.UltimoReporteUTC,
+            	vehiculo_integrado:payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.VehiculoIntegrado,
+            }
+        }
+    }
+}
+else
+	{
+    "traxion_response": {
+        "completed_succesfully": "false",
+        "response": {
+            "message": "Soap error",
+            "data": {}
+        }
+    }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

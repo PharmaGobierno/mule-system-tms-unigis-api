@@ -5,7 +5,7 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<wsc:config name="tms-unigis-avior-Web_services_consumer_config"   doc:name="Web Service Consumer Config" doc:id="830a221c-59ed-48e1-b1b2-e36aa74302e7" >
+	<wsc:config name="TMS-UNIGIS-Avior-Web_services_consumer_config"   doc:name="Web Service Consumer Config" doc:id="830a221c-59ed-48e1-b1b2-e36aa74302e7" >
 		<wsc:connection wsdlLocation="wsdls\tms-unigis-avior.wsdl" service="Service" port="ServiceSoap" address="https://cloud-test.unigis.com/AVIOR/mapi/soap/logistic/service.asmx">
 			<reconnection >
 				<reconnect-forever />
@@ -17,7 +17,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 
 		</wsc:connection>
 	</wsc:config>
-	<wsc:config name="tms-unigis-medistik-Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="aeca016c-c2b4-4d41-a06d-310220e40669" >
+	<wsc:config name="TMS-UNIGIS-Medistik-Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="aeca016c-c2b4-4d41-a06d-310220e40669" >
 		<wsc:connection wsdlLocation="wsdls\tms-unigis-medistik.wsdl" service="Service" port="ServiceSoap" address="${consume.medistik.address}">
 			<wsc:custom-transport-configuration >
 				<wsc:default-http-transport-configuration timeout="#[p('consume.medistik.transport.timeout')]" />
@@ -25,8 +25,16 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
 		</wsc:connection>
 	</wsc:config>
-	<wsc:config name="tms-unigis-vmodal-Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="7f1c287d-0625-4d4e-a32e-e18604a58f9a" >
+	<wsc:config name="TMS-UNIGIS-Vmodal-Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="7f1c287d-0625-4d4e-a32e-e18604a58f9a" >
 		<wsc:connection wsdlLocation="wsdls\tms-unigis-vmodal.wsdl" service="Service" port="ServiceSoap" address="https://cloud-test.unigis.com/vmodal/mapi/Soap/Logistic/service.asmx" >
+			<wsc:custom-transport-configuration >
+				<wsc:default-http-transport-configuration timeout="500000" />
+			</wsc:custom-transport-configuration>
+			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+		</wsc:connection>
+	</wsc:config>
+	<wsc:config name="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="5ac7a11c-8769-488d-906f-bc6e1aa982a0" >
+		<wsc:connection wsdlLocation="wsdls\tms-unigis-vmodal.wsdl" service="Service" port="ServiceSoap" address="https://cloud-test.unigis.com/PHARMA_GOB/mapi/soap/Logistic/Service.asmx?" >
 			<wsc:custom-transport-configuration >
 				<wsc:default-http-transport-configuration timeout="500000" />
 			</wsc:custom-transport-configuration>

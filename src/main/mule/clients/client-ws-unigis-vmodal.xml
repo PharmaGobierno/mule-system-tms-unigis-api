@@ -5,21 +5,24 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 	<sub-flow name="client-create-order-shipment-call-ws-create-order-shipment-vmodal" doc:id="0774fb6d-c8e4-45c8-b121-2e39f775ab18" >
-		<wsc:consume doc:name="Consume" doc:id="930b06fe-6d56-4c02-a31d-3408a14a4247" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="CrearOrdenesEntrega"/>
+		<wsc:consume doc:name="Consume" doc:id="930b06fe-6d56-4c02-a31d-3408a14a4247" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="CrearOrdenesEntrega"/>
+	</sub-flow>	
+	<sub-flow name="client-create-call-ws-create-order-imss" doc:id="606aba2c-e3a1-4fe3-bef9-cf4947876216" >
+		<wsc:consume doc:name="Consume" doc:id="3f10a743-c173-4f87-99f5-500c9fdd5407" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="CrearViajeCompleto"/>
 	</sub-flow>	
 	<sub-flow name="client-create-order-shipment-call-ws-create-client-order-vmodal" doc:id="c32d1eef-79ab-4bef-a9a2-1962c7c7e5a9" >
-		<wsc:consume doc:name="Consume" doc:id="81b69c76-a0f5-46a6-9fd6-146ca002287e" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="CrearClientesDadores"/>
+		<wsc:consume doc:name="Consume" doc:id="81b69c76-a0f5-46a6-9fd6-146ca002287e" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="CrearClientesDadores"/>
 	</sub-flow>
 	<sub-flow name="client-create-order-shipment-call-ws-create-transportista-vmodal" doc:id="018a2e49-d780-432e-93c8-c6a9f0124e54" >
-		<wsc:consume doc:name="Consume" doc:id="22debefb-f7ac-41c4-a4c3-178c10bf2f4b" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="CrearTransportes"/>
+		<wsc:consume doc:name="Consume" doc:id="22debefb-f7ac-41c4-a4c3-178c10bf2f4b" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="CrearTransportes"/>
 	</sub-flow>	
 	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-guia-vmodal" doc:id="3c125474-25d6-4ac8-a219-ede9e8cc7b69" >
-		<wsc:consume doc:name="Consume" doc:id="59541091-d0c0-4f73-aac2-fad868eea839" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="ModificarEstadoGuia"/>
+		<wsc:consume doc:name="Consume" doc:id="59541091-d0c0-4f73-aac2-fad868eea839" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="ModificarEstadoGuia"/>
 	</sub-flow>
 	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-viaje-vmodal" doc:id="01f9c74b-6c55-4926-8076-e119cbb39e64" >
-		<wsc:consume doc:name="Consume" doc:id="08eb5cfb-d3d2-48be-b4c8-19ef2f947237" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="ModificarEstadoViaje"/>
+		<wsc:consume doc:name="Consume" doc:id="08eb5cfb-d3d2-48be-b4c8-19ef2f947237" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="ModificarEstadoViaje"/>
 	</sub-flow>
 	<sub-flow name="client-ws-unigis-vmodal-send-document-pdf-and-xml" doc:id="5ce5fb66-1bde-45d0-910b-c0f7055d633a" >
-		<wsc:consume doc:name="Consume" doc:id="60a801a4-d5c0-4a12-b616-a10cd27a1677" config-ref="tms-unigis-vmodal-Web_Service_Consumer_Config" operation="CrearDocumentos"/>
+		<wsc:consume doc:name="Consume" doc:id="60a801a4-d5c0-4a12-b616-a10cd27a1677" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="CrearDocumentos"/>
 	</sub-flow>						
 </mule>
