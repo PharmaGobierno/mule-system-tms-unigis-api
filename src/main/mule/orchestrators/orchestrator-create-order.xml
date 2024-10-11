@@ -69,7 +69,7 @@ ns unis http://unisolutions.com.ar/
                             unis#Volumen:item.volumen,
                             unis#Peso:item.peso,
                             unis#Pallets:item.pallets,
-                            unis#ProductoLinea:item.productoLinea,
+                            unis#ProductoLinea:item.lote,
                             unis#Apilable_Permitido:item.apilablePermitido,
                         }
                     })
