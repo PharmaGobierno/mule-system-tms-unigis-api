@@ -52,8 +52,8 @@ ns unis http://unisolutions.com.ar/
             unis#Paradas:  (payload.paradas map(parada)->{
                 unis#pParada:{
                     unis#Secuencia:parada.secuencia,
-                    unis#RefDocumento:parada.secuencia,
-                    unis#RefDocumentoAdicional:parada.secuencia,
+                    unis#RefDocumento:parada.refDocumento,
+                    unis#RefDocumentoAdicional:parada.refDocumentoAdicional,
                     unis#TipoParada:"Delivery",
                     unis#Descripcion:parada.descripcion,
                     unis#InicioHorarioPlanificado:parada.inicioHorarioPlanificado,
@@ -144,10 +144,10 @@ else
 import modules::code_errors_unigis
 output application/json
 ---
-write(code_errors_unigis::error(payload.body.ModificarEstadoGuiaResponse.ModificarEstadoGuiaResult))]]></ee:set-variable>
+write(code_errors_unigis::error(payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.IdViaje))]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<validation:is-true doc:name="Is true" doc:id="608d40cf-fa58-455e-8f75-b91e04c2fe15" message="#[vars.error_messages]" expression="#[(payload.body.ModificarEstadoGuiaResponse.ModificarEstadoGuiaResult default 0) as Number &gt; 1]"/>
+		<validation:is-true doc:name="Is true" doc:id="608d40cf-fa58-455e-8f75-b91e04c2fe15" message="#[vars.error_messages]" expression="#[(payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.IdViaje default 0) as Number &gt; 1]"/>
 
 	</sub-flow>
 </mule>
