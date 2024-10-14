@@ -9,6 +9,7 @@ http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/
 	</sub-flow>	
 	<sub-flow name="client-create-call-ws-create-order-imss" doc:id="606aba2c-e3a1-4fe3-bef9-cf4947876216" >
 		<wsc:consume doc:name="Consume" doc:id="3f10a743-c173-4f87-99f5-500c9fdd5407" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="CrearViajeCompleto"/>
+		<logger level="INFO" doc:name="Logger" doc:id="8b714fcf-60da-47ae-a927-ced12f356911" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]"/>
 	</sub-flow>	
 	<sub-flow name="client-create-order-shipment-call-ws-create-client-order-vmodal" doc:id="c32d1eef-79ab-4bef-a9a2-1962c7c7e5a9" >
 		<wsc:consume doc:name="Consume" doc:id="81b69c76-a0f5-46a6-9fd6-146ca002287e" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="CrearClientesDadores"/>

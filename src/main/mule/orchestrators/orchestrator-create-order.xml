@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="orchestrator-create-order-main" doc:id="02516b96-d24b-4de4-bf0a-e72396d59de0" >
 		<flow-ref doc:name="orchestrator-create-order-prepare-request" doc:id="f5aedb2f-3514-4145-b695-52380721f959" name="orchestrator-create-order-prepare-request"/>
 		<flow-ref doc:name="orchestrator-create-order-validate-source-system" doc:id="1fbf546b-1a4a-41bd-bc5c-f81ef1df44aa" name="orchestrator-create-order-validate-source-system"/>
+		<flow-ref doc:name="orchestrator-modifica-estado-guia-validate-error" doc:id="c5ae1425-3c8e-466a-b9e7-beb7836be6a2" name="orchestrator-modifica-estado-guia-validate-error" />
 		<flow-ref doc:name="Call to orchestrator-create-order-set-response" doc:id="325963b7-0531-4190-bb20-d9c0553d04a2" name="orchestrator-create-order-set-response"/>
 	</sub-flow>
 	<sub-flow name="orchestrator-create-order-prepare-request" doc:id="f8e7152d-6e4a-4893-a746-b58ec72bae7d" >
@@ -69,10 +72,11 @@ ns unis http://unisolutions.com.ar/
                             unis#Volumen:item.volumen,
                             unis#Peso:item.peso,
                             unis#Pallets:item.pallets,
-                            unis#ProductoLinea:item.lote,
+                            unis#ProductoLinea:item.productoLinea default "",
                             unis#Apilable_Permitido:item.apilablePermitido,
-                            unis#Varchar2:item.embalaje,
-                            unis#Varchar3:item.claveSat
+                            unis#Varchar2:item.fechaCaducidad,
+                            unis#Varchar3:item.embalaje,
+                            unis#Varchar1: item.lote
                         }
                     })
                 }
@@ -131,5 +135,19 @@ else
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+	</sub-flow>
+	<sub-flow name="orchestrator-create-order-validate-error" doc:id="330fb015-c3d0-4164-868c-76ad98fe2c62" >
+			<ee:transform doc:name="Transform Message" doc:id="06cc0b5c-3bb0-4fab-87f8-bf257d912ca9">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable variableName="error_messages"><![CDATA[%dw 2.0
+import modules::code_errors_unigis
+output application/json
+---
+write(code_errors_unigis::error(payload.body.ModificarEstadoGuiaResponse.ModificarEstadoGuiaResult))]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<validation:is-true doc:name="Is true" doc:id="608d40cf-fa58-455e-8f75-b91e04c2fe15" message="#[vars.error_messages]" expression="#[(payload.body.ModificarEstadoGuiaResponse.ModificarEstadoGuiaResult default 0) as Number &gt; 1]"/>
+
 	</sub-flow>
 </mule>
