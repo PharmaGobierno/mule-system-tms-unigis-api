@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<sub-flow name="orchestrator-create-order-main" doc:id="02516b96-d24b-4de4-bf0a-e72396d59de0" >
 		<flow-ref doc:name="orchestrator-create-order-prepare-request" doc:id="f5aedb2f-3514-4145-b695-52380721f959" name="orchestrator-create-order-prepare-request"/>
 		<flow-ref doc:name="orchestrator-create-order-validate-source-system" doc:id="1fbf546b-1a4a-41bd-bc5c-f81ef1df44aa" name="orchestrator-create-order-validate-source-system"/>
-		<flow-ref doc:name="orchestrator-modifica-estado-guia-validate-error" doc:id="c5ae1425-3c8e-466a-b9e7-beb7836be6a2" name="orchestrator-modifica-estado-guia-validate-error" />
+		<flow-ref doc:name="orchestrator-create-order-validate-error" doc:id="c5ae1425-3c8e-466a-b9e7-beb7836be6a2" name="orchestrator-create-order-validate-error" />
 		<flow-ref doc:name="Call to orchestrator-create-order-set-response" doc:id="325963b7-0531-4190-bb20-d9c0553d04a2" name="orchestrator-create-order-set-response"/>
 	</sub-flow>
 	<sub-flow name="orchestrator-create-order-prepare-request" doc:id="f8e7152d-6e4a-4893-a746-b58ec72bae7d" >
