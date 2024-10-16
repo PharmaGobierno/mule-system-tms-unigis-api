@@ -59,7 +59,7 @@ ns unis http://unisolutions.com.ar/
                     unis#cliente:{
                         unis#RefCliente:parada.refCliente,
                         unis#RefDomicilioExterno:parada.refDomicilioExternoCliente,
-                        unis#DomicilioDescripcion:parada.domicilioDescripcionDireccionCliente,
+                        unis#DomicilioDescripcion:parada.domicilioDescripcionCliente,
                     },
                     unis#Items:(parada.items map(item)->{
                          unis#pParadaItem:{
