@@ -36,8 +36,7 @@ ns unis http://unisolutions.com.ar/
             },
             unis#cliente:  {
                 unis#RefCliente:payload.refCliente,
-                unis#RazonSocial:payload.razonSocialCliente,
-                unis#Direccion:payload.direccionCliente
+                unis#RazonSocial:payload.razonSocialCliente
             },
             unis#depositoSalida:  {
                 unis#RefDepositoExterno:payload.depositoSalida
@@ -55,13 +54,12 @@ ns unis http://unisolutions.com.ar/
                     unis#RefDocumento:parada.refDocumento,
                     unis#RefDocumentoAdicional:parada.refDocumentoAdicional,
                     unis#TipoParada:"Delivery",
-                    unis#Descripcion:parada.descripcion,
                     unis#InicioHorarioPlanificado:parada.inicioHorarioPlanificado,
                     unis#FinHorarioPlanificado:parada.finHorarioPlanificado,
                     unis#cliente:{
                         unis#RefCliente:parada.refCliente,
-                        unis#RazonSocial:parada.razonSocialCliente,
-                        unis#Direccion:parada.direccionCliente,
+                        unis#RefDomicilioExterno:parada.refDomicilioExternoCliente,
+                        unis#DomicilioDescripcion:parada.domicilioDescripcionDireccionCliente,
                     },
                     unis#Items:(parada.items map(item)->{
                          unis#pParadaItem:{
