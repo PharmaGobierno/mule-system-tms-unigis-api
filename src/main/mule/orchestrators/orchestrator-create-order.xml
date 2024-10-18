@@ -64,7 +64,7 @@ ns unis http://unisolutions.com.ar/
                     unis#Items:(parada.items map(item)->{
                          unis#pParadaItem:{
                             unis#RefDocumento:item.refDocumento,
-                            unis#RefDocumentoAdicional:item.refDocumentoAdicional,
+                            unis#RefDocumentoAdicional:item.refDocumentoAdicional default "51142400",
                             unis#Descripcion:item.descripcion,
                             unis#Cantidad:item.cantidad,
                             unis#Volumen:item.volumen,
