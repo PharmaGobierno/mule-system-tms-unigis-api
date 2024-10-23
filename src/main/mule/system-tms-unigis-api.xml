@@ -149,6 +149,24 @@ output application/json
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
+            <on-error-propagate type="UNIGIS:UNKNOWN_ERROR" enableNotifications="true" logException="true">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"traxion_response": {
+		"completed_succesfully": "false",
+		"error": (error.muleMessage.typedValue.detailMessage)
+	}
+}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[400]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
             <on-error-propagate type="UNIGIS:BAD_REQUEST" enableNotifications="true" logException="true">
                 <ee:transform>
                     <ee:message>
