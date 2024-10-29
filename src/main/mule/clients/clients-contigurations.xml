@@ -34,7 +34,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		</wsc:connection>
 	</wsc:config>
 	<wsc:config name="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="5ac7a11c-8769-488d-906f-bc6e1aa982a0" >
-		<wsc:connection wsdlLocation="wsdls\tms-unigis-vmodal.wsdl" service="Service" port="ServiceSoap" address="https://cloud-test.unigis.com/PHARMA_GOB/mapi/soap/Logistic/Service.asmx?" >
+		<wsc:connection wsdlLocation="${consume.unigis.wsdl.location}" service="Service" port="ServiceSoap" address="${consume.unigis.address}" >
 			<wsc:custom-transport-configuration >
 				<wsc:default-http-transport-configuration timeout="500000" />
 			</wsc:custom-transport-configuration>

@@ -23,7 +23,7 @@ ns unis http://unisolutions.com.ar/
 ---
 {
   unis#"ModificarEstadoViaje": {
-    unis#"ApiKey": p('tms.unigis.api.key'),
+    unis#"ApiKey": p('consume.unigis.api.key'),
     unis#"IdViaje": vars.id_journey,
     unis#"Estado": payload.status,
     unis#"ValidarTransicion": "true",
