@@ -445,6 +445,10 @@ attributes.queryParams.source_system]]></ee:set-variable>
 output application/json
 ---
 attributes.queryParams.source_system]]></ee:set-variable>
+				<ee:set-variable variableName="payloadBK" ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<flow-ref doc:name="Call to orchestrator-create-order-main" doc:id="ae5372c2-abeb-427a-9b65-8cbf8da5f78b" name="orchestrator-create-order-main"/>

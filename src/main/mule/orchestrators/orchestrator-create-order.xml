@@ -11,6 +11,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<flow-ref doc:name="orchestrator-create-order-validate-source-system" doc:id="1fbf546b-1a4a-41bd-bc5c-f81ef1df44aa" name="orchestrator-create-order-validate-source-system"/>
 		<flow-ref doc:name="orchestrator-create-order-validate-error" doc:id="c5ae1425-3c8e-466a-b9e7-beb7836be6a2" name="orchestrator-create-order-validate-error" />
 		<flow-ref doc:name="Call to orchestrator-create-order-set-response" doc:id="325963b7-0531-4190-bb20-d9c0553d04a2" name="orchestrator-create-order-set-response"/>
+		<flow-ref doc:name="orchestrator-create-order-prepare-message-slack" doc:id="fb414d86-9f3a-449b-8104-06ab2ca101c9" name="orchestrator-create-order-prepare-message-slack"/>
 	</sub-flow>
 	<sub-flow name="orchestrator-create-order-prepare-request" doc:id="f8e7152d-6e4a-4893-a746-b58ec72bae7d" >
 		<ee:transform doc:name="Transform Message" doc:id="82b15b01-906d-4f25-9e02-604b8facd06f" >
@@ -102,6 +103,20 @@ ns unis http://unisolutions.com.ar/
 			</otherwise>
 		</choice>
 	</sub-flow>
+	<sub-flow name="orchestrator-create-order-validate-error" doc:id="05b39250-6af2-4403-8746-c493d2c160a5">
+			<ee:transform doc:name="Transform Message" doc:id="214721c6-be3b-4857-a037-3c9f43d22764">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable variableName="error_messages"><![CDATA[%dw 2.0
+import modules::code_errors_unigis
+output application/json
+---
+write(code_errors_unigis::error(payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.IdViaje))]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<validation:is-true doc:name="Is true" doc:id="424e7bbd-c9e4-42df-83e9-433ee6276333" message="#[vars.error_messages]" expression="#[(payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.IdViaje default 0) as Number &gt; 1]" />
+
+	</sub-flow>
 	<sub-flow name="orchestrator-create-order-set-response" doc:id="ce4affd3-51b2-4f26-9c1b-ded0bc8b726e" >
 		<ee:transform doc:name="Transform Message" doc:id="5c7701b0-aae8-469a-ac04-0de64614da48" >
 			<ee:message >
@@ -117,7 +132,7 @@ if (!isEmpty(payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult))
             "data": {
             	id_viaje:payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.IdViaje,
             	ultimo_reporte:payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.UltimoReporteUTC,
-            	vehiculo_integrado:payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.VehiculoIntegrado,
+            	vehiculo_integrado:payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.VehiculoIntegrado
             }
         }
     }
@@ -136,18 +151,40 @@ else
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="23ade082-0d5d-4f16-bac1-8285b8e330cf" message="#[payload]"/>
 	</sub-flow>
-	<sub-flow name="orchestrator-create-order-validate-error" doc:id="05b39250-6af2-4403-8746-c493d2c160a5" >
-			<ee:transform doc:name="Transform Message" doc:id="214721c6-be3b-4857-a037-3c9f43d22764">
-			<ee:message />
-			<ee:variables>
-				<ee:set-variable variableName="error_messages"><![CDATA[%dw 2.0
-import modules::code_errors_unigis
+	<sub-flow name="orchestrator-create-order-prepare-message-slack" doc:id="557a8e0d-162c-43cf-bddc-f5b775cddd51" >
+		<ee:transform doc:name="Transform Message" doc:id="ba3077ef-f98d-4570-a53e-17f35778c506" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-write(code_errors_unigis::error(payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.IdViaje))]]></ee:set-variable>
+	{
+    "traxion_response": {
+        "completed_succesfully": "true",
+        "response": {
+            "message": "successful",
+            "data": {
+            	id_viaje: payload.traxion_response.response.data.id_viaje,
+            	ultimo_reporte: payload.traxion_response.response.data.ultimo_reporte,
+            	vehiculo_integrado: payload.traxion_response.response.data.vehiculo_integrado,
+            	tipo_orden: vars.payloadBK.refCliente,
+            	referencia: vars.payloadBK.referencia,
+            	descripcion: vars.payloadBK.descripcion
+            }
+        }
+    }
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="slackChannel" ><![CDATA[%dw 2.0
+output application/json
+---
+p('slack.connection.channel.successful.orders.unigis')]]></ee:set-variable>
+				<ee:set-variable variableName="service_provider" ><![CDATA[%dw 2.0
+output application/json
+---
+"MENSAJE EXITOSO DE CREACION EN UNIGIS"]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<validation:is-true doc:name="Is true" doc:id="424e7bbd-c9e4-42df-83e9-433ee6276333" message="#[vars.error_messages]" expression="#[(payload.body.CrearViajeCompletoResponse.CrearViajeCompletoResult.IdViaje default 0) as Number &gt; 1]"/>
-
+		<flow-ref doc:name="orchestrator-send-message-to-slack-main" doc:id="6483b6ee-ed98-42e8-87c6-6ee6efe26bbe" name="orchestrator-send-message-to-slack-main"/>
 	</sub-flow>
 </mule>
