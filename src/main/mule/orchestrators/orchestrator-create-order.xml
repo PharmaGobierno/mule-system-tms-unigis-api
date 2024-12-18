@@ -175,14 +175,14 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 			<ee:variables >
-				<ee:set-variable variableName="slackChannel" ><![CDATA[%dw 2.0
-output application/json
----
-p('slack.connection.channel.successful.orders.unigis')]]></ee:set-variable>
 				<ee:set-variable variableName="service_provider" ><![CDATA[%dw 2.0
 output application/json
 ---
 "MENSAJE EXITOSO DE CREACION EN UNIGIS"]]></ee:set-variable>
+				<ee:set-variable variableName="channel" ><![CDATA[%dw 2.0
+output application/json
+---
+p('slack.connection.channel.successful.orders.unigis')]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<flow-ref doc:name="orchestrator-send-message-to-slack-main" doc:id="6483b6ee-ed98-42e8-87c6-6ee6efe26bbe" name="orchestrator-send-message-to-slack-main"/>
