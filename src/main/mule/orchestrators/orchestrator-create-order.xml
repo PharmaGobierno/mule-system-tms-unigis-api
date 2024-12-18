@@ -74,7 +74,7 @@ ns unis http://unisolutions.com.ar/
                             unis#ProductoLinea:item.productoLinea default "",
                             unis#Apilable_Permitido:item.apilablePermitido,
                             unis#Varchar2:item.fechaCaducidad,
-                            unis#Varchar3:item.embalaje,
+                            unis#Varchar3:item.embalaje default "X4G",
                             unis#Varchar1: item.lote
                         }
                     })
