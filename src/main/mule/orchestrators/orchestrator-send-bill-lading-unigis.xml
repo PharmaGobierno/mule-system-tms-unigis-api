@@ -10,6 +10,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis-prepare-response-for-sending-documents" doc:id="c1f066a4-9bab-405e-8aad-f71daafd3d8b" name="orchestrator-send-bill-lading-unigis-prepare-response-for-sending-documents"/>
 	</sub-flow>
 	<sub-flow name="orchestrator-prepare-xml-request-send-bill-lading-unigis-documents" doc:id="9965e6cf-3a62-4958-a5e0-64a2aa6b4942" >
+		<logger level="INFO" doc:name="Logger1" doc:id="af9a4bed-13dc-444a-8ac8-3543bfa72083" message="#[payload]" />
 		<ee:transform doc:name="Set request for pdf document" doc:id="430125ca-f142-4d93-bd1d-fbad33311767" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -18,7 +19,7 @@ output application/xml
 ---
 {
   unis#"CrearDocumentos": {
-    unis#"ApiKey": p('tms.unigis.api.key'),
+    unis#"ApiKey": p('consume.medistik.api.key'),
     unis#"Documentos": {
       unis#"pDocumento": {
         unis#"TipoDocumento": payload.crearDocumentos.Documentos.pDocumento.tipoDocumento,
