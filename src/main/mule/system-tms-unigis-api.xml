@@ -3,7 +3,7 @@
     <http:listener-config name="system-tms-connection-httpListenerConfig">
         <http:listener-connection host="${https.listener.host}" port="${https.listener.port}" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="system-tms-unigis-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:system-tms-unigis-api:1.0.12:raml:zip:system-tms-unigis-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="system-tms-unigis-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:system-tms-unigis-api:1.0.13:raml:zip:system-tms-unigis-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="system-tms-unigis-api-main">
         <http:listener config-ref="system-tms-connection-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -438,19 +438,36 @@ attributes.queryParams.source_system]]></ee:set-variable>
         <flow-ref doc:name="Call-orchestrator-send-bill-lading-unigis" doc:id="bf5ae486-634b-4408-b428-bcb370d3fcaa" name="orchestrator-send-bill-lading-unigis" />
     </flow>
     <flow name="post:\tms\order:application\json:system-tms-unigis-api-config">
-		<ee:transform doc:name="Set source system" doc:id="e1726086-e4b7-44aa-b615-14cfa00a82f3" >
-			<ee:message />
-			<ee:variables >
-				<ee:set-variable variableName="source_system" ><![CDATA[%dw 2.0
+        <ee:transform doc:name="Set source system" doc:id="e1726086-e4b7-44aa-b615-14cfa00a82f3">
+            <ee:message />
+            <ee:variables>
+                <ee:set-variable variableName="source_system"><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.queryParams.source_system]]></ee:set-variable>
-				<ee:set-variable variableName="payloadBK" ><![CDATA[%dw 2.0
+                <ee:set-variable variableName="payloadBK"><![CDATA[%dw 2.0
 output application/json
 ---
 payload]]></ee:set-variable>
-			</ee:variables>
-		</ee:transform>
-		<flow-ref doc:name="Call to orchestrator-create-order-main" doc:id="ae5372c2-abeb-427a-9b65-8cbf8da5f78b" name="orchestrator-create-order-main"/>
+            </ee:variables>
+        </ee:transform>
+        <flow-ref doc:name="Call to orchestrator-create-order-main" doc:id="ae5372c2-abeb-427a-9b65-8cbf8da5f78b" name="orchestrator-create-order-main" />
+    </flow>
+    <flow name="post:\tms\order\shipment:application\json:system-tms-unigis-api-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  traxion_response: {
+    completed_successfully: "true",
+    response: {
+      message: "operation successfully"
+    }
+  }
+} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
     </flow>
 </mule>
