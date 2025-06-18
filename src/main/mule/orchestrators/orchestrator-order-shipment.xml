@@ -68,8 +68,8 @@ ns unis http://unisolutions.com.ar/
           unis#Descripcion: payload.depositoSalida.descripcion
         },
         unis#depositoLlegada: {
-          unis#RefDepositoExterno: payload.depositoLlegada,
-          unis#Descripcion: payload.depositoLlegada
+          unis#RefDepositoExterno: payload.depositoLlegada.refDepositoExterno,
+          unis#Descripcion: payload.depositoLlegada.descripcion
         },
         unis#Items: payload.items map (item) ->  {
           unis#pOrdenPedidoItem: {
