@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<sub-flow name="orchestrator-order-shipment-main" doc:id="b57f336f-7e7d-4a13-9901-17292b08f14d" >
+		<flow-ref doc:name="orchestrator-order-shipment-prepare-request" doc:id="197fd53c-778b-41db-9c7f-aee22ec736bf" name="orchestrator-order-shipment-prepare-request"/>
+		<flow-ref doc:name="orchestrator-order-shipment-validate-source-system" doc:id="5e7503f4-e144-45e0-8670-3abfef458ead" name="orchestrator-order-shipment-validate-source-system"/>
+		<flow-ref doc:name="orchestrator-order-shipment-prepare-response" doc:id="f09b4dc0-20f8-4970-95c8-477dc66a124a" name="orchestrator-order-shipment-prepare-response"/>
+		<flow-ref doc:name="orchestrator-order-shipment-prepare-response" doc:id="7100eca2-cf24-4ad8-a5c7-ff7cbbbf481e" name="orchestrator-order-shipment-prepare-response"/>
+	</sub-flow>
+	<sub-flow name="orchestrator-order-shipment-prepare-request" doc:id="c73afbb9-4465-4fbb-9a6f-b96348914ea8" >
+		<ee:transform doc:name="Transform Message" doc:id="db882d7d-3d69-40bb-89ea-8f4579520981" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns unis http://unisolutions.com.ar/
+---
+{
+  unis#CrearOrdenesPedido: {
+    unis#apiKey: "C6-8B-95-4C-EC-4",
+    unis#pedidos: {
+      unis#pOrdenPedido: {
+        unis#RefDocumento: payload.refDocumento,
+        unis#RefDocumentoAdicional: payload.refDocumentoAdicional,
+        unis#CodigoOperacion: payload.codigoOperacion,
+        unis#Fecha: payload.fecha,
+        unis#FechaEntrega: payload.fechaEntrega,
+        unis#FechaEntregaOriginal: payload.fechaEntregaOriginal,
+        unis#Cliente: {
+          unis#RefCliente: payload.cliente.refCliente,
+          unis#RefDomicilioExterno: payload.cliente.RefDomicilioExterno,
+          unis#Varchar2: payload.cliente.Varchar2,
+          unis#Latitud: payload.cliente.latitud,
+          unis#Longitud: payload.cliente.longitud,
+          unis#InicioHorario1: payload.cliente.inicioHorario1,
+          unis#FinHorario1: payload.cliente.finHorario1,
+          unis#ValidarDomicilioOrden: payload.cliente.validarDomicilioOrden,
+          unis#CrearDomicilioOrden: payload.cliente.crearDomicilioOrden,
+          unis#DomicilioDescripcion: payload.cliente.domicilioDescripcion,
+          unis#IgnorarOperacion: payload.cliente.ignorarOperacion,
+          unis#IgnorarOperacionDomicilioOrden: payload.cliente.ignorarOperacionDomicilioOrden
+        },
+        unis#ClienteDador: {
+          unis#RefCliente: payload.clienteDador.refCliente
+        },
+        unis#Descripcion: payload.descripcion,
+        unis#TipoPedido: payload.tipoPedido,
+        unis#Tipo: payload.tipo,
+        unis#Estado: payload.estado,
+        unis#Prioridad: payload.prioridad,
+        unis#Volumen: payload.volumen,
+        unis#Peso: payload.peso,
+        unis#Bulto: payload.bulto,
+        unis#Pallets: payload.pallets,
+        unis#cargaExclusiva: payload.cargaExclusiva,
+        unis#requiereTurno: payload.requiereTurno,
+        unis#ultimaVisita: payload.ultimaVisita,
+        unis#requiereAbasto: payload.requiereAbasto,
+        unis#usarProductos: payload.usarProductos,
+        unis#soloInsertarProductos: payload.soloInsertarProductos,
+        unis#agruparItems: payload.agruparItems,
+        unis#Observaciones: payload.observaciones,
+        unis#depositoSalida: {
+          unis#RefDepositoExterno: payload.depositoSalida.refDepositoExterno,
+          unis#Descripcion: payload.depositoSalida.descripcion
+        },
+        unis#depositoLlegada: {
+          unis#RefDepositoExterno: payload.depositoLlegada,
+          unis#Descripcion: payload.depositoLlegada
+        },
+        unis#Items: payload.items map (item) ->  {
+          unis#pOrdenPedidoItem: {
+            unis#Producto: {
+              unis#RefProducto: item.producto.refProducto,
+              unis#Descripcion: item.producto.descripcion,
+              unis#VolumenProducto: item.producto.volumenProducto,
+              unis#Peso: item.producto.peso,
+              unis#Rotacion: item.producto.rotacion
+            },
+            unis#RefDocumento: item.refDocumento,
+            unis#RefDocumentoAdicional: item.refDocumentoAdicional,
+            unis#Descripcion: item.descripcion,
+            unis#Codigo: item.codigo,
+            unis#Linea: item.linea,
+            unis#Cantidad: item.cantidad,
+            unis#Bulto: item.bulto,
+            unis#Unidades: item.unidades,
+            unis#Pallets: item.pallets,
+            unis#Volumen: item.volumen,
+            unis#Varchar1: item.varchar1
+          }
+        }
+      }
+    }
+  }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="2d7a8310-d47a-42f8-82d5-2dc776fbd800" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="orchestrator-order-shipment-validate-source-system" doc:id="0c9085f3-53f4-4cf8-9495-d4ac7f7e54fc" >
+		<choice doc:name="Choice" doc:id="6697e422-7a5d-4450-95bb-570883a9f81d" >
+			<when expression='#[vars.source_system == "IMSS"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="0e745e06-c100-4df5-86cf-182f0d7fd0d4" message="CREATE SHIPMENT IMSS"/>
+				<flow-ref doc:name="client-create-call-ws-create-shipment-order" doc:id="c7bdd19f-45fb-4313-b9b8-7cac625796c4" name="client-create-call-ws-create-shipment-order"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="96efbb4e-03e0-44b6-b75c-48b24dd62d64" message="NO CREATE SHIPMENT"/>
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<sub-flow name="orchestrator-order-shipment-prepare-response" doc:id="78df5a0e-0a34-49d3-906a-571dd6a46cad" >
+		<ee:transform doc:name="Transform Message" doc:id="badb9483-cd3d-4de9-9d53-6f4c2c56d741" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="orchestrator-order-shipment-validate-reponse" doc:id="a74c4e57-0b0f-455a-b521-494c73011b4d" >
+		<ee:transform doc:name="Transform Message" doc:id="bc458c04-e47b-42fa-9336-7f39ee8de3d4" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="error_messages" ><![CDATA[%dw 2.0
+import modules::code_errors_unigis
+output application/json
+---
+write(code_errors_unigis::error(payload.body.CrearOrdenesPedidoResponse.CrearOrdenesPedidoResult))]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<validation:is-true doc:name="Is true" doc:id="581f4059-cc64-4d1d-9b26-35730c77333d" expression="#[(payload.body.CrearOrdenesPedidoResponse.CrearOrdenesPedidoResult default 0) as Number &gt; 1]" message="#[vars.error_messages]" />
+	</sub-flow>
+</mule>

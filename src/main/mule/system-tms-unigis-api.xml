@@ -454,7 +454,8 @@ payload]]></ee:set-variable>
         <flow-ref doc:name="Call to orchestrator-create-order-main" doc:id="ae5372c2-abeb-427a-9b65-8cbf8da5f78b" name="orchestrator-create-order-main" />
     </flow>
     <flow name="post:\tms\order\shipment:application\json:system-tms-unigis-api-config">
-        <ee:transform doc:name="Transform Message">
+        <flow-ref doc:name="system-tms.unigis-api-set-var-system-source" doc:id="f18f216f-f4af-4c86-a9ee-cce56d40ef77" name="system-tms.unigis-api-set-var-system-source"/>
+		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
