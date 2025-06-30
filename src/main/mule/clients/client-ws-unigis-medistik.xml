@@ -8,23 +8,329 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
 	<sub-flow name="client-create-order-shipment-call-ws-create-order-shipment-medistik" doc:id="f6021928-11de-498f-adb9-296361792a0e" >
-		<wsc:consume doc:name="Consume" doc:id="c54a893b-3616-455a-9a87-157229694be2" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearOrdenesEntrega"/>
+		<try doc:name="Try" doc:id="a50a3818-7efb-4ce3-b920-718e205e01d6" >
+			<wsc:consume doc:name="Consume" doc:id="c54a893b-3616-455a-9a87-157229694be2" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearOrdenesEntrega" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="4d4c6ef4-a4bd-47ed-8d1c-4288368688b8" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+					<ee:transform doc:name="Transform Message" doc:id="3ebd2929-756b-4672-879f-2bf481589758" >
+						<ee:message />
+						<ee:variables >
+							<ee:set-variable variableName="causeby" ><![CDATA[%dw 2.0
+output application/json
+---
+error.description]]></ee:set-variable>
+							<ee:set-variable variableName="main_error" ><![CDATA[%dw 2.0
+output application/json
+---
+error.errorType]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<ee:transform doc:name="set payload error" doc:id="f8994de6-a19f-42b7-b178-bc657d8dbf21" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  traxion_response: {
+    completed_succesfully: "false",
+    error: {
+      error_type: "TMS:" ++ (vars.main_error.identifier default "ERROR"),
+      payload: {
+      	event: correlationId
+      },
+      user_error_description: "error en comunicacion con TMS",
+      system_error_description: vars.causeby
+    }
+  }
+}]]></ee:set-payload>
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="slackChannel" ><![CDATA[%dw 2.0
+output application/json
+---
+p('slack.connection.channel.connectivity.error')]]></ee:set-variable>
+							<ee:set-variable variableName="messageProvider" ><![CDATA[%dw 2.0
+output application/json
+---
+"ERROR PROVENIENTE DE TMS BLUEYONDER"]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<flow-ref doc:name="orchestrator-send-message-to-slack-main" doc:id="bd6550d4-333e-4c21-80f9-dbd04d61c58a" name="orchestrator-send-message-to-slack-main" />
+					<raise-error doc:name="Raise error" doc:id="0a50b9c1-e96b-42ae-b266-05fc912952b7" type="TMS:ERROR" description="#[vars.causeby]" />
+				</on-error-continue>
+			</error-handler>
+		</try>
 	</sub-flow>	
 		<sub-flow name="client-create-order-shipment-call-ws-create-client-order-medistik" doc:id="2fd9be2d-719c-4f3e-b707-47542e0444d0" >
-		<wsc:consume doc:name="Consume" doc:id="ffbcc9c2-9ed6-4cc8-9de4-715986c3405e" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearClientesDadores"/>
+		<try doc:name="Try" doc:id="076c3251-70ed-449c-a515-b3856bd74e91" >
+			<wsc:consume doc:name="Consume" doc:id="ffbcc9c2-9ed6-4cc8-9de4-715986c3405e" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearClientesDadores" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="020266e9-ed97-4c5e-a235-031a39cd4ec7" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+					<ee:transform doc:name="Transform Message" doc:id="d40f47ee-08e6-486d-b268-804e5b795190" >
+						<ee:message />
+						<ee:variables >
+							<ee:set-variable variableName="causeby" ><![CDATA[%dw 2.0
+output application/json
+---
+error.description]]></ee:set-variable>
+							<ee:set-variable variableName="main_error" ><![CDATA[%dw 2.0
+output application/json
+---
+error.errorType]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<ee:transform doc:name="set payload error" doc:id="863a6f5b-963f-4bb0-98e2-c4be66114761" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  traxion_response: {
+    completed_succesfully: "false",
+    error: {
+      error_type: "TMS:" ++ (vars.main_error.identifier default "ERROR"),
+      payload: {
+      	event: correlationId
+      },
+      user_error_description: "error en comunicacion con TMS",
+      system_error_description: vars.causeby
+    }
+  }
+}]]></ee:set-payload>
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="slackChannel" ><![CDATA[%dw 2.0
+output application/json
+---
+p('slack.connection.channel.connectivity.error')]]></ee:set-variable>
+							<ee:set-variable variableName="messageProvider" ><![CDATA[%dw 2.0
+output application/json
+---
+"ERROR PROVENIENTE DE TMS BLUEYONDER"]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<flow-ref doc:name="orchestrator-send-message-to-slack-main" doc:id="13c37fea-a2d2-4763-9e93-89746e1b5b63" name="orchestrator-send-message-to-slack-main" />
+					<raise-error doc:name="Raise error" doc:id="0129e1d1-ee9b-4a7b-9743-4186cfc2aeea" type="TMS:ERROR" description="#[vars.causeby]" />
+				</on-error-continue>
+			</error-handler>
+		</try>
 	</sub-flow>	
 		<sub-flow name="client-create-order-shipment-call-ws-create-transportista-medistik" doc:id="74bff1b4-2b01-4491-a762-a53dba3e3249" >
-		<wsc:consume doc:name="Consume" doc:id="46158650-9328-44bb-935c-d0ece468870a" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearTransportes"/>
+		<try doc:name="Try" doc:id="1005c120-c589-4aa4-b407-c19473513c84" >
+			<wsc:consume doc:name="Consume" doc:id="46158650-9328-44bb-935c-d0ece468870a" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearTransportes" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d660304a-d749-406e-b88a-397db1c2fa77" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+					<ee:transform doc:name="Transform Message" doc:id="7b9e88b8-0b3a-4b26-9120-ba7e86e0d591" >
+						<ee:message />
+						<ee:variables >
+							<ee:set-variable variableName="causeby" ><![CDATA[%dw 2.0
+output application/json
+---
+error.description]]></ee:set-variable>
+							<ee:set-variable variableName="main_error" ><![CDATA[%dw 2.0
+output application/json
+---
+error.errorType]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<ee:transform doc:name="set payload error" doc:id="9879b8c5-a421-4aec-a793-af3e3b7c42e7" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  traxion_response: {
+    completed_succesfully: "false",
+    error: {
+      error_type: "TMS:" ++ (vars.main_error.identifier default "ERROR"),
+      payload: {
+      	event: correlationId
+      },
+      user_error_description: "error en comunicacion con TMS",
+      system_error_description: vars.causeby
+    }
+  }
+}]]></ee:set-payload>
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="slackChannel" ><![CDATA[%dw 2.0
+output application/json
+---
+p('slack.connection.channel.connectivity.error')]]></ee:set-variable>
+							<ee:set-variable variableName="messageProvider" ><![CDATA[%dw 2.0
+output application/json
+---
+"ERROR PROVENIENTE DE TMS BLUEYONDER"]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<flow-ref doc:name="orchestrator-send-message-to-slack-main" doc:id="ad3575b6-6c35-4920-94b2-03354a160cf8" name="orchestrator-send-message-to-slack-main" />
+					<raise-error doc:name="Raise error" doc:id="605fa32f-7700-48af-a9f7-afd9921dfc32" type="TMS:ERROR" description="#[vars.causeby]" />
+				</on-error-continue>
+			</error-handler>
+		</try>
 	</sub-flow>			
 	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-guia-medistik" doc:id="49084fdf-f62b-41e8-a9af-f5fee13fc199" >
-		<wsc:consume doc:name="Consume" doc:id="decb7911-2076-4a2f-b48b-0dc31f321deb" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="ModificarEstadoGuia"/>
+		<try doc:name="Try" doc:id="b12bd15e-9d86-4af0-9c65-0acccbb69d48" >
+			<wsc:consume doc:name="Consume" doc:id="decb7911-2076-4a2f-b48b-0dc31f321deb" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="ModificarEstadoGuia" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="53f79ec0-221f-427a-9c57-e85ec1bde453" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+					<ee:transform doc:name="Transform Message" doc:id="0d9fc6f5-b847-45e9-8282-690f42065ee3" >
+						<ee:message />
+						<ee:variables >
+							<ee:set-variable variableName="causeby" ><![CDATA[%dw 2.0
+output application/json
+---
+error.description]]></ee:set-variable>
+							<ee:set-variable variableName="main_error" ><![CDATA[%dw 2.0
+output application/json
+---
+error.errorType]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<ee:transform doc:name="set payload error" doc:id="5c901f4d-79f7-4fb3-a2d8-84042e2e8367" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  traxion_response: {
+    completed_succesfully: "false",
+    error: {
+      error_type: "TMS:" ++ (vars.main_error.identifier default "ERROR"),
+      payload: {
+      	event: correlationId
+      },
+      user_error_description: "error en comunicacion con TMS",
+      system_error_description: vars.causeby
+    }
+  }
+}]]></ee:set-payload>
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="slackChannel" ><![CDATA[%dw 2.0
+output application/json
+---
+p('slack.connection.channel.connectivity.error')]]></ee:set-variable>
+							<ee:set-variable variableName="messageProvider" ><![CDATA[%dw 2.0
+output application/json
+---
+"ERROR PROVENIENTE DE TMS BLUEYONDER"]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<flow-ref doc:name="orchestrator-send-message-to-slack-main" doc:id="240b31c1-3c9d-4b68-9b42-39fe3c6427c0" name="orchestrator-send-message-to-slack-main" />
+					<raise-error doc:name="Raise error" doc:id="7120d341-c84d-46c2-96bd-eb75deb02a2e" type="TMS:ERROR" description="#[vars.causeby]" />
+				</on-error-continue>
+			</error-handler>
+		</try>
 	</sub-flow>
 	<sub-flow name="client-create-order-shipment-call-ws-modificar-estado-viaje-medistik" doc:id="ba6d5d4c-06c5-4288-9e40-fcd7c9e54cab" >
-		<wsc:consume doc:name="Consume" doc:id="5667af6a-c22d-4b2c-a2b0-df2e9dbf57f3" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="ModificarEstadoViaje"/>
+		<try doc:name="Try" doc:id="d78b8208-b745-4937-bf01-50091571c5e6" >
+			<wsc:consume doc:name="Consume" doc:id="5667af6a-c22d-4b2c-a2b0-df2e9dbf57f3" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="ModificarEstadoViaje" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d7a8d24d-b5e2-4141-8b09-3d06d9a13c61" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+					<ee:transform doc:name="Transform Message" doc:id="a810785e-a98d-4c9a-a9dc-2ec397631961" >
+						<ee:message />
+						<ee:variables >
+							<ee:set-variable variableName="causeby" ><![CDATA[%dw 2.0
+output application/json
+---
+error.description]]></ee:set-variable>
+							<ee:set-variable variableName="main_error" ><![CDATA[%dw 2.0
+output application/json
+---
+error.errorType]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<ee:transform doc:name="set payload error" doc:id="73316aaf-25aa-48f5-a3f6-7d6b7961338a" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  traxion_response: {
+    completed_succesfully: "false",
+    error: {
+      error_type: "TMS:" ++ (vars.main_error.identifier default "ERROR"),
+      payload: {
+      	event: correlationId
+      },
+      user_error_description: "error en comunicacion con TMS",
+      system_error_description: vars.causeby
+    }
+  }
+}]]></ee:set-payload>
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="slackChannel" ><![CDATA[%dw 2.0
+output application/json
+---
+p('slack.connection.channel.connectivity.error')]]></ee:set-variable>
+							<ee:set-variable variableName="messageProvider" ><![CDATA[%dw 2.0
+output application/json
+---
+"ERROR PROVENIENTE DE TMS BLUEYONDER"]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<flow-ref doc:name="orchestrator-send-message-to-slack-main" doc:id="af4a82a5-2a68-4e77-8e7c-f56b5c478733" name="orchestrator-send-message-to-slack-main" />
+					<raise-error doc:name="Raise error" doc:id="f8b17015-47fc-434e-97e1-27283963d359" type="TMS:ERROR" description="#[vars.causeby]" />
+				</on-error-continue>
+			</error-handler>
+		</try>
 	</sub-flow>
 	<sub-flow name="client-ws-unigis-medistik-send-document-pdf-and-xml" doc:id="dd0b5474-374d-45bc-84d6-642980cd1fcd" >
-		<wsc:consume doc:name="Consume" doc:id="14086a68-73ee-4c23-b071-dbc24999e0e1" config-ref="TMS-UNIGIS-Medistik-Web_Service_Consumer_Config" operation="CrearDocumentos" target="createDocResp"/>
-		<logger level="INFO" doc:name="Logger" doc:id="1304998c-d347-4002-9b3d-4e101aa6d178" message="#[vars.createDocResp]"/>
+		<try doc:name="Try" doc:id="03c93ed2-b556-477a-a6dc-206a486ae41b">
+			<wsc:consume doc:name="Consume" doc:id="14086a68-73ee-4c23-b071-dbc24999e0e1" config-ref="TMS-UNIGIS-Medistik-Web_Service_Consumer_Config" operation="CrearDocumentos" target="createDocResp" />
+			<logger level="INFO" doc:name="Logger" doc:id="1304998c-d347-4002-9b3d-4e101aa6d178" message="#[vars.createDocResp]" />
+			<error-handler>
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="11da5a2f-aa13-4ec8-94a0-0e9f7d102cc9" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT">
+					<ee:transform doc:name="Transform Message" doc:id="b9826eb7-4c7b-4f57-aeb8-a7bbe786da8b">
+						<ee:message />
+						<ee:variables>
+							<ee:set-variable variableName="causeby"><![CDATA[%dw 2.0
+output application/json
+---
+error.description]]></ee:set-variable>
+							<ee:set-variable variableName="main_error"><![CDATA[%dw 2.0
+output application/json
+---
+error.errorType]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<ee:transform doc:name="set payload error" doc:id="30d34dae-927d-4c71-b3ff-584559a5f9cd">
+						<ee:message>
+							<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  traxion_response: {
+    completed_succesfully: "false",
+    error: {
+      error_type: "TMS:" ++ (vars.main_error.identifier default "ERROR"),
+      payload: {
+      	event: correlationId
+      },
+      user_error_description: "error en comunicacion con TMS",
+      system_error_description: vars.causeby
+    }
+  }
+}]]></ee:set-payload>
+						</ee:message>
+						<ee:variables>
+							<ee:set-variable variableName="slackChannel"><![CDATA[%dw 2.0
+output application/json
+---
+p('slack.connection.channel.connectivity.error')]]></ee:set-variable>
+							<ee:set-variable variableName="messageProvider"><![CDATA[%dw 2.0
+output application/json
+---
+"ERROR PROVENIENTE DE TMS BLUEYONDER"]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<flow-ref doc:name="orchestrator-send-message-to-slack-main" doc:id="497d4a39-d971-4514-8ac2-c40740fceb65" name="orchestrator-send-message-to-slack-main" />
+					<raise-error doc:name="Raise error" doc:id="65423aa8-f013-4b09-b97f-812838a5773d" type="TMS:ERROR" description="#[vars.causeby]" />
+				</on-error-continue>
+			</error-handler>
+		</try>
 		<choice doc:name="Choice" doc:id="9b73a894-eb0f-43bd-9e0c-9af24a588231" >
 			<when expression='#[vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult &lt; "0" or&#10;vars.createDocResp.body.CrearDocumentosResponse.CrearDocumentosResult == "99"]'>
 				<!-- [STUDIO:"Set structure error response for slack"]<ee:transform doc:name="Set structure error response for slack" doc:id="62d12f7d-fb62-4440-a367-73c470431ea3">
