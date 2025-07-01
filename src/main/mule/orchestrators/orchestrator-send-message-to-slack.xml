@@ -34,7 +34,7 @@ output application/json
 	"channel": vars.slackChannel,
 	"text": "`Attention!` <!channel> There was an error in system-edifac-> :warning: "
 	++ "\n ---------------------------------------------------"
-	++ "\n `"++ vars.messageProvider+"`"
+	++ "\n `"++ vars.messageProvider ++"`"
 	++ "\n ---------------------------------------------------"
 	++ "\n Fecha y hora ->" ++ (now() >> "-06:00" )as String
 	++ "\n" ++ (vars.sendToSlack)
