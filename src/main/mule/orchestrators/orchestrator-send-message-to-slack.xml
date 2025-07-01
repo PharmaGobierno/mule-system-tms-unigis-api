@@ -31,7 +31,7 @@ write(payload)]]></ee:set-variable>
 output application/json
 ---
 {
-	"channel": vars.channel,
+	"channel": vars.slackChannel,
 	"text": "`Attention!` <!channel> There was an error in system-edifac-> :warning: "
 	++ "\n ---------------------------------------------------"
 	++ "\n `"++ vars.messageProvider+"`"
