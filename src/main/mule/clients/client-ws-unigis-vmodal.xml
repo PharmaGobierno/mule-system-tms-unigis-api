@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<try doc:name="Try" doc:id="e7abda37-652b-43b4-ab12-e663f592c221" >
 			<wsc:consume doc:name="Consume" doc:id="930b06fe-6d56-4c02-a31d-3408a14a4247" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="CrearOrdenesEntrega" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ad577601-5c14-4fcf-a40f-bda470ed4948" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ad577601-5c14-4fcf-a40f-bda470ed4948" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="8d8ac748-2f99-4119-b775-78db25bf031a" >
 						<ee:message />
 						<ee:variables >
@@ -66,7 +66,7 @@ output application/json
 		</wsc:consume>
 			<logger level="INFO" doc:name="Logger" doc:id="8b714fcf-60da-47ae-a927-ced12f356911" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9c045233-13a5-4989-9bb4-fe608e6d877d" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9c045233-13a5-4989-9bb4-fe608e6d877d" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="d33a3e9e-ce75-4104-a4df-9b178bd74b7d" >
 						<ee:message />
 						<ee:variables >
@@ -123,7 +123,7 @@ output application/json
 		</wsc:consume>
 			<logger level="INFO" doc:name="Logger" doc:id="d68bcdf1-e914-415d-aa29-f1d0dd501979" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="e7d44c9e-67bb-44e6-8177-7d30a6e92a17" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT">
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="e7d44c9e-67bb-44e6-8177-7d30a6e92a17" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT">
 					<ee:transform doc:name="Transform Message" doc:id="2fd148d9-6df5-4a20-acd4-25bf8d77c6a3" >
 						<ee:message />
 						<ee:variables >
@@ -177,7 +177,7 @@ output application/json
 		<try doc:name="Try" doc:id="80279d57-1919-4d75-89bf-eea36a56c5d3" >
 			<wsc:consume doc:name="Consume" doc:id="81b69c76-a0f5-46a6-9fd6-146ca002287e" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="CrearClientesDadores" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="8df52956-237e-413a-96da-50d3378eb1d4" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="8df52956-237e-413a-96da-50d3378eb1d4" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="a5447da4-c1b8-4f36-b21e-08fe27e20a6e" >
 						<ee:message />
 						<ee:variables >
@@ -231,7 +231,7 @@ output application/json
 		<try doc:name="Try" doc:id="584f3feb-7b54-45ad-b18c-51e0055b3e6e" >
 			<wsc:consume doc:name="Consume" doc:id="22debefb-f7ac-41c4-a4c3-178c10bf2f4b" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="CrearTransportes" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="46943347-eef3-4872-8eba-4b2236c4c5aa" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="46943347-eef3-4872-8eba-4b2236c4c5aa" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="f5a58f33-b0e0-4a3a-9f97-19a05f5e3037" >
 						<ee:message />
 						<ee:variables >
@@ -285,7 +285,7 @@ output application/json
 		<try doc:name="Try" doc:id="6ffc276c-718a-4776-8ddf-a96b5b85c013" >
 			<wsc:consume doc:name="Consume" doc:id="59541091-d0c0-4f73-aac2-fad868eea839" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="ModificarEstadoGuia" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9fd789bd-f842-4e10-9cc4-90f1ccac11a9" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9fd789bd-f842-4e10-9cc4-90f1ccac11a9" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="b7ef53d5-c462-49e5-be20-afba1b826d59" >
 						<ee:message />
 						<ee:variables >
@@ -339,7 +339,7 @@ output application/json
 		<try doc:name="Try" doc:id="6636fce6-fa6f-4fb7-a242-62b5ea3ea306" >
 			<wsc:consume doc:name="Consume" doc:id="08eb5cfb-d3d2-48be-b4c8-19ef2f947237" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="ModificarEstadoViaje" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ca316fc8-7072-4787-aa87-55dd4e012066" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ca316fc8-7072-4787-aa87-55dd4e012066" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="7ec6ca58-36a7-465a-b231-0394203fef08" >
 						<ee:message />
 						<ee:variables >
@@ -393,7 +393,7 @@ output application/json
 		<try doc:name="Try" doc:id="b3c2c217-6161-4f7d-99ae-b566b7d53c3e" >
 			<wsc:consume doc:name="Consume" doc:id="60a801a4-d5c0-4a12-b616-a10cd27a1677" config-ref="TMS-UNIGIS-IMSS-Web_Service_Consumer_Config" operation="CrearDocumentos" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="fbc0476a-4890-43f2-b6e1-aa199264e4a7" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="fbc0476a-4890-43f2-b6e1-aa199264e4a7" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="a2ef1556-ca28-4a6f-a3d4-879400508f11" >
 						<ee:message />
 						<ee:variables >

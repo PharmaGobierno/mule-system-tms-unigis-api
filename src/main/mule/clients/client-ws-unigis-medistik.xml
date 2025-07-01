@@ -11,7 +11,7 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
 		<try doc:name="Try" doc:id="a50a3818-7efb-4ce3-b920-718e205e01d6" >
 			<wsc:consume doc:name="Consume" doc:id="c54a893b-3616-455a-9a87-157229694be2" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearOrdenesEntrega" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="4d4c6ef4-a4bd-47ed-8d1c-4288368688b8" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="4d4c6ef4-a4bd-47ed-8d1c-4288368688b8" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="3ebd2929-756b-4672-879f-2bf481589758" >
 						<ee:message />
 						<ee:variables >
@@ -65,7 +65,7 @@ output application/json
 		<try doc:name="Try" doc:id="076c3251-70ed-449c-a515-b3856bd74e91" >
 			<wsc:consume doc:name="Consume" doc:id="ffbcc9c2-9ed6-4cc8-9de4-715986c3405e" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearClientesDadores" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="020266e9-ed97-4c5e-a235-031a39cd4ec7" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="020266e9-ed97-4c5e-a235-031a39cd4ec7" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="d40f47ee-08e6-486d-b268-804e5b795190" >
 						<ee:message />
 						<ee:variables >
@@ -119,7 +119,7 @@ output application/json
 		<try doc:name="Try" doc:id="1005c120-c589-4aa4-b407-c19473513c84" >
 			<wsc:consume doc:name="Consume" doc:id="46158650-9328-44bb-935c-d0ece468870a" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="CrearTransportes" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d660304a-d749-406e-b88a-397db1c2fa77" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d660304a-d749-406e-b88a-397db1c2fa77" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="7b9e88b8-0b3a-4b26-9120-ba7e86e0d591" >
 						<ee:message />
 						<ee:variables >
@@ -173,7 +173,7 @@ output application/json
 		<try doc:name="Try" doc:id="b12bd15e-9d86-4af0-9c65-0acccbb69d48" >
 			<wsc:consume doc:name="Consume" doc:id="decb7911-2076-4a2f-b48b-0dc31f321deb" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="ModificarEstadoGuia" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="53f79ec0-221f-427a-9c57-e85ec1bde453" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="53f79ec0-221f-427a-9c57-e85ec1bde453" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="0d9fc6f5-b847-45e9-8282-690f42065ee3" >
 						<ee:message />
 						<ee:variables >
@@ -227,7 +227,7 @@ output application/json
 		<try doc:name="Try" doc:id="d78b8208-b745-4937-bf01-50091571c5e6" >
 			<wsc:consume doc:name="Consume" doc:id="5667af6a-c22d-4b2c-a2b0-df2e9dbf57f3" config-ref="TMS-UNIGIS-Avior-Web_services_consumer_config" operation="ModificarEstadoViaje" />
 			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d7a8d24d-b5e2-4141-8b09-3d06d9a13c61" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT" >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d7a8d24d-b5e2-4141-8b09-3d06d9a13c61" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT" >
 					<ee:transform doc:name="Transform Message" doc:id="a810785e-a98d-4c9a-a9dc-2ec397631961" >
 						<ee:message />
 						<ee:variables >
@@ -282,7 +282,7 @@ output application/json
 			<wsc:consume doc:name="Consume" doc:id="14086a68-73ee-4c23-b071-dbc24999e0e1" config-ref="TMS-UNIGIS-Medistik-Web_Service_Consumer_Config" operation="CrearDocumentos" target="createDocResp" />
 			<logger level="INFO" doc:name="Logger" doc:id="1304998c-d347-4002-9b3d-4e101aa6d178" message="#[vars.createDocResp]" />
 			<error-handler>
-				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="11da5a2f-aa13-4ec8-94a0-0e9f7d102cc9" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:TIMEOUT">
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="11da5a2f-aa13-4ec8-94a0-0e9f7d102cc9" type="WSC:CANNOT_DISPATCH, WSC:CONNECTIVITY, WSC:ENCODING, WSC:INVALID_WSDL, WSC:RETRY_EXHAUSTED, WSC:SOAP_FAULT, WSC:TIMEOUT">
 					<ee:transform doc:name="Transform Message" doc:id="b9826eb7-4c7b-4f57-aeb8-a7bbe786da8b">
 						<ee:message />
 						<ee:variables>
