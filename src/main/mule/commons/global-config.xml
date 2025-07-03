@@ -19,7 +19,7 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
 	<slack:config name="Slack_Connector_Config" doc:name="Slack Connector Config" doc:id="c6eff13d-c4d1-4395-838c-9a4a809deb07" responseTimeout="${slack.response.timeout}">
 		<slack:slack-auth-connection baseUri="${slack.connection.base.uri}" connectionTimeout="${slack.connection.timeout}" maxConnections="${slack.max.connections}" connectionIdleTimeout="${slack.connection.idle.timeout}" responseBufferSize="${slack.response.buffer.size}">
 			<slack:oauth-authorization-code consumerKey="${slack.connection.client_id}" consumerSecret="${slack.connection.client_secret}" authorizationUrl="${slack.connection.authorization.url}" accessTokenUrl="${slack.connection.token.url}" scopes="${slack.connection.scopes}" />
-			<slack:oauth-callback-config listenerConfig="system-tms-connection-httpListenerConfig" callbackPath="${slack.connection.callback.path}" authorizePath="${slack.connection.authorize.path}" externalCallbackUrl="${slack.connection.external.callback.url.test}"/>
+			<slack:oauth-callback-config listenerConfig="system-tms-unigis-httpListenerConfig" callbackPath="${slack.connection.callback.path}" authorizePath="${slack.connection.authorize.path}" externalCallbackUrl="${slack.connection.external.callback.url}"/>
 			<slack:oauth-store-config objectStore="Object_store_slack" />
 		</slack:slack-auth-connection>
 	</slack:config>
