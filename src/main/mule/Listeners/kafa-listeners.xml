@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:kafka="http://www.mulesoft.org/schema/mule/kafka"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/kafka http://www.mulesoft.org/schema/mule/kafka/current/mule-kafka.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="kafa-listeners-order-creation" doc:id="b7b9b707-f026-4775-af2c-27fd970a0dd5" >
+		<kafka:consume doc:name="Consume" doc:id="a571baea-e5f9-46a7-8738-50d378e0db82" config-ref="Apache_Kafka_Consumer" ackMode="MANUAL"/>
+		<ee:transform doc:name="Transform Message" doc:id="bd396dc4-a841-4587-bad8-d06a7a0ea7d2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns soapenv http://schemas.xmlsoap.org/soap/envelope/
+ns unis http://unisolutions.com.ar/
+---
+{
+    soapenv#envelope: {
+        soapenv#Header:null,
+        soapenv#Body:{
+            unis#CrearOrdenesPedido:{
+                unis#apiKey:"9A-2A-E5-74-0B-4",
+                unis:pedidos:{
+                    unis#pOrdenPedido:{
+                        unis#RefDocumento: "AV0521136193",
+                        unis#RefDocumentoAdicional: "AV0521136193",
+                        unis#Fecha: "2025-08-22T08:57:37.373",
+                        unis#FechaEntrega: "2025-08-22T00:00:00",
+                        unis#FechaEntregaOriginal: "2025-08-22T00:00:00",
+                        unis#Cliente:{
+                            unis#RefCliente: "0059919989",
+                            unis#RazonSocial: "JUAN MANUEL GARCIA CHAVARRIA",
+                            unis#RefDomicilioExterno: "0059919990",
+                            unis#DomicilioDescripcion: "JUAN MANUEL GARCIA CHAVARRIA",
+                            unis#Contacto: "JUAN MANUEL GARCIA CHAVARRIA",
+                            unis#Telefono: "NA",
+                            unis#EMail: "NA",
+                            unis#Direccion: "CIRCUITO CENTRO COMERCIAL 14, CIUDAD SATELITE, 53100, NAUCALPAN DE JUAREZ, ESTADO DE MEXICO, MEXICO",
+                            unis#Localidad: "NAUCALPAN DE JUAREZ",
+                            unis#Calle: "CIRCUITO CENTRO COMERCIAL 14",
+                            unis#Barrio: "CIUDAD SATELITE",
+                            unis#Partido: "NAUCALPAN DE JUAREZ",
+                            unis#Provincia: "MEX",
+                            unis#Pais: "MEXICO",
+                            unis#DomicilioCodigoPostal: "53100",
+                            unis#DomicilioFiscal:{
+                                unis#Direccion: "CIRCUITO CENTRO COMERCIAL 14, CIUDAD SATELITE, 53100, NAUCALPAN DE JUAREZ, ESTADO DE MEXICO, MEXICO",
+                                unis#Calle: "CIRCUITO CENTRO COMERCIAL 14",
+                                unis#Barrio: "NAUCALPAN DE JUAREZ",
+                                unis#Localidad: "NAUCALPAN DE JUAREZ",
+                                unis#Partido: "NAUCALPAN DE JUAREZ",
+                                unis#Provincia: "MEX",
+                                unis#Pais: "MEXICO"
+                            },
+                                unis#IgnorarOperacion: true,
+                                unis#IgnorarOperacionDomicilioOrden: true,
+                                unis#CrearDomicilioOrden: true,
+                                unis#ActualizarDomicilioOrden: true,
+                                unis#ValidarDomicilioOrden: true,
+                                unis#Latitud: 19.5069365,
+                                unis#Longitud: -99.2338714
+                        },
+                        unis#ClienteDador:{
+                            unis#RefCliente: "201029845",
+                            unis:RazonSocial: "ABBVIE FARMACEUTICOS"
+                        },
+                        unis#depositoSalida:{
+                            unis#RefDepositoExterno:"MD00020101"
+                        },
+                        unis#depositoLlegada:{
+                            unis#RefDepositoExterno:"MD00020101"
+                        },
+                        unis#Descripcion: "0059919990 JUAN MANUEL GARCIA CHAVARRIA",
+                        unis#CodigoSucursal: "MD00",
+                        unis#CodigoOperacion: "MD00",
+                        unis#TipoPedido: "O - Consolidado Botox",
+                        unis#InicioHorario1: 800,
+                        unis#FinHorario1: 1800,
+                        unis#InicioHorario2: 0,
+                        unis#FinHorario2: 0,
+                        unis#TiempoEspera: 30,        
+                        unis#CampoDinamico:{
+                            unis#CampoValor:[
+                                {
+                                    unis#Campo:"PalletsWMS",
+                                    unis#Valor:"0"
+                                },
+                                {
+                                    unis#Campo:"TipoPedidoWMS",
+                                    unis#Valor:"1"
+                                }
+                            ]
+                        },
+                        unis#Volumen:0.08427,
+                        unis#Peso: 16.8538,
+                        unis#Bulto: 1,
+                        unis#Pallets: 0,
+                        unis#Distancia: 0,
+                        unis#Latitud: 19.5069365,
+                        unis#Longitud: -99.2338714,
+                        unis#Tipo: "D",
+                        unis#Categoria: "Consolidado Botox",
+                        unis#Prioridad: 1,
+                        unis#cargaExclusiva: false,
+                        unis#requiereTurno: false,
+                        unis#ultimaVisita: false,
+                        unis#Items:{
+                            unis#pOrdenPedidoItem:{
+                                unis#RefDocumento: "900001",
+                                unis#Cantidad: 1,
+                                unis#Volumen: 0.0001176,
+                                unis#Peso: 0.029,
+                                unis#Bulto: 0,
+                                unis#Pallets: 0,
+                                unis#ImporteCosto: 0,
+                                unis#FechaEntrega: "2025-08-22T00:00:00",
+                                unis#Descripcion: "92130ME BOTOX 100 Units Vial \"Cosmetica\"",
+                                unis#UnidadMedida: "PI"
+                            }
+                        },
+                        unis#usarProductos: true,
+                        unis#ValidarTransicion: true,
+                        unis#soloInsertarProductos: true,
+                        unis#agruparItems: true,
+                        unis#altaProductos: true,
+                        unis#obligarProductoItems: false
+                    },
+                }
+            }
+        }
+    }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="call clients-system-tmsSub_Flow" doc:id="d95ff8a2-8145-4dba-a28b-7b30dd20c1a2" name="clients-system-tmsSub_Flow"/>
+		<kafka:commit doc:name="Commit" doc:id="43b9ee85-e1e0-4c09-a44d-886a4e0b040e" config-ref="Apache_Kafka_Consumer" commitKey="#[vars.commitKey]"/>
+	</sub-flow>
+	<sub-flow name="kafa-listeners-order-creation1" doc:id="a500ac9e-7d36-4c27-9971-9f3be0683d76" >
+		<kafka:consume doc:name="Consume" doc:id="9c547f18-5567-467f-be74-8cfc03de7004" config-ref="Apache_Kafka_Consumer" ackMode="MANUAL" />
+		<ee:transform doc:name="Transform Message" doc:id="e444afe7-ccb6-4199-95c9-28e728dcd0ba" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns soapenv http://schemas.xmlsoap.org/soap/envelope/
+ns unis http://unisolutions.com.ar/
+---
+{
+    soapenv#envelope: {
+        soapenv#Header:null,
+        soapenv#Body:{
+            unis#CrearOrdenesPedido:{
+                unis#apiKey:"9A-2A-E5-74-0B-4",
+                unis:pedidos:{
+                    unis#pOrdenPedido:{
+                        unis#RefDocumento: "AV0521136193",
+                        unis#RefDocumentoAdicional: "AV0521136193",
+                        unis#Fecha: "2025-08-22T08:57:37.373",
+                        unis#FechaEntrega: "2025-08-22T00:00:00",
+                        unis#FechaEntregaOriginal: "2025-08-22T00:00:00",
+                        unis#Cliente:{
+                            unis#RefCliente: "0059919989",
+                            unis#RazonSocial: "JUAN MANUEL GARCIA CHAVARRIA",
+                            unis#RefDomicilioExterno: "0059919990",
+                            unis#DomicilioDescripcion: "JUAN MANUEL GARCIA CHAVARRIA",
+                            unis#Contacto: "JUAN MANUEL GARCIA CHAVARRIA",
+                            unis#Telefono: "NA",
+                            unis#EMail: "NA",
+                            unis#Direccion: "CIRCUITO CENTRO COMERCIAL 14, CIUDAD SATELITE, 53100, NAUCALPAN DE JUAREZ, ESTADO DE MEXICO, MEXICO",
+                            unis#Localidad: "NAUCALPAN DE JUAREZ",
+                            unis#Calle: "CIRCUITO CENTRO COMERCIAL 14",
+                            unis#Barrio: "CIUDAD SATELITE",
+                            unis#Partido: "NAUCALPAN DE JUAREZ",
+                            unis#Provincia: "MEX",
+                            unis#Pais: "MEXICO",
+                            unis#DomicilioCodigoPostal: "53100",
+                            unis#DomicilioFiscal:{
+                                unis#Direccion: "CIRCUITO CENTRO COMERCIAL 14, CIUDAD SATELITE, 53100, NAUCALPAN DE JUAREZ, ESTADO DE MEXICO, MEXICO",
+                                unis#Calle: "CIRCUITO CENTRO COMERCIAL 14",
+                                unis#Barrio: "NAUCALPAN DE JUAREZ",
+                                unis#Localidad: "NAUCALPAN DE JUAREZ",
+                                unis#Partido: "NAUCALPAN DE JUAREZ",
+                                unis#Provincia: "MEX",
+                                unis#Pais: "MEXICO"
+                            },
+                                unis#IgnorarOperacion: true,
+                                unis#IgnorarOperacionDomicilioOrden: true,
+                                unis#CrearDomicilioOrden: true,
+                                unis#ActualizarDomicilioOrden: true,
+                                unis#ValidarDomicilioOrden: true,
+                                unis#Latitud: 19.5069365,
+                                unis#Longitud: -99.2338714
+                        },
+                        unis#ClienteDador:{
+                            unis#RefCliente: "201029845",
+                            unis:RazonSocial: "ABBVIE FARMACEUTICOS"
+                        },
+                        unis#depositoSalida:{
+                            unis#RefDepositoExterno:"MD00020101"
+                        },
+                        unis#depositoLlegada:{
+                            unis#RefDepositoExterno:"MD00020101"
+                        },
+                        unis#Descripcion: "0059919990 JUAN MANUEL GARCIA CHAVARRIA",
+                        unis#CodigoSucursal: "MD00",
+                        unis#CodigoOperacion: "MD00",
+                        unis#TipoPedido: "O - Consolidado Botox",
+                        unis#InicioHorario1: 800,
+                        unis#FinHorario1: 1800,
+                        unis#InicioHorario2: 0,
+                        unis#FinHorario2: 0,
+                        unis#TiempoEspera: 30,        
+                        unis#CampoDinamico:{
+                            unis#CampoValor:[
+                                {
+                                    unis#Campo:"PalletsWMS",
+                                    unis#Valor:"0"
+                                },
+                                {
+                                    unis#Campo:"TipoPedidoWMS",
+                                    unis#Valor:"1"
+                                }
+                            ]
+                        },
+                        unis#Volumen:0.08427,
+                        unis#Peso: 16.8538,
+                        unis#Bulto: 1,
+                        unis#Pallets: 0,
+                        unis#Distancia: 0,
+                        unis#Latitud: 19.5069365,
+                        unis#Longitud: -99.2338714,
+                        unis#Tipo: "D",
+                        unis#Categoria: "Consolidado Botox",
+                        unis#Prioridad: 1,
+                        unis#cargaExclusiva: false,
+                        unis#requiereTurno: false,
+                        unis#ultimaVisita: false,
+                        unis#Items:{
+                            unis#pOrdenPedidoItem:{
+                                unis#RefDocumento: "900001",
+                                unis#Cantidad: 1,
+                                unis#Volumen: 0.0001176,
+                                unis#Peso: 0.029,
+                                unis#Bulto: 0,
+                                unis#Pallets: 0,
+                                unis#ImporteCosto: 0,
+                                unis#FechaEntrega: "2025-08-22T00:00:00",
+                                unis#Descripcion: "92130ME BOTOX 100 Units Vial \"Cosmetica\"",
+                                unis#UnidadMedida: "PI"
+                            }
+                        },
+                        unis#usarProductos: true,
+                        unis#ValidarTransicion: true,
+                        unis#soloInsertarProductos: true,
+                        unis#agruparItems: true,
+                        unis#altaProductos: true,
+                        unis#obligarProductoItems: false
+                    },
+                }
+            }
+        }
+    }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="call clients-system-tmsSub_Flow" doc:id="d8474bc1-1abb-4b8e-9dd1-35731466b2bb" name="clients-system-tmsSub_Flow" />
+		<kafka:commit doc:name="Commit" doc:id="ea0ae035-c18d-4a8e-a72a-f1cba190b836" config-ref="Apache_Kafka_Consumer" commitKey="#[vars.commitKey]" />
+	</sub-flow>
+</mule>

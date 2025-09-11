@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:kafka="http://www.mulesoft.org/schema/mule/kafka"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:traxion-s-logger="http://www.mulesoft.org/schema/mule/traxion-s-logger"
+	xmlns:kinesis="http://www.mulesoft.org/schema/mule/kinesis"
+	xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:sqs="http://www.mulesoft.org/schema/mule/sqs" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/sqs http://www.mulesoft.org/schema/mule/sqs/current/mule-sqs.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/kinesis http://www.mulesoft.org/schema/mule/kinesis/current/mule-kinesis.xsd
+http://www.mulesoft.org/schema/mule/traxion-s-logger http://www.mulesoft.org/schema/mule/traxion-s-logger/current/mule-traxion-s-logger.xsd
+http://www.mulesoft.org/schema/mule/kafka http://www.mulesoft.org/schema/mule/kafka/current/mule-kafka.xsd">
+	
+	<kafka:consumer-config name="Apache_Kafka_Consumer" doc:name="Apache Kafka Consumer configuration" doc:id="36a82f0f-6ad5-4412-8b59-eb49f0a76369" >
+		<kafka:consumer-plaintext-connection groupId="mule-uat-customer-group" autoOffsetReset="EARLIEST">
+			<kafka:bootstrap-servers >
+				<kafka:bootstrap-server value="localhost:9092" />
+			</kafka:bootstrap-servers>
+			<kafka:assignments >
+				<kafka:topic-partition topic="OMS.ORDER_EVENTS.REMISSION_PISA" partition="0" />
+			</kafka:assignments>
+		</kafka:consumer-plaintext-connection>
+	
+</kafka:consumer-config>	
+	<kafka:producer-config name="Apache_Kafka_Producer_configuration" doc:name="Apache Kafka Producer configuration" doc:id="7dcf57f3-b844-41e3-8c1c-4e706bac0aa7" >
+		<kafka:producer-plaintext-connection >
+			<kafka:bootstrap-servers >
+				<kafka:bootstrap-server value="localhost:9092" />
+			</kafka:bootstrap-servers>
+		</kafka:producer-plaintext-connection>
+	</kafka:producer-config>
+</mule>
