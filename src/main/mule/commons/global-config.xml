@@ -15,6 +15,9 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
 	<tls:context name="TLS_Context" doc:name="TLS Context" doc:id="a547ceba-b5ad-4ceb-87c2-4f8e9df64ffc" >
 		<tls:key-store type="pkcs12" path="Traxion_Logistics.p12" keyPassword="wWpg9LfX6nxh9Ke3u1L0wxSmYr5y3YKTjAWiTMEa9dww" password="wWpg9LfX6nxh9Ke3u1L0wxSmYr5y3YKTjAWiTMEa9dww" />
 	</tls:context>
+		<tls:context name="TLS_Context_Unigis" doc:name="TLS Context" doc:id="f7b3776f-25d1-4b7d-8514-ce59f0055c62" >
+		<tls:trust-store path="truststore_unigis.jks" password="changeit" type="jks" />
+	</tls:context>
 	<api-gateway:autodiscovery apiId="${anypoint.platform.autodiscovery}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="ac9f2c2b-1626-41b9-a4a1-c0235fadfc3a" flowRef="system-tms-unigis-api-main" />
 	<slack:config name="Slack_Connector_Config" doc:name="Slack Connector Config" doc:id="c6eff13d-c4d1-4395-838c-9a4a809deb07" responseTimeout="${slack.response.timeout}">
 		<slack:slack-auth-connection baseUri="${slack.connection.base.uri}" connectionTimeout="${slack.connection.timeout}" maxConnections="${slack.max.connections}" connectionIdleTimeout="${slack.connection.idle.timeout}" responseBufferSize="${slack.response.buffer.size}">

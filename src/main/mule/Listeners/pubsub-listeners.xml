@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:pubsub="http://www.mulesoft.org/schema/mule/pubsub" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:kafka="http://www.mulesoft.org/schema/mule/kafka"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/kafka http://www.mulesoft.org/schema/mule/kafka/current/mule-kafka.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/pubsub http://www.mulesoft.org/schema/mule/pubsub/current/mule-pubsub.xsd">
+	<flow name="pubsub-listeners-order-creation" doc:id="489fc25c-4996-4290-b2f0-83068e3ed382" >
+		<pubsub:message-listener doc:name="On message listener" doc:id="9d435714-ea71-404a-8607-51e9015be087" config-ref="Google_Pub_Sub_Configuration" projectId="${pubsub.project.id}" subscriptionName="${pubsub.subscription.order_create}"/>
+		<ee:transform doc:name="Transform Message" doc:id="bd396dc4-a841-4587-bad8-d06a7a0ea7d2">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "apiKey": "F6-A9-A5-E4-6D-4",
+    "pedidos": [{
+            "RefDocumento": "12345560RF2",
+            "RefDocumentoAdicional": "OC123456",
+            "Fecha": "2025-09-13T17:49:58",
+            "FechaEntrega": "2025-09-14T17:49:58",
+            "FechaEntregaOriginal": "2025-09-14T17:49:58",
+            "Cliente": {
+                "RefCliente": "52402345",
+                "RazonSocial": "ISSSTE",
+                "Direccion": "BOULEVARD AZTECA S/N ",
+                "Calle": "BOULEVARD AZTECA S/N ",
+                "Barrio": "PEMEX",
+                "Partido": "AGUA DULCE",
+                "Provincia": "CMX",
+                "Pais": "MEX",
+                "RefDomicilioExterno": "10001",
+                "DomicilioDescripcion": "ISSSTE CENTRO",
+                "DomicilioCodigoPostal": 96690,
+                "DomicilioFiscal": {
+                    "Direccion": "BOULEVARD AZTECA S/N ",
+                    "Calle": "BOULEVARD AZTECA S/N ",
+                    "Barrio": "PEMEX",
+                    "Localidad": "AGUA DULCE",
+                    "Partido": "AGUA DULCE",
+                    "Provincia": "CMX",
+                    "Pais": "MEX"
+                },
+                "IgnorarOperacion": false,
+                "IgnorarOperacionDomicilioOrden": false,
+                "CrearDomicilioOrden": true,
+                "ActualizarDomicilioOrden": true,
+                "ValidarDomicilioOrden": true
+            },
+            "ClienteDador": {
+                "RefCliente": 104167,
+                "RazonSocial": "PISA"
+            },
+            "Descripcion": "10001-ISSSTE CENTRO",
+            "CodigoOperacion": "PISA",
+            "CodigoSucursal": "PISAMB00",
+            "TipoPedido": "Privado",
+            "InicioHorario1": 0,
+            "FinHorario1": 2300,
+            "InicioHorario2": 0,
+            "FinHorario2": 2300,
+            "TiempoEspera": 30,
+            "Distancia": 0,
+            "Tipo": "P",
+            "Volumen": "7.25",
+            "Peso": "3.3",
+            "Bultos": "7.25",
+            "Pallets": "3.3",
+            "CampoDinamico": [{
+                    "Campo": "TipoDeOrden",
+                    "Valor": "Seco"
+                }
+            ],
+            "depositoSalida": {
+                "RefDepositoExterno": "PISA Huehuetoca"
+            },
+            "depositoLlegada": {
+                "RefDepositoExterno": "PISA Huehuetoca"
+            },
+            "requiereTurno": false,
+            "ultimaVisita": false,
+            "Items": [{
+                    "RefDocumento": "000020,,",
+                    "Cantidad": 1000,
+                    "Volumen": "3.625E0",
+                    "Peso": "1.65E2",
+                    "Bulto": "3.625E0",
+                    "Pallets": "1.65E2",
+                    "ImporteCosto": 263900,
+                    "FechaEntrega": "2025-01-14T17:49:58",
+                    "Descripcion": "P51107-TIGECICLINA CJA 1 FA LIOF 50 MG.",
+                    "UnidadMedida": "Qty Un",
+                    "CampoDinamico": [{
+                            "Campo": "TipoDeMaterial",
+                            "Valor": "Medicamento de curacion"
+                        }, {
+                            "Campo": "TipoDeOrdenItem",
+                            "Valor": "Seco"
+                        }
+                    ]
+                }, {
+                    "RefDocumento": "000020,,",
+                    "Cantidad": 1000,
+                    "Volumen": "3.625E0",
+                    "Peso": "1.65E2",
+                    "ImporteCosto": 263900,
+                    "Descripcion": "P51107-TIGECICLINA CJA 1 FA LIOF 50 MG.",
+                    "UnidadMedida": "UN",
+                    "CampoDinamico": [{
+                            "Campo": "TipoDeMaterial",
+                            "Valor": "Medicamento de curacion"
+                        }, {
+                            "Campo": "TipoDeOrdenItem",
+                            "Valor": "Seco"
+                        }
+                    ]
+                }
+            ],
+            "usarProductos": true,
+            "ValidarTransicion": false,
+            "soloInsertarProductos": true,
+            "agruparItems": false,
+            "altaProductos": true,
+            "obligarProductoItems": false
+        }
+    ]
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<try doc:name="Try" doc:id="420d6230-7c04-46c4-83b3-6d215f5fdf11" >
+			<flow-ref doc:name="call clients-system-tmsSub_Flow" doc:id="d95ff8a2-8145-4dba-a28b-7b30dd20c1a2" name="clients-system-tmsSub_Flow" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9d84a965-9c03-41b1-af80-e93f7d7d94f0" >
+					<logger level="INFO" doc:name="Logger" doc:id="72a0d5ec-56fd-4e18-bb7c-48a70231c03c" message="Error"/>
+				</on-error-continue>
+			</error-handler>
+		</try>
+	</flow>
+	<flow name="kafa-order-creation-test" doc:id="13d6a58d-dd41-4a14-83bf-36ae8f6ea365">
+		<scheduler doc:name="Scheduler" doc:id="15c5353b-f9a5-4b00-aa28-4b16373ccf9a">
+			<scheduling-strategy>
+				<cron expression="0 0 0 ? * SUN *" />
+			</scheduling-strategy>
+		</scheduler>
+		<ee:transform doc:name="Transform Message" doc:id="ba06946b-68bc-4a3f-a8b3-76e3863540e5">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "payload": {
+        "remission": {
+            "id": "str",
+            "tenant_id": "str",
+            "tracking_id": "str",
+            "order_number": "str",
+            "order_type": "REMISSION_PISA",
+            "delivery_date": 1787898797,
+            "delivery_destination_id": null // Optional[str]
+        },
+        "event": "ORDER_CREATED", //  [DISPATCH, ...]   
+        "event_timestamp": 1788885678,   // momento en el que ocurre (utc, no reginal) , timestamp fisico real
+        "metadata": { //Optional[dict]
+          "delivery_date": 1756533600000, // int millis para saber la fecha u u hora de entrega, e.g. 1756533600000 -> 30-Agosto-2025
+          "appointment_delivery_date": 1756533600000, // Optional[int] puede ser null
+          "comment": "Optional[str]", // puede ser null
+        }, 
+        "event_note": null, // Optional[dict] TBD
+        "warnings": null, // Optional[dict] TBD
+        "author": {
+            "id": "str",   // obligatorio
+            "name": "str",       
+            "type": "Opcional[str]",         
+            "email": "Opcional[str]"  
+        },
+        "evidences": null, // Optional[List[dict]]
+        "version": "1.0.0"
+    },
+    "event":"ORDER_CREATED", // e.g. ORDER_CREATED
+    "origin_platform" : "OMS", // [TMS, WMS, ...]
+    "author": {
+        "id": "str",   // obligatorio
+        "name": "str",       
+        "type": "Opcional[str]", // puede ser null      
+        "email": "Opcional[str]"  // puede ser null
+    },
+    "origin_timestamp" : 1788885678,  // posiblemente en la mayoria de los casos el que viene en payload.event_timestamp
+    "context": null, // Optional[dict]
+    "version": "1"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<pubsub:publish-message doc:name="Publish Message" doc:id="e6b49e70-8689-4240-8648-0e7a57bfde3a" config-ref="Google_Pub_Sub_Configuration" projectId="${pubsub.project.id}" topicName="${pubsub.topic.order_create}">
+			<pubsub:message><![CDATA[#[payload]]]></pubsub:message>
+			<pubsub:attributes><![CDATA[#[output application/java
+---
+{
+	"company" : p('pubsub.company.order_create'),
+	"event" : p('pubsub.event.order_create'),
+	"project" : p('pubsub.project.order_create'),
+	"version" : p('pubsub.version.order_create')
+}]]]></pubsub:attributes>
+		</pubsub:publish-message>
+	</flow>
+	<flow name="pubsub-listeners-load-end" doc:id="60db72d0-1453-441c-8d4f-3a12f0a675e3" >
+		<pubsub:message-listener doc:name="On message listener" doc:id="13081ab7-d2f6-4b65-93b6-7ee9d5f22339" config-ref="Google_Pub_Sub_Configuration" projectId="${pubsub.project.id}" subscriptionName="${pubsub.subscription.load_end}"/>
+		<ee:transform doc:name="Transform Message" doc:id="7decf8a7-441a-4185-90e9-780ba7712b34" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="0a6cc076-6268-4101-a708-b0b3e18786fe" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "ApiKey": "F6-A9-A5-E4-6D-4",
+  "viaje": {
+    "IdViaje": payload.payload.order_status_change.load_id,
+    "Paradas": [
+      {
+        "RefDocumento": payload.payload.order_status_change.order_number,
+        "Items": payload.payload.order_status_change.order_details map ((item) -> 
+          {
+            "RefDocumento": item.product_number,
+            "RefDocumentoAdicional":  item.tracking_id,
+            "Descripcion": "",
+            "Cantidad": item.quantity,
+            "Volumen": item.volume default "5",
+            "Peso": item.weight default "5",
+            "Bulto": item.bulk  default "5",
+            "Pallets": item.parcel default "5",
+            "Temperatura": item.temperature default "", 
+            "UnidadMedida": payload.payload.order_status_change.institution_number default "",
+            "CampoDinamico": [
+              { "Campo": "TipoDeMaterial", "Valor": item.parcel default ""},///Pendiente
+              { "Campo": "TipoDeOrdenItem", "Valor": item.condition_type default "" }////Pendiente
+            ]
+          }
+        ),
+        "sumarizarTotalesDesdeItems": true
+      }
+    ]
+  },
+  "FechaCambioEstado": now() >> "America/Mexico_City"
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="call clients-system-tmsSub_Flow" doc:id="5f210702-8c00-484b-8b0e-a63e769add2e" name="clients-system-tmsSub_Flow" />
+	</flow>
+	<flow name="kafa-load-end-test" doc:id="fc68ffbb-fd12-48a5-a7cf-80c8b1b338b9" >
+		<scheduler doc:name="Scheduler" doc:id="88a6f46c-a3a5-4359-b4d9-4f0f053565f8" >
+			<scheduling-strategy >
+				<cron expression="0 0 0 ? * SUN *" />
+			</scheduling-strategy>
+		</scheduler>
+		<ee:transform doc:name="Transform Message" doc:id="857d57b5-b9c0-4876-b461-92957853d61b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "payload": {
+        "remission": {
+            "id": "str",
+            "tenant_id": "str",
+            "tracking_id": "str",
+            "order_number": "str",
+            "order_type": "REMISSION_PISA",
+            "delivery_date": 1787898797,
+            "delivery_destination_id": null // Optional[str]
+        },
+        "event": "ORDER_CREATED", //  [DISPATCH, ...]   
+        "event_timestamp": 1788885678,   // momento en el que ocurre (utc, no reginal) , timestamp fisico real
+        "metadata": { //Optional[dict]
+          "delivery_date": 1756533600000, // int millis para saber la fecha u u hora de entrega, e.g. 1756533600000 -> 30-Agosto-2025
+          "appointment_delivery_date": 1756533600000, // Optional[int] puede ser null
+          "comment": "Optional[str]", // puede ser null
+        }, 
+        "event_note": null, // Optional[dict] TBD
+        "warnings": null, // Optional[dict] TBD
+        "author": {
+            "id": "str",   // obligatorio
+            "name": "str",       
+            "type": "Opcional[str]",         
+            "email": "Opcional[str]"  
+        },
+        "evidences": null, // Optional[List[dict]]
+        "version": "1.0.0"
+    },
+    "event":"ORDER_CREATED", // e.g. ORDER_CREATED
+    "origin_platform" : "OMS", // [TMS, WMS, ...]
+    "author": {
+        "id": "str",   // obligatorio
+        "name": "str",       
+        "type": "Opcional[str]", // puede ser null      
+        "email": "Opcional[str]"  // puede ser null
+    },
+    "origin_timestamp" : 1788885678,  // posiblemente en la mayoria de los casos el que viene en payload.event_timestamp
+    "context": null, // Optional[dict]
+    "version": "1"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<pubsub:publish-message doc:name="Publish Message" doc:id="7345db94-42fe-4393-bce4-7b785cf8efd9" config-ref="Google_Pub_Sub_Configuration" projectId="${pubsub.project.id}" topicName="${pubsub.topic.load_end}" >
+			<pubsub:message ><![CDATA[#[{
+  "payload":
+    {
+    "order_status_change": {
+        "order_number": "",
+        "order_type": "",
+        "load_id": "Falta",
+        "customer_id": "",
+        "address_id": "",
+        "user": "",
+        "event_timestamp": "",
+        "institution_number": "",
+        "status": "picking/packing/loaded/dispatched/delivered",
+        "origin_warehouse": "",
+        "order_details": [
+            {
+                "product_number":"",
+                "volume": "Falta",
+                "weight": "Falta",
+                "bulk": "Falta",
+                "parcel": "Falta",
+                "lot_number": "",
+                "expiration_date": "",
+                "quantity": "",
+                "expected_quantity": "",
+                "material_type": "",
+                "condition_type": ""
+            }
+        ]
+    }
+}
+    ,
+  "origin_timestamp": 1758328111780,
+  "event": "INVENTORY_STATUS_UPDATE",
+  "publish_at": 1758328111794,
+  "project": "PISA",
+  "company": "WMS",
+  "version": "1"
+}]]]></pubsub:message>
+			<pubsub:attributes ><![CDATA[#[output application/java
+---
+{
+	"company" : p('pubsub.company.load_end'),
+	"event" : p('pubsub.event.load_end'),
+	"project" : p('pubsub.project.load_end'),
+	"version" : p('pubsub.version.load_end')
+}]]]></pubsub:attributes>
+		</pubsub:publish-message>
+	</flow>
+</mule>

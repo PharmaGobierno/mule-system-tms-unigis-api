@@ -190,8 +190,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.mulesoft.connectors</groupId>
-			<artifactId>mule-kafka-connector</artifactId>
-			<version>4.11.0</version>
+			<artifactId>mule4-google-pubsub-connector</artifactId>
+			<version>1.1.0</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="clients-system-tmsSub_Flow" doc:id="2d65817d-e192-4be5-b752-57285a86b0d1" >
+		<http:request method="POST" doc:name="Request" doc:id="da1b0e49-3008-4145-8e8e-e3216681bc22" config-ref="TMS-Unigis" path="${tms.connection.order.create.uri}">
+			<http:body ><![CDATA[#[{
+    "apiKey": "F6-A9-A5-E4-6D-4",
+    "pedidos": [{
+            "RefDocumento": "12345560RF2",
+            "RefDocumentoAdicional": "OC123456",
+            "Fecha": "2025-09-13T17:49:58",
+            "FechaEntrega": "2025-09-14T17:49:58",
+            "FechaEntregaOriginal": "2025-09-14T17:49:58",
+            "Cliente": {
+                "RefCliente": "52402345",
+                "RazonSocial": "ISSSTE",
+                "Direccion": "BOULEVARD AZTECA S/N ",
+                "Calle": "BOULEVARD AZTECA S/N ",
+                "Barrio": "PEMEX",
+                "Partido": "AGUA DULCE",
+                "Provincia": "CMX",
+                "Pais": "MEX",
+                "RefDomicilioExterno": "10001",
+                "DomicilioDescripcion": "ISSSTE CENTRO",
+                "DomicilioCodigoPostal": 96690,
+                "DomicilioFiscal": {
+                    "Direccion": "BOULEVARD AZTECA S/N ",
+                    "Calle": "BOULEVARD AZTECA S/N ",
+                    "Barrio": "PEMEX",
+                    "Localidad": "AGUA DULCE",
+                    "Partido": "AGUA DULCE",
+                    "Provincia": "CMX",
+                    "Pais": "MEX"
+                },
+                "IgnorarOperacion": false,
+                "IgnorarOperacionDomicilioOrden": false,
+                "CrearDomicilioOrden": true,
+                "ActualizarDomicilioOrden": true,
+                "ValidarDomicilioOrden": true
+            },
+            "ClienteDador": {
+                "RefCliente": 104167,
+                "RazonSocial": "PISA"
+            },
+            "Descripcion": "10001-ISSSTE CENTRO",
+            "CodigoOperacion": "PISA",
+            "CodigoSucursal": "PISAMB00",
+            "TipoPedido": "Privado",
+            "InicioHorario1": 0,
+            "FinHorario1": 2300,
+            "InicioHorario2": 0,
+            "FinHorario2": 2300,
+            "TiempoEspera": 30,
+            "Distancia": 0,
+            "Tipo": "P",
+            "Volumen": "7.25",
+            "Peso": "3.3",
+            "Bultos": "7.25",
+            "Pallets": "3.3",
+            "CampoDinamico": [{
+                    "Campo": "TipoDeOrden",
+                    "Valor": "Seco"
+                }
+            ],
+            "depositoSalida": {
+                "RefDepositoExterno": "PISA Huehuetoca"
+            },
+            "depositoLlegada": {
+                "RefDepositoExterno": "PISA Huehuetoca"
+            },
+            "requiereTurno": false,
+            "ultimaVisita": false,
+            "Items": [{
+                    "RefDocumento": "000020,,",
+                    "Cantidad": 1000,
+                    "Volumen": "3.625E0",
+                    "Peso": "1.65E2",
+                    "Bulto": "3.625E0",
+                    "Pallets": "1.65E2",
+                    "ImporteCosto": 263900,
+                    "FechaEntrega": "2025-01-14T17:49:58",
+                    "Descripcion": "P51107-TIGECICLINA CJA 1 FA LIOF 50 MG.",
+                    "UnidadMedida": "Qty Un",
+                    "CampoDinamico": [{
+                            "Campo": "TipoDeMaterial",
+                            "Valor": "Medicamento de curacion"
+                        }, {
+                            "Campo": "TipoDeOrdenItem",
+                            "Valor": "Seco"
+                        }
+                    ]
+                }, {
+                    "RefDocumento": "000020,,",
+                    "Cantidad": 1000,
+                    "Volumen": "3.625E0",
+                    "Peso": "1.65E2",
+                    "ImporteCosto": 263900,
+                    "Descripcion": "P51107-TIGECICLINA CJA 1 FA LIOF 50 MG.",
+                    "UnidadMedida": "UN",
+                    "CampoDinamico": [{
+                            "Campo": "TipoDeMaterial",
+                            "Valor": "Medicamento de curacion"
+                        }, {
+                            "Campo": "TipoDeOrdenItem",
+                            "Valor": "Seco"
+                        }
+                    ]
+                }
+            ],
+            "usarProductos": true,
+            "ValidarTransicion": false,
+            "soloInsertarProductos": true,
+            "agruparItems": false,
+            "altaProductos": true,
+            "obligarProductoItems": false
+        }
+    ]
+}]]]></http:body>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="220b97a6-0243-4313-b24e-bd97f85e5e68" message="call to TMS"/>
+	</sub-flow>
+</mule>
