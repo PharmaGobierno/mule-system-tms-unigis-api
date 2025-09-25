@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<sub-flow name="clients-system-tmsSub_Flow" doc:id="2d65817d-e192-4be5-b752-57285a86b0d1" >
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="clients-system-tms-create-order" doc:id="2d65817d-e192-4be5-b752-57285a86b0d1" >
 		<http:request method="POST" doc:name="Request" doc:id="da1b0e49-3008-4145-8e8e-e3216681bc22" config-ref="TMS-Unigis" path="${tms.connection.order.create.uri}">
-			<http:body ><![CDATA[#[{
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="87d234b9-fe22-4770-9b5e-bf85fa4ed39e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import modules::code_errors_unigis as code_errors
+output application/json
+---
+{
+	"message":code_errors::error(payload.d)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="d924c3e1-16a8-48d1-9c0d-e3625e01732b" message="#[payload]"/>
+	</sub-flow>
+	<sub-flow name="client-system-tms-dispatch" doc:id="1121ef17-e768-4470-b0f3-271430ad6414" >
+		<http:request method="POST" doc:name="Request" doc:id="20d3c784-2bf9-42f5-a6fe-72f6e455e50b" config-ref="TMS-Unigis" path="${tms.connection.dispatch.uri}" >
+			<http:body ><![CDATA[#[dw
+application/json
+----------
+{
     "apiKey": "F6-A9-A5-E4-6D-4",
     "pedidos": [{
             "RefDocumento": "12345560RF2",
@@ -120,6 +140,17 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
     ]
 }]]]></http:body>
 		</http:request>
-		<logger level="INFO" doc:name="Logger" doc:id="220b97a6-0243-4313-b24e-bd97f85e5e68" message="call to TMS"/>
+		<ee:transform doc:name="Transform Message" doc:id="2b5e6655-77ff-4065-b474-749996233193" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import modules::code_errors_unigis as code_errors
+output application/json
+---
+{
+	"message":code_errors::error(payload.d)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="141a7c1d-2e2a-467b-a9b3-ab8b8400c193" message="#[payload]" />
 	</sub-flow>
 </mule>
