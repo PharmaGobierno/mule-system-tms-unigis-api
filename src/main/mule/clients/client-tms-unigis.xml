@@ -7,8 +7,12 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="clients-system-tms-create-order" doc:id="2d65817d-e192-4be5-b752-57285a86b0d1" >
 		<http:request method="POST" doc:name="Request" doc:id="da1b0e49-3008-4145-8e8e-e3216681bc22" config-ref="TMS-Unigis" path="${tms.connection.order.create.uri}">
+			<http:body ><![CDATA[#[%dw 2.0
+output application/json
+---
+payload]]]></http:body>
 		</http:request>
-		<ee:transform doc:name="Transform Message" doc:id="87d234b9-fe22-4770-9b5e-bf85fa4ed39e" >
+		<ee:transform doc:name="map response message" doc:id="e6bd5f52-f298-4d44-8d48-e3fc9a1d660f" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 import modules::code_errors_unigis as code_errors
@@ -19,128 +23,15 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="d924c3e1-16a8-48d1-9c0d-e3625e01732b" message="#[payload]"/>
 	</sub-flow>
 	<sub-flow name="client-system-tms-dispatch" doc:id="1121ef17-e768-4470-b0f3-271430ad6414" >
 		<http:request method="POST" doc:name="Request" doc:id="20d3c784-2bf9-42f5-a6fe-72f6e455e50b" config-ref="TMS-Unigis" path="${tms.connection.dispatch.uri}" >
-			<http:body ><![CDATA[#[dw
-application/json
-----------
-{
-    "apiKey": "F6-A9-A5-E4-6D-4",
-    "pedidos": [{
-            "RefDocumento": "12345560RF2",
-            "RefDocumentoAdicional": "OC123456",
-            "Fecha": "2025-09-13T17:49:58",
-            "FechaEntrega": "2025-09-14T17:49:58",
-            "FechaEntregaOriginal": "2025-09-14T17:49:58",
-            "Cliente": {
-                "RefCliente": "52402345",
-                "RazonSocial": "ISSSTE",
-                "Direccion": "BOULEVARD AZTECA S/N ",
-                "Calle": "BOULEVARD AZTECA S/N ",
-                "Barrio": "PEMEX",
-                "Partido": "AGUA DULCE",
-                "Provincia": "CMX",
-                "Pais": "MEX",
-                "RefDomicilioExterno": "10001",
-                "DomicilioDescripcion": "ISSSTE CENTRO",
-                "DomicilioCodigoPostal": 96690,
-                "DomicilioFiscal": {
-                    "Direccion": "BOULEVARD AZTECA S/N ",
-                    "Calle": "BOULEVARD AZTECA S/N ",
-                    "Barrio": "PEMEX",
-                    "Localidad": "AGUA DULCE",
-                    "Partido": "AGUA DULCE",
-                    "Provincia": "CMX",
-                    "Pais": "MEX"
-                },
-                "IgnorarOperacion": false,
-                "IgnorarOperacionDomicilioOrden": false,
-                "CrearDomicilioOrden": true,
-                "ActualizarDomicilioOrden": true,
-                "ValidarDomicilioOrden": true
-            },
-            "ClienteDador": {
-                "RefCliente": 104167,
-                "RazonSocial": "PISA"
-            },
-            "Descripcion": "10001-ISSSTE CENTRO",
-            "CodigoOperacion": "PISA",
-            "CodigoSucursal": "PISAMB00",
-            "TipoPedido": "Privado",
-            "InicioHorario1": 0,
-            "FinHorario1": 2300,
-            "InicioHorario2": 0,
-            "FinHorario2": 2300,
-            "TiempoEspera": 30,
-            "Distancia": 0,
-            "Tipo": "P",
-            "Volumen": "7.25",
-            "Peso": "3.3",
-            "Bultos": "7.25",
-            "Pallets": "3.3",
-            "CampoDinamico": [{
-                    "Campo": "TipoDeOrden",
-                    "Valor": "Seco"
-                }
-            ],
-            "depositoSalida": {
-                "RefDepositoExterno": "PISA Huehuetoca"
-            },
-            "depositoLlegada": {
-                "RefDepositoExterno": "PISA Huehuetoca"
-            },
-            "requiereTurno": false,
-            "ultimaVisita": false,
-            "Items": [{
-                    "RefDocumento": "000020,,",
-                    "Cantidad": 1000,
-                    "Volumen": "3.625E0",
-                    "Peso": "1.65E2",
-                    "Bulto": "3.625E0",
-                    "Pallets": "1.65E2",
-                    "ImporteCosto": 263900,
-                    "FechaEntrega": "2025-01-14T17:49:58",
-                    "Descripcion": "P51107-TIGECICLINA CJA 1 FA LIOF 50 MG.",
-                    "UnidadMedida": "Qty Un",
-                    "CampoDinamico": [{
-                            "Campo": "TipoDeMaterial",
-                            "Valor": "Medicamento de curacion"
-                        }, {
-                            "Campo": "TipoDeOrdenItem",
-                            "Valor": "Seco"
-                        }
-                    ]
-                }, {
-                    "RefDocumento": "000020,,",
-                    "Cantidad": 1000,
-                    "Volumen": "3.625E0",
-                    "Peso": "1.65E2",
-                    "ImporteCosto": 263900,
-                    "Descripcion": "P51107-TIGECICLINA CJA 1 FA LIOF 50 MG.",
-                    "UnidadMedida": "UN",
-                    "CampoDinamico": [{
-                            "Campo": "TipoDeMaterial",
-                            "Valor": "Medicamento de curacion"
-                        }, {
-                            "Campo": "TipoDeOrdenItem",
-                            "Valor": "Seco"
-                        }
-                    ]
-                }
-            ],
-            "usarProductos": true,
-            "ValidarTransicion": false,
-            "soloInsertarProductos": true,
-            "agruparItems": false,
-            "altaProductos": true,
-            "obligarProductoItems": false
-        }
-    ]
-}]]]></http:body>
+			<http:body ><![CDATA[#[%dw 2.0
+output application/json
+---
+payload]]]></http:body>
 		</http:request>
-		<ee:transform doc:name="Transform Message" doc:id="2b5e6655-77ff-4065-b474-749996233193" >
+		<ee:transform doc:name="map response message" doc:id="f1c1e967-dcd7-4646-8ebf-a8fdbeadbb51" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 import modules::code_errors_unigis as code_errors
@@ -151,6 +42,24 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="141a7c1d-2e2a-467b-a9b3-ab8b8400c193" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="client-system-tms-update" doc:id="217d9505-13f7-4a2b-aa4a-8a7adb8ec52e" >
+		<http:request method="POST" doc:name="Request" doc:id="b9b4e8e5-9860-4924-a012-06ffbf755df1" config-ref="TMS-Unigis" path="${tms.connection.update.uri}" >
+			<http:body ><![CDATA[#[%dw 2.0
+output application/json
+---
+payload]]]></http:body>
+		</http:request>
+		<ee:transform doc:name="map response message" doc:id="80d9c3b7-e7cf-4c07-b98f-6be8154c1cef" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import modules::code_errors_unigis as code_errors
+output application/json
+---
+{
+	"message":code_errors::error(payload.d)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 	</sub-flow>
 </mule>

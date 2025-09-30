@@ -1,4 +1,9 @@
 fun error (error_code: String) = error_code match{
+        case "1" -> {
+			"CODIGO": "1",
+        	"ORIGEN ENTIDAD": "CARGA_EXITOSA",
+        	"DESCRIPCIÓN": "Documento creado correctamente en Unigis."
+		}
         case "-1" -> {
             "CODIGO": "-1",
             "ORIGEN ENTIDAD": "ERROR_OPERACION",

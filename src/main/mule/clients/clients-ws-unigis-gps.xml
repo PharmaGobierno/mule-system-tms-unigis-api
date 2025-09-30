@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<sub-flow name="clients-ws-unigis-gps-update" doc:id="890c5f24-b2ac-423d-83ba-ed80ce4aaa91" >
+		<wsc:consume doc:name="Consume" doc:id="9d72a1a2-b633-499c-b2ae-df50f0573f24" config-ref="TMS-UNIGIS-GPS-Web_Service_Consumer_Config" operation="LoginYInsertarEvento"/>
+	</sub-flow>
+</mule>

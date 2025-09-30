@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="orchestrator-tms-unigis-order-creation" doc:id="0b84a2a9-ff79-44fd-846f-fc39ba2cd02a" >
+		<ee:transform doc:name="Transform Message" doc:id="bc19c049-b380-41fc-9d97-390849818c08" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "apiKey": "F6-A9-A5-E4-6D-4",
+    "pedidos": [{
+            "RefDocumento": payload.payload."_id",
+            "RefDocumentoAdicional": payload.payload."_id",
+            "Fecha": (payload.payload.event_timestamp as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"},
+            "FechaEntrega": (payload.payload.remission.delivery_date as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"},
+            "FechaEntregaOriginal": (payload.payload.remission.delivery_date as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"},
+            "Cliente": {
+                "RefCliente": "52402345",
+                "RazonSocial": "ISSSTE",
+                "Direccion": "BOULEVARD AZTECA S/N ",
+                "Calle": "BOULEVARD AZTECA S/N ",
+                "Barrio": "PEMEX",
+                "Partido": "AGUA DULCE",
+                "Provincia": "CMX",
+                "Pais": "MEX",
+                "RefDomicilioExterno": "10001",
+                "DomicilioDescripcion": "ISSSTE CENTRO",
+                "DomicilioCodigoPostal": 96690,
+                "DomicilioFiscal": {
+                    "Direccion": "BOULEVARD AZTECA S/N ",
+                    "Calle": "BOULEVARD AZTECA S/N ",
+                    "Barrio": "PEMEX",
+                    "Localidad": "AGUA DULCE",
+                    "Partido": "AGUA DULCE",
+                    "Provincia": "CMX",
+                    "Pais": "MEX"
+                },
+                "IgnorarOperacion": false,
+                "IgnorarOperacionDomicilioOrden": false,
+                "CrearDomicilioOrden": true,
+                "ActualizarDomicilioOrden": true,
+                "ValidarDomicilioOrden": true
+            },
+            "ClienteDador": {
+                "RefCliente": 104167,
+                "RazonSocial": "PISA"
+            },
+            "Descripcion": "10001-ISSSTE CENTRO",
+            "CodigoOperacion": "PISA",
+            "CodigoSucursal": "PISAMB00",
+            "TipoPedido": "Privado",
+            "InicioHorario1": 0,
+            "FinHorario1": 2300,
+            "InicioHorario2": 0,
+            "FinHorario2": 2300,
+            "TiempoEspera": 30,
+            "Distancia": 0,
+            "Tipo": "P",
+            "Volumen": "7.25",
+            "Peso": "3.3",
+            "Bultos": "7.25",
+            "Pallets": "3.3",
+            "CampoDinamico": [{
+                    "Campo": "TipoDeOrden",
+                    "Valor": "Seco"
+                }
+            ],
+            "depositoSalida": {
+                "RefDepositoExterno": "PISA Huehuetoca"
+            },
+            "depositoLlegada": {
+                "RefDepositoExterno": "PISA Huehuetoca"
+            },
+            "requiereTurno": false,
+            "ultimaVisita": false,
+            "Items": [{
+                    "RefDocumento": "000020,,",
+                    "Cantidad": 1000,
+                    "Volumen": "3.625E0",
+                    "Peso": "1.65E2",
+                    "Bulto": "3.625E0",
+                    "Pallets": "1.65E2",
+                    "ImporteCosto": 263900,
+                    "FechaEntrega": "2025-01-14T17:49:58",
+                    "Descripcion": "P51107-TIGECICLINA CJA 1 FA LIOF 50 MG.",
+                    "UnidadMedida": "Qty Un",
+                    "CampoDinamico": [{
+                            "Campo": "TipoDeMaterial",
+                            "Valor": "Medicamento de curacion"
+                        }, {
+                            "Campo": "TipoDeOrdenItem",
+                            "Valor": "Seco"
+                        }
+                    ]
+                }, {
+                    "RefDocumento": "000020,,",
+                    "Cantidad": 1000,
+                    "Volumen": "3.625E0",
+                    "Peso": "1.65E2",
+                    "ImporteCosto": 263900,
+                    "Descripcion": "P51107-TIGECICLINA CJA 1 FA LIOF 50 MG.",
+                    "UnidadMedida": "UN",
+                    "CampoDinamico": [{
+                            "Campo": "TipoDeMaterial",
+                            "Valor": "Medicamento de curacion"
+                        }, {
+                            "Campo": "TipoDeOrdenItem",
+                            "Valor": "Seco"
+                        }
+                    ]
+                }
+            ],
+            "usarProductos": true,
+            "ValidarTransicion": false,
+            "soloInsertarProductos": true,
+            "agruparItems": false,
+            "altaProductos": true,
+            "obligarProductoItems": false
+        }
+    ]
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<try doc:name="Try" doc:id="0cb2c5b2-29e7-4394-8d95-c90353fcea91" >
+			<flow-ref doc:name="call clients-system-tms-create-order" doc:id="fad1379f-9839-44a7-bc50-f226b52ce32a" name="clients-system-tms-create-order" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="8c6cf9c3-2b4c-4a5e-857e-bea65673a71b" >
+					<logger level="INFO" doc:name="Logger" doc:id="b73be2cd-39af-40b4-8b24-2abb62d9bc31" message="Error" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<logger level="INFO" doc:name="Logger" doc:id="2c640e25-a243-4929-9af1-e39a8c70610e" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="orchestrator-tms-unigis-dispatch" doc:id="518f85f5-83e8-480b-8a58-62bcdb3f0eb4" >
+		<ee:transform doc:name="convert to JSON" doc:id="356eb4fb-a8d7-411e-bfba-386b4e39935b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+read(payload as String, "application/json")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="ac11394e-f12f-4261-b783-dcaba3dcbd98" variableName="payloadBckp"/>
+		<ee:transform doc:name="Transform Message" doc:id="8857c952-dd43-47a9-ab9f-be75fd5fef88" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "ApiKey": "F6-A9-A5-E4-6D-4",
+  "viaje": {
+    "IdViaje": payload.payload.order_status_change.load_id,
+    "Paradas": [
+      {
+        "RefDocumento": payload.payload.order_status_change.order_number,
+        "Items": payload.payload.order_status_change.order_details map ((item) -> 
+          {
+            "RefDocumento": item.product_number,
+            "RefDocumentoAdicional":  item.tracking_id,
+            "Descripcion": "",
+            "Cantidad": item.quantity,
+            "Volumen": item.volume default "5",
+            "Peso": item.weight default "5",
+            "Bulto": item.bulk  default "5",
+            "Pallets": item.parcel default "5",
+            "Temperatura": item.temperature default "", 
+            "UnidadMedida": payload.payload.order_status_change.institution_number default "",
+            "CampoDinamico": [
+              { "Campo": "TipoDeMaterial", "Valor": item.parcel default ""},///Pendiente
+              { "Campo": "TipoDeOrdenItem", "Valor": item.condition_type default "" }////Pendiente
+            ]
+          }
+        ),
+        "sumarizarTotalesDesdeItems": true
+      }
+    ]
+  },
+  "FechaCambioEstado": now() >> "America/Mexico_City"
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<try doc:name="Try" doc:id="1be94efd-013e-470a-9326-87f578b084ea" >
+			<flow-ref doc:name="call client-system-tms-dispatch" doc:id="a80b69d7-fca0-41f5-86a9-e8c5c4de0c35" name="client-system-tms-dispatch" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b77d9a5e-22ed-4d48-aa27-46d93bce2594" >
+					<logger level="INFO" doc:name="Logger" doc:id="b51e92e5-d19b-4482-9543-c039b423df15" message="Error" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<choice doc:name="Choice" doc:id="797a6703-11ad-4b39-b639-4f755b4aa82d" >
+			<when expression='"1" == payload.d'>
+				<set-payload value="#[payloadBckp]" doc:name="Set Payload" doc:id="c45470bb-d247-4ec2-ac16-619db8b3a0c8" />
+				<ee:transform doc:name="Transform Message" doc:id="3f59ee8b-fae7-40b9-830d-3562dcac9ff7" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "ApiKey": "F6-A9-A5-E4-6D-4", 
+    "viaje": { 
+        "IdViaje": payload.payload.order_status_change.load_id, 
+        "Estado": "Fin Carga", 
+        "Observaciones": "TEST 1" 
+    },
+    "cambioMismoEstado": "false", 
+    "validarTransicion": "true",
+    "FechaCambioEstado": now() as String {format: "yyyy-MM-dd'T'HH:mm:ss"}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<logger level="INFO" doc:name="Logger" doc:id="2695b11f-20ba-4adf-8448-5937149c4558" message="#[payload]" />
+			</otherwise>
+		</choice>
+		<flow-ref doc:name="call client-system-tms-update" doc:id="da824752-73d6-437c-a111-8e30b8ea8fff" name="client-system-tms-update"/>
+		<logger level="INFO" doc:name="Logger" doc:id="aaa66c20-4c33-4155-bc33-cde3eb561d7f" message="#[payload]" />
+	</sub-flow>
+</mule>

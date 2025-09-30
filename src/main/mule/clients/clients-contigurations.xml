@@ -48,6 +48,14 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 			<pubsub:private-key ><![CDATA[${pubsub.private.key}]]></pubsub:private-key>
 		</pubsub:connection>
 	</pubsub:config>
+	<wsc:config name="TMS-UNIGIS-GPS-Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="91bf487d-9e57-4488-b5ee-84318dd8371b" >
+		<wsc:connection wsdlLocation="${consume.gps.wsdl.location}" service="Service" port="ServiceSoap" address="${consume.gps.address}" >
+			<wsc:custom-transport-configuration >
+				<wsc:default-http-transport-configuration timeout="500000" />
+			</wsc:custom-transport-configuration>
+			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+		</wsc:connection>
+	</wsc:config>
 	<http:request-config name="TMS-Unigis" doc:name="HTTP Request configuration" doc:id="aeec152a-3932-403f-8a9a-25df8f90128d">
 		<http:request-connection protocol="HTTPS" host="${tms.connection.base.uri}" port="${tms.connection.base.port}" tlsContext="TLS_Context_Unigis">
 		</http:request-connection>
