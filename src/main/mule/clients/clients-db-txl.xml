@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="clients-db-txl-insert-dispatch" doc:id="8b8ecdab-fedc-4f3c-9eb7-4da026ffbca3" >
+		<db:insert doc:name="Insert" doc:id="3bb0e8e2-ad4e-4922-bd00-3ec8e8eb9aa5" config-ref="Database_Config" >
+			<db:sql ><![CDATA[insert into oms_status_update_sequence (idViaje,RefDocumento,sequence,status,lastUpdate)
+values (:idViaje, :RefDocumento, :sequence, :status, :lastUpdate)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	idViaje: vars.idViaje,
+	RefDocumento: vars.RefDocumento,
+	sequence: 1,
+	status: "despacho",
+	lastupdate: now()
+}]]]></db:input-parameters>
+		</db:insert>
+	</sub-flow>
+	<sub-flow name="clients-db-txl-select-oms-update" doc:id="bb67302f-82fc-4728-a04e-7fa512e6d389" >
+		<db:select doc:name="Select" doc:id="8b1df91f-e060-49ef-8b43-7fd6c4fbc843" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from oms_status_update_sequence where status <> 'finalizado']]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="349d43d8-a6e1-4af1-a21d-f41c8820f6b2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="clients-db-txl-record-update" doc:id="6675359d-6fca-4f0f-90e9-d54d0d7ad5b9" >
+		<db:update doc:name="Update" doc:id="770d6376-2ca1-409b-aec6-3bfc5b969316" config-ref="Database_Config">
+			<db:sql ><![CDATA[UPDATE oms_status_update_sequence 
+SET secuencia = :secuencia,
+	status = :status,
+	fecha = :fecha,
+	latitud = :latitud,
+	longitud = :longitud
+WHERE idViaje = :idViaje AND
+	refDocumento = :refDocumento]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	idViaje: payload.idViaje,
+	refDocumento: payload.refDocumento,
+	secuencia: payload.secuencia,
+	status: payload.status,
+	fecha: payload.fecha,
+	latitud: payload.latitud,
+	longitud: payload.longitud
+}]]]></db:input-parameters>
+		</db:update>
+	</sub-flow>
+</mule>

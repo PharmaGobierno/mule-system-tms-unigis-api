@@ -62,4 +62,15 @@ output application/json
 			</ee:message>
 		</ee:transform>
 	</sub-flow>
+	<sub-flow name="client-system-oms-query-stop" doc:id="102486c5-3c51-4424-8763-1b6562337bf1" >
+		<http:request method="GET" doc:name="Request" doc:id="72d397c6-eeb1-49b1-8903-c6855fc25566" config-ref="TMS-Unigis" path="${tms.connection.query.stop}" >
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"IdViaje" : payload.idViaje,
+	"ApiKey" : "F6-A9-A5-E4-6D-4",
+	"RefDocumento" : payload.RefDocumento
+}]]]></http:query-params>
+		</http:request>
+	</sub-flow>
 </mule>

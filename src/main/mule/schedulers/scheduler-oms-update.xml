@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="scheduler-oms-updateFlow" doc:id="83be609b-8679-4c11-9a2c-1ad0ea28f3ec" >
+		<scheduler doc:name="Scheduler" doc:id="392e6265-060e-4b7a-b948-9848ffa0638f" >
+			<scheduling-strategy >
+				<cron expression="0 0 0 ? * SUN *" />
+			</scheduling-strategy>
+		</scheduler>
+		<flow-ref doc:name="call clients-db-txl-select-oms-update" doc:id="cc2a4bdd-8a8b-48ed-8a67-1435429ebc20" name="clients-db-txl-select-oms-update"/>
+		<foreach doc:name="For Each" doc:id="361252a4-ef62-4c0e-9115-c088a7650fba" collection="#[payload]">
+			<set-variable value="#[payload]" doc:name="Set Variable" doc:id="571df52d-127f-4b58-a609-e20f16e23bd5" variableName="data"/>
+			<flow-ref doc:name="call client-system-oms-query-stop" doc:id="ec038d96-3ff5-4f16-bd14-2bd388305a7f" name="client-system-oms-query-stop"/>
+			<choice doc:name="Choice" doc:id="0cb0003c-470a-46e2-99cf-898694330f72" >
+				<when expression="vars.data.lastUpdate != payload.FinHorarioPlanificado">
+					<flow-ref doc:name="call client-pubsub-connection-stop-update" doc:id="53722b99-3b10-490d-b1f3-93837bc7aa7f" name="client-pubsub-connection-stop-update"/>
+					<ee:transform doc:name="Transform Message" doc:id="5f8794dc-6a4f-416e-95f7-394d3eaf1f37">
+						<ee:message>
+							<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	idViaje: vars.data.IdViaje,
+	refDocumento: vars.data.RefDocumento,
+	secuencia: vars.data.Secuencia,
+	status: vars.data.EstadoParada,
+	fecha: vars.data.FinHorarioPlanificado,
+	latitud: vars.data.Latitud_opcional,
+	longitud: vars.data.Longitud_opcional
+}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+					<flow-ref doc:name="call clients-db-txl-record-update" doc:id="fcee9f58-f491-406e-9f40-59acf259c414" name="clients-db-txl-record-update" />
+				</when>
+				<when expression="#[payload.ViajeFinalizado == true]">
+					<ee:transform doc:name="Transform Message" doc:id="2c7b4da6-d45e-4f6e-88f4-dbd97ab4f30b">
+						<ee:message>
+							<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	idViaje: payload.IdViaje,
+	refDocumento: payload.RefDocumento,
+	secuencia: payload.Secuencia,
+	status: "finalizado",
+	fecha: payload.FinHorarioPlanificado,
+	latitud: payload.Latitud_opcional,
+	longitud: payload.Longitud_opcional
+}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+					<flow-ref doc:name="call clients-db-txl-record-update" doc:id="ec6f4096-778c-4575-94cc-4dd3e41e2aa0" name="clients-db-txl-record-update"/>
+				</when>
+			</choice>
+			<logger level="INFO" doc:name="Logger" doc:id="230bb1f8-ed68-4d18-b84a-5c012707a500" />
+		</foreach>
+	</flow>
+</mule>

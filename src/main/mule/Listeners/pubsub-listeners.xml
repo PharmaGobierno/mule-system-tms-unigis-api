@@ -23,97 +23,100 @@ output application/json
 ---
 {
     "payload": {
-        "tenant_id": "PISA#PISA",
-        "_id": "c817ef3a-c7cb-533b-9170-022148bfae41",
-        "created_at": 1758318333162,
-        "version": "1.0.0",
-        "event_timestamp": 1758318332249,
-        "event": "ORDER_CREATED",
-        "updated_at": 1758318333162,
-        "remission": {
-            "id": "c43b3728-3535-5ddd-8049-ea320a67c760",
-            "tenant_id": "PISA#PISA",
-            "tracking_id": "5i_6R-Q1WCugrh235ctz1g",
-            "order_number": "6543465948",
-            "order_type": "REMISSION_PISA",
-            "delivery_date": 1758312894000,
-            "delivery_destination_id": null
-        },
-        "author": {
-            "id": "pharma-pisa",
-            "name": "Pisa",
-            "type": null,
-            "email": null
-        },
-        "evidences": null,
-        "metadata": {
-            "items": [{
-                    "id": "ITEMB",
-                    "sku": "ITEMB",
-                    "origin_warehouse": "IM01",
-                    "quantity": 45,
-                    "description": null
-                }, {
-                    "id": "ITEMB",
-                    "sku": "ITEMB",
-                    "origin_warehouse": "IM01",
-                    "quantity": 66,
-                    "description": null
-                }
-            ],
-            "rejected_reasons": []
-        },
-        "event_note": null,
-        "warnings": null,
-        "origin_platform": null
-    },
-    "origin_timestamp": 1758318332249,
-    "author": {
-        "id": "pharma-pisa",
-        "name": "Pisa",
-        "type": null,
-        "email": null
-    },
-    "version": "1",
-    "tenant": "PISA#PISA",
-    "published_at": 1758318333208,
-    "context": {
-        "remission": {
-            "tenant_id": "PISA#PISA",
-            "_id": "c43b3728-3535-5ddd-8049-ea320a67c760",
-            "created_at": 1758318328965,
+            "_id": "1111-2222-3333-4444-addadadad",
+            "created_at": 1753461524778,
+            "tenant_id": "PISA",
+            "remission": {
+                "id": "487987",
+                "tenant_id": "PISA",
+                "tracking_id": "Araui657d",
+                "order_number": "", 
+                "order_type": "REMISSION_PISA",
+                "delivery_date": 1787898797,
+                "delivery_destination_id": "787d8adaa"
+            },
             "version": "1.0.0",
-            "updated_at": 1758318328965,
-            "tracking_id": "5i_6R-Q1WCugrh235ctz1g",
-            "order_number": "6543465948",
-            "foreign_id": null,
-            "order_type": "REMISSION_PISA",
-            "items": ["ITEMB", "ITEMB"],
-            "delivery_destination": {
-                "id": "A000000029",
-                "customer": "999",
-                "version": "1.0.0"
-            },
-            "delivery_date": 1758312894000,
+            "updated_at": 1753461524778,
+            "event_timestamp": 1753463962000,
+            "event": "ORDER_CREATED", 
             "author": {
-                "id": "pharma-pisa",
-                "name": "Pisa",
-                "type": null,
-                "email": null
+                "id": "pisa-131",
+                "name": "alguien",
+                "type": null, 
+                "email": "ariel@mail.com" 
             },
-            "delivery_id": null,
-            "appointment_delivery_date": null,
-            "current_event": null,
-            "current_event_timestamp": null,
-            "institution_number": "58749325"
-        }
+            "evidences": null,
+            "metadata": {
+               "appointment_delivery_date": null, 
+               "items": [
+                    {
+                        "id": "123",
+                        "sku": "A1-XXXX",
+                        "description": "item-a1",
+                        "quantity": 100,
+                        "origin_warehouse": ""
+                    },
+                    {
+                        "id": "456",
+                        "sku": "B2-XXX",
+                        "description": "item-b2",
+                        "quantity": 100,
+                        "origin_warehouse": ""
+                    }
+                ]
+            },
+            "event_note": null, 
+            "origin_platform": "PISA", 
+            "version": "1.0.0"
     },
     "event": "ORDER_CREATED",
-    "action_type": "CREATED",
-    "order_type": "REMISSION_PISA",
-    "origin_platform": "OMS"
-}
-]]></ee:set-payload>
+    "context":{
+        "remission":{
+              "_id": "f7a87752-7f2f-5d45-8c2b-d09d85446a76",
+              "appointment_delivery_date": 1756533600000, 
+              "author": {
+                "id": "str",
+                "name": "str",
+                "type": null,
+                "email": null
+              },
+              "created_at": 1756930751200,
+              "current_event": null,
+              "current_event_timestamp": null,
+              "delivery_date": 1756533600000, 
+              "delivery_destination": { 
+                "id": "xxxx",
+                "customer_id": "aaaaaao",
+                "version": "1.0.0"
+              },
+              "delivery_id": null, 
+              "foreign_id": null, 
+              "institution_number": "",  
+              "items": [
+                "A1-XXXX",
+                "B2-XXX"
+              ],
+              "metadata": { 
+                "issuance_date": 1757524635221, 
+                "bid_number": "AA-12-NEF", 
+                "contract_number": "4234545",
+                "society":"", 
+                "destination_center":""
+              },
+              "order_number": "999653354",
+              "order_type": "REMISSION_PISA",
+              "tenant_id": "PISA",
+              "tracking_id": "6124dc1cada",
+              "updated_at": 1756930751200,
+              "version": "1.0.0"
+        }
+    },
+    "origin_timestamp" : 178888564,
+    "publish_at":178888564,
+    "project": "PISA", 
+    "company": "PHARMA-PISA", 
+    "version": "1" 
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<pubsub:publish-message doc:name="Publish Message" doc:id="e6b49e70-8689-4240-8648-0e7a57bfde3a" config-ref="Google_Pub_Sub_Configuration" projectId="${pubsub.project.id}" topicName="${pubsub.topic.order_create}">
@@ -214,25 +217,53 @@ ns unis http://unisolutions.com.ar/
 output application/xml
 ---
 {
-    soapenv#body:{
-        unis#LoginYInsertarEvento:{
-            unis#SystemUser:"user",
-            unis#Password:"pass",
-            unis#Dominio:payload.plate,
-            unis#NroSerie: -1,
-            unis#Codigo:"",
-            unis#Latitud:payload.latitude,
-            unis#Longitud:payload.longitude,
-            unis#Altitud: 0,
-            unis#velocidad: 20,
-            unis#FechaHoraEvento: payload.event_date,
-            unis#FechaHoraRecepcion: payload.receipt_date
-        }
+	soapenv#Envelope:{
+		soapenv#Header:{},
+	    soapenv#Body:{
+	        unis#LoginYInsertarEvento:{
+	            unis#SystemUser:p('consume.GPS.user'),
+	            unis#Password:p('consume.GPS.password'),
+	            unis#Dominio:payload.plate,
+	            unis#NroSerie: -1,
+	            unis#Codigo:"",
+	            unis#Latitud:payload.latitude,
+	            unis#Longitud:payload.longitude,
+	            unis#Altitud: 0,
+	            unis#Velocidad: 20,
+	            unis#FechaHoraEvento: payload.event_date,
+	            unis#FechaHoraRecepcion: payload.receipt_date
+	        }
+	    }
+    }
+}
+]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="plate" ><![CDATA[payload.plate]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="call clients-ws-unigis-gps-update" doc:id="1ec54a47-c368-4434-9cbd-b562e7ff3391" name="clients-ws-unigis-gps-update"/>
+		<ee:transform doc:name="Transform Message" doc:id="18119e38-13d9-414f-abe1-28ed41d2d2eb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+ns soap http://schemas.xmlsoap.org/soap/envelope/
+ns uni http://unisolutions.com.ar/
+---
+{
+    "traxion_response": {
+        "response": {
+            "message": "successful",
+            "data": {
+                "transactionId":vars.plate,
+                "result":payload.soap#Envelope.soap#Body.uni#LoginYInsertarEventoResponse.uni#LoginYInsertarEventoResult
+            }
+        },
+        "completedSuccessfully": true
     }
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<flow-ref doc:name="call clients-ws-unigis-gps-update" doc:id="1ec54a47-c368-4434-9cbd-b562e7ff3391" name="clients-ws-unigis-gps-update"/>
 		<logger level="INFO" doc:name="Logger" doc:id="88d861ff-0108-4424-b4d2-232c1cad7f07" />
 	</flow>
 	<flow name="kafa-gps-test" doc:id="fc74d0fd-9b19-40e7-b43f-14f29d73062e" >

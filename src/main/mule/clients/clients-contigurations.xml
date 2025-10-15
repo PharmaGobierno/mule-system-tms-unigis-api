@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:pubsub="http://www.mulesoft.org/schema/mule/pubsub"
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:pubsub="http://www.mulesoft.org/schema/mule/pubsub"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/pubsub http://www.mulesoft.org/schema/mule/pubsub/current/mule-pubsub.xsd
@@ -43,13 +45,8 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
 		</wsc:connection>
 	</wsc:config>
-	<pubsub:config name="Google_Pub_Sub_Configuration" doc:name="Google Pub Sub Configuration" doc:id="6e3e49e0-7199-4283-9bed-57d918524cd5" >
-		<pubsub:connection privateKeyId="${pubsub.private.key.id}" clientId="${pubsub.client.id}" clientEmail="${pubsub.client.email}" >
-			<pubsub:private-key ><![CDATA[${pubsub.private.key}]]></pubsub:private-key>
-		</pubsub:connection>
-	</pubsub:config>
 	<wsc:config name="TMS-UNIGIS-GPS-Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="91bf487d-9e57-4488-b5ee-84318dd8371b" >
-		<wsc:connection wsdlLocation="${consume.gps.wsdl.location}" service="Service" port="ServiceSoap" address="${consume.gps.address}" >
+		<wsc:connection wsdlLocation="wsdls\tms-unigis-gps.wsdl" service="Service" port="ServiceSoap" address="ttps://cloud-test.unigis.com/hub_TEST/mapi/soap/gps/service.asmx" >
 			<wsc:custom-transport-configuration >
 				<wsc:default-http-transport-configuration timeout="500000" />
 			</wsc:custom-transport-configuration>
@@ -60,4 +57,12 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		<http:request-connection protocol="HTTPS" host="${tms.connection.base.uri}" port="${tms.connection.base.port}" tlsContext="TLS_Context_Unigis">
 		</http:request-connection>
 	</http:request-config>
+	<pubsub:config name="Google_Pub_Sub_Configuration" doc:name="Google Pub Sub Configuration" doc:id="fc8aef84-372c-4cb3-97a2-4536643a750f" >
+		<pubsub:connection privateKeyId="${pubsub.private.key.id}" clientId="${pubsub.client.id}" clientEmail="${pubsub.client.email}" >
+			<pubsub:private-key ><![CDATA[${pubsub.private.key}]]></pubsub:private-key>
+		</pubsub:connection>
+	</pubsub:config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="4ba01890-6c9f-4401-854f-6e9171a1855b" >
+		<db:generic-connection url="${db.url}" user="${db.user}" password="${db.password}" driverClassName="software.aws.rds.jdbc.mysql.Driver"/>
+	</db:config>
 </mule>

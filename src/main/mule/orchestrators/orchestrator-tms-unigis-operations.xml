@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<sub-flow name="orchestrator-tms-unigis-order-creation" doc:id="0b84a2a9-ff79-44fd-846f-fc39ba2cd02a" >
+		<ee:transform doc:name="convert to JSON" doc:id="02024e5d-56e6-47e1-a99c-fb9d6089cb9d">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+read(payload as String, "application/json")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 		<ee:transform doc:name="Transform Message" doc:id="bc19c049-b380-41fc-9d97-390849818c08" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -14,112 +23,65 @@ output application/json
     "apiKey": "F6-A9-A5-E4-6D-4",
     "pedidos": [{
             "RefDocumento": payload.payload."_id",
-            "RefDocumentoAdicional": payload.payload."_id",
+            "RefDocumentoAdicional": payload.payload.remission.tracking_id,
             "Fecha": (payload.payload.event_timestamp as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"},
-            "FechaEntrega": (payload.payload.remission.delivery_date as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"},
-            "FechaEntregaOriginal": (payload.payload.remission.delivery_date as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"},
+            "FechaEntrega": if (payload.payload.metadata.appointment_delivery_date == null)(payload.payload.remission.delivery_date as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"} else (payload.payload.metadata.appointment_delivery_date as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"},
+            "FechaEntregaOriginal": if (payload.payload.metadata.appointment_delivery_date == null)(payload.payload.remission.delivery_date as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"} else (payload.payload.metadata.appointment_delivery_date as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"},
+            "varchar1": "" ++ payload.context.remission.metadata.issuance_date default "",
+            "varchar2": "" ++ payload.context.remission.metadata.bid_number default "",
+            "varchar3": "" ++ payload.context.remission.metadata.contract_number default "",
+            "varchar4": "" ++ payload.context.remission.metadata.society default "",
+            "varchar5": "" ++ payload.context.remission.metadata.destination_center default "",
+            "varchar6": "" ++ payload.payload.remission.delivery_destination_id default "",
             "Cliente": {
                 "RefCliente": "52402345",
-                "RazonSocial": "ISSSTE",
-                "Direccion": "BOULEVARD AZTECA S/N ",
-                "Calle": "BOULEVARD AZTECA S/N ",
-                "Barrio": "PEMEX",
-                "Partido": "AGUA DULCE",
-                "Provincia": "CMX",
-                "Pais": "MEX",
                 "RefDomicilioExterno": "10001",
-                "DomicilioDescripcion": "ISSSTE CENTRO",
-                "DomicilioCodigoPostal": 96690,
-                "DomicilioFiscal": {
-                    "Direccion": "BOULEVARD AZTECA S/N ",
-                    "Calle": "BOULEVARD AZTECA S/N ",
-                    "Barrio": "PEMEX",
-                    "Localidad": "AGUA DULCE",
-                    "Partido": "AGUA DULCE",
-                    "Provincia": "CMX",
-                    "Pais": "MEX"
-                },
                 "IgnorarOperacion": false,
                 "IgnorarOperacionDomicilioOrden": false,
-                "CrearDomicilioOrden": true,
-                "ActualizarDomicilioOrden": true,
+                "CrearDomicilioOrden": false,
+                "ActualizarDomicilioOrden": false,
                 "ValidarDomicilioOrden": true
             },
             "ClienteDador": {
-                "RefCliente": 104167,
-                "RazonSocial": "PISA"
+                "RefCliente": payload.context.remission.tenant_id,
+                "RazonSocial": payload.context.remission.tenant_id
             },
-            "Descripcion": "10001-ISSSTE CENTRO",
             "CodigoOperacion": "PISA",
             "CodigoSucursal": "PISAMB00",
-            "TipoPedido": "Privado",
-            "InicioHorario1": 0,
-            "FinHorario1": 2300,
-            "InicioHorario2": 0,
-            "FinHorario2": 2300,
-            "TiempoEspera": 30,
-            "Distancia": 0,
-            "Tipo": "P",
-            "Volumen": "7.25",
-            "Peso": "3.3",
-            "Bultos": "7.25",
-            "Pallets": "3.3",
+            "TipoPedido": payload.payload.remission.order_type,
+            "Tipo": "D",
+            "Volumen": 7.25,
+            "Peso": 3.3,
+            "Bultos": 7.25,
+            "Pallets": 3.3,
             "CampoDinamico": [{
                     "Campo": "TipoDeOrden",
                     "Valor": "Seco"
                 }
             ],
             "depositoSalida": {
-                "RefDepositoExterno": "PISA Huehuetoca"
+                "RefDepositoExterno": "IM01"
             },
             "depositoLlegada": {
-                "RefDepositoExterno": "PISA Huehuetoca"
+                "RefDepositoExterno": "10001"
             },
             "requiereTurno": false,
             "ultimaVisita": false,
-            "Items": [{
-                    "RefDocumento": "000020,,",
-                    "Cantidad": 1000,
-                    "Volumen": "3.625E0",
-                    "Peso": "1.65E2",
-                    "Bulto": "3.625E0",
-                    "Pallets": "1.65E2",
-                    "ImporteCosto": 263900,
-                    "FechaEntrega": "2025-01-14T17:49:58",
-                    "Descripcion": "P51107-TIGECICLINA CJA 1 FA LIOF 50 MG.",
-                    "UnidadMedida": "Qty Un",
-                    "CampoDinamico": [{
-                            "Campo": "TipoDeMaterial",
-                            "Valor": "Medicamento de curacion"
-                        }, {
-                            "Campo": "TipoDeOrdenItem",
-                            "Valor": "Seco"
-                        }
-                    ]
-                }, {
-                    "RefDocumento": "000020,,",
-                    "Cantidad": 1000,
-                    "Volumen": "3.625E0",
-                    "Peso": "1.65E2",
-                    "ImporteCosto": 263900,
-                    "Descripcion": "P51107-TIGECICLINA CJA 1 FA LIOF 50 MG.",
-                    "UnidadMedida": "UN",
-                    "CampoDinamico": [{
-                            "Campo": "TipoDeMaterial",
-                            "Valor": "Medicamento de curacion"
-                        }, {
-                            "Campo": "TipoDeOrdenItem",
-                            "Valor": "Seco"
-                        }
-                    ]
-                }
-            ],
+            "Items": payload.payload.metadata.items map (item) ->{
+                "RefDocumento" : item.id,
+                "Producto" : {
+                	"RefProducto" : item.id,
+                	"Descripcion" : item.sku
+                },
+				"Cantidad" : item.quantity,
+				"Descripcion" : item.description
+            },
             "usarProductos": true,
             "ValidarTransicion": false,
-            "soloInsertarProductos": true,
+            "soloInsertarProductos": false,
             "agruparItems": false,
-            "altaProductos": true,
-            "obligarProductoItems": false
+            "altaProductos": false,
+            "obligarProductoItems": true
         }
     ]
 }]]></ee:set-payload>
@@ -144,7 +106,15 @@ output application/json
 read(payload as String, "application/json")]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="ac11394e-f12f-4261-b783-dcaba3dcbd98" variableName="payloadBckp"/>
+		<ee:transform doc:name="set variables" doc:id="dcc4abe5-ce60-4421-b964-3a3c5ed746e4" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="payloadBckp" ><![CDATA[payload]]></ee:set-variable>
+				<ee:set-variable variableName="idViaje" ><![CDATA[payload.payload.order_status_change.load_id]]></ee:set-variable>
+				<ee:set-variable variableName="RefDocumento" ><![CDATA[payload.payload.order_status_change.order_number]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
 		<ee:transform doc:name="Transform Message" doc:id="8857c952-dd43-47a9-ab9f-be75fd5fef88" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -213,12 +183,20 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<flow-ref doc:name="call client-system-tms-update" doc:id="da824752-73d6-437c-a111-8e30b8ea8fff" name="client-system-tms-update" />
 			</when>
 			<otherwise>
 				<logger level="INFO" doc:name="Logger" doc:id="2695b11f-20ba-4adf-8448-5937149c4558" message="#[payload]" />
 			</otherwise>
 		</choice>
-		<flow-ref doc:name="call client-system-tms-update" doc:id="da824752-73d6-437c-a111-8e30b8ea8fff" name="client-system-tms-update"/>
+		<choice doc:name="Choice" doc:id="af62366d-3583-4cf3-8390-4ace5b986a70" >
+			<when expression='"1" == payload.d'>
+				<flow-ref doc:name="call clients-db-txl-insert-dispatch" doc:id="e34e76bf-b048-404b-99e0-571bd116915a" name="clients-db-txl-insert-dispatch"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="00142c25-9831-43f1-8636-ca9eb83bf7ba" message="#[payload]" />
+			</otherwise>
+		</choice>
 		<logger level="INFO" doc:name="Logger" doc:id="aaa66c20-4c33-4155-bc33-cde3eb561d7f" message="#[payload]" />
 	</sub-flow>
 </mule>

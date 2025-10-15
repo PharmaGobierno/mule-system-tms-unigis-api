@@ -39,6 +39,10 @@
 							<groupId>com.microsoft.sqlserver</groupId>
 							<artifactId>mssql-jdbc</artifactId>
 						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>software.aws.rds</groupId>
+							<artifactId>aws-mysql-jdbc</artifactId>
+						</sharedLibrary>
 					</sharedLibraries>
 					<classifier>mule-application</classifier>
 					<cloudHubDeployment>
@@ -193,6 +197,11 @@
 			<artifactId>mule4-google-pubsub-connector</artifactId>
 			<version>1.1.0</version>
 			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>software.aws.rds</groupId>
+			<artifactId>aws-mysql-jdbc</artifactId>
+			<version>1.1.15</version>
 		</dependency>
 	</dependencies>
 
