@@ -6,6 +6,8 @@
 http://www.mulesoft.org/schema/mule/pubsub http://www.mulesoft.org/schema/mule/pubsub/current/mule-pubsub.xsd">
 	<sub-flow name="client-pubsub-connection-stop-update" doc:id="1492bea6-4d2f-4d3a-b5f9-7ca7bd420e82" >
 		<logger level="INFO" doc:name="Logger" doc:id="d8eb83fd-bd9b-45fd-88ae-7574f289bc98" />
-		<pubsub:publish-message doc:name="Publish Message" doc:id="52ba431a-fce9-4e77-a405-0a2bd717c085" config-ref="Google_Pub_Sub_Configuration" projectId="${pubsub.project.id}"/>
+		<pubsub:publish-message doc:name="Publish Message" doc:id="52ba431a-fce9-4e77-a405-0a2bd717c085" config-ref="Google_Pub_Sub_Configuration" projectId="${pubsub.project.id}" topicName="${pubsub.topic.order_create}">
+			<pubsub:message ><![CDATA[#[payload]]]></pubsub:message>
+		</pubsub:publish-message>
 	</sub-flow>
 </mule>

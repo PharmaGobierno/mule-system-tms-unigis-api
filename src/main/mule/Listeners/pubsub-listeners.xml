@@ -8,6 +8,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/pubsub http://www.mulesoft.org/schema/mule/pubsub/current/mule-pubsub.xsd">
 	<flow name="pubsub-listeners-order-creation" doc:id="489fc25c-4996-4290-b2f0-83068e3ed382" >
 		<pubsub:message-listener doc:name="On message listener" doc:id="9d435714-ea71-404a-8607-51e9015be087" config-ref="Google_Pub_Sub_Configuration" projectId="${pubsub.project.id}" subscriptionName="${pubsub.subscription.order_create}"/>
+		<logger level="INFO" doc:name="Logger" doc:id="d040b774-844b-4461-938b-6fea6087745d" message="#[payload]"/>
 		<flow-ref doc:name="call orchestrator-tms-unigis-order-creation" doc:id="8f310611-af0e-4dab-b3c8-a97ac007e5da" name="orchestrator-tms-unigis-order-creation"/>
 	</flow>
 	<flow name="kafa-order-creation-test" doc:id="13d6a58d-dd41-4a14-83bf-36ae8f6ea365">
@@ -133,6 +134,7 @@ output application/json
 	</flow>
 	<flow name="pubsub-listeners-dispatch" doc:id="60db72d0-1453-441c-8d4f-3a12f0a675e3" >
 		<pubsub:message-listener doc:name="On message listener" doc:id="13081ab7-d2f6-4b65-93b6-7ee9d5f22339" config-ref="Google_Pub_Sub_Configuration" projectId="${pubsub.project.id}" subscriptionName="${pubsub.subscription.dispatch}"/>
+		<logger level="INFO" doc:name="Logger" doc:id="3d2ed9a9-5d61-42bf-bbc9-70210f921d5b" message="#[payload]" />
 		<flow-ref doc:name="call orchestrator-tms-unigis-dispatch" doc:id="4603e4ff-a7b5-4439-be4b-5b46ed83c4cd" name="orchestrator-tms-unigis-dispatch"/>
 	</flow>
 	<flow name="kafa-load-end-test" doc:id="fc68ffbb-fd12-48a5-a7cf-80c8b1b338b9" >
@@ -201,6 +203,7 @@ output application/json
 	</flow>
 	<flow name="pubsub-listeners-gps-update" doc:id="7505043e-2e21-4ede-ac5c-f9d5a588bb9e" >
 		<pubsub:message-listener doc:name="On message listener" doc:id="05050fbd-4f5c-44f9-9d1f-2a50875f9aef" config-ref="Google_Pub_Sub_Configuration" projectId="${pubsub.project.id}" subscriptionName="${pubsub.subscription.gps.update}"/>
+		<logger level="INFO" doc:name="Logger" doc:id="07b14e1a-cb3c-4ae0-9be0-0e9418beb20b" message="#[payload]" />
 		<ee:transform doc:name="convert to JSON" doc:id="651e7a3e-852d-4ea1-a6e3-0f1ade7085e8">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -214,6 +217,7 @@ read(payload as String, "application/json")]]></ee:set-payload>
 				<ee:set-payload ><![CDATA[%dw 2.0
 ns soapenv http://schemas.xmlsoap.org/soap/envelope/
 ns unis http://unisolutions.com.ar/ 
+ns xsi http://www.w3.org/2001/XMLSchema-instance
 output application/xml
 ---
 {
@@ -221,11 +225,9 @@ output application/xml
 		soapenv#Header:{},
 	    soapenv#Body:{
 	        unis#LoginYInsertarEvento:{
-	            unis#SystemUser:p('consume.GPS.user'),
-	            unis#Password:p('consume.GPS.password'),
 	            unis#Dominio:payload.plate,
 	            unis#NroSerie: -1,
-	            unis#Codigo:"",
+				unis#Codigo @(xsi#nil: "true"): null,
 	            unis#Latitud:payload.latitude,
 	            unis#Longitud:payload.longitude,
 	            unis#Altitud: 0,
@@ -264,7 +266,7 @@ ns uni http://unisolutions.com.ar/
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="88d861ff-0108-4424-b4d2-232c1cad7f07" />
+		<logger level="INFO" doc:name="Logger" doc:id="88d861ff-0108-4424-b4d2-232c1cad7f07" message="#[payload]"/>
 	</flow>
 	<flow name="kafa-gps-test" doc:id="fc74d0fd-9b19-40e7-b43f-14f29d73062e" >
 		<scheduler doc:name="Scheduler" doc:id="9ae895ed-2de1-4dd9-a6bf-ad015e5f908d" >

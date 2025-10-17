@@ -46,7 +46,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		</wsc:connection>
 	</wsc:config>
 	<wsc:config name="TMS-UNIGIS-GPS-Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="91bf487d-9e57-4488-b5ee-84318dd8371b" >
-		<wsc:connection wsdlLocation="wsdls\tms-unigis-gps.wsdl" service="Service" port="ServiceSoap" address="ttps://cloud-test.unigis.com/hub_TEST/mapi/soap/gps/service.asmx" >
+		<wsc:connection wsdlLocation="wsdls\tms-unigis-gps.wsdl" service="Service" port="ServiceSoap" address="https://cloud-test.unigis.com/hub_TEST/mapi/soap/gps/service.asmx" >
 			<wsc:custom-transport-configuration >
 				<wsc:default-http-transport-configuration timeout="500000" />
 			</wsc:custom-transport-configuration>
