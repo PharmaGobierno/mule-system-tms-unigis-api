@@ -43,8 +43,8 @@ output application/json
                 "ValidarDomicilioOrden": true
             },
             "ClienteDador": {
-                "RefCliente": payload.context.remission.tenant_id,
-                "RazonSocial": payload.context.remission.tenant_id
+                "RefCliente": payload.company,
+                "RazonSocial": payload.company
             },
             "CodigoOperacion": "PISA",
             "CodigoSucursal": "PISAMB00",
