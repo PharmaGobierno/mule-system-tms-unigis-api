@@ -23,7 +23,7 @@ output application/json
 {
     "apiKey": "F6-A9-A5-E4-6D-4",
     "pedidos": [{
-            "RefDocumento": payload.payload."_id",
+            "RefDocumento": payload.payload.remission.order_number,
             "RefDocumentoAdicional": payload.payload.remission.tracking_id,
             "Fecha": (payload.payload.event_timestamp as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"},
             "FechaEntrega": if (payload.payload.metadata.appointment_delivery_date == null)(payload.payload.remission.delivery_date as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"} else (payload.payload.metadata.appointment_delivery_date as DateTime {unit: "milliseconds"}) as String {format: "yyyy-MM-dd'T'HH:mm:ss"},
@@ -44,8 +44,8 @@ output application/json
                 "ValidarDomicilioOrden": true
             },
             "ClienteDador": {
-                "RefCliente": payload.context.remission.tenant_id,
-                "RazonSocial": payload.context.remission.tenant_id
+                "RefCliente": payload.company,
+                "RazonSocial": payload.company
             },
             "CodigoOperacion": "PISA",
             "CodigoSucursal": "PISAMB00",
