@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:pubsub="http://www.mulesoft.org/schema/mule/pubsub" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/pubsub http://www.mulesoft.org/schema/mule/pubsub/current/mule-pubsub.xsd">
 	<sub-flow name="orchestrator-tms-unigis-order-creation" doc:id="0b84a2a9-ff79-44fd-846f-fc39ba2cd02a" >
 		<ee:transform doc:name="convert to JSON" doc:id="02024e5d-56e6-47e1-a99c-fb9d6089cb9d">
 			<ee:message>
@@ -87,6 +88,7 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="4b4ca3a2-1f7c-440c-93d1-f061211a3dbf" message="#[payload]"/>
 		<try doc:name="Try" doc:id="0cb2c5b2-29e7-4394-8d95-c90353fcea91" >
 			<flow-ref doc:name="call clients-system-tms-create-order" doc:id="fad1379f-9839-44a7-bc50-f226b52ce32a" name="clients-system-tms-create-order" />
 			<error-handler >
@@ -154,6 +156,7 @@ output application/json
 ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="fda5084b-b162-4ed0-a682-738dcb5e0abd" message="#[payload]"/>
 		<try doc:name="Try" doc:id="1be94efd-013e-470a-9326-87f578b084ea" >
 			<flow-ref doc:name="call client-system-tms-dispatch" doc:id="a80b69d7-fca0-41f5-86a9-e8c5c4de0c35" name="client-system-tms-dispatch" />
 			<error-handler >
@@ -164,6 +167,7 @@ output application/json
 		</try>
 		<choice doc:name="Choice" doc:id="797a6703-11ad-4b39-b639-4f755b4aa82d" >
 			<when expression='"1" == payload.d'>
+				<logger level="INFO" doc:name="Logger" doc:id="f486bd0b-afce-42f3-89d7-faff0985b0b5" message="#[payload]"/>
 				<set-payload value="#[payloadBckp]" doc:name="Set Payload" doc:id="c45470bb-d247-4ec2-ac16-619db8b3a0c8" />
 				<ee:transform doc:name="Transform Message" doc:id="3f59ee8b-fae7-40b9-830d-3562dcac9ff7" >
 					<ee:message >
@@ -183,6 +187,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="bdd9eed5-8585-4368-87e1-5c19acb01752" message="#[payload]"/>
 				<flow-ref doc:name="call client-system-tms-update" doc:id="da824752-73d6-437c-a111-8e30b8ea8fff" name="client-system-tms-update" />
 			</when>
 			<otherwise>
@@ -191,12 +196,80 @@ output application/json
 		</choice>
 		<choice doc:name="Choice" doc:id="af62366d-3583-4cf3-8390-4ace5b986a70" >
 			<when expression='"1" == payload.d'>
+				<logger level="INFO" doc:name="Logger" doc:id="aaa66c20-4c33-4155-bc33-cde3eb561d7f" message="#[payload]" />
 				<flow-ref doc:name="call clients-db-txl-insert-dispatch" doc:id="e34e76bf-b048-404b-99e0-571bd116915a" name="clients-db-txl-insert-dispatch"/>
 			</when>
 			<otherwise >
 				<logger level="INFO" doc:name="Logger" doc:id="00142c25-9831-43f1-8636-ca9eb83bf7ba" message="#[payload]" />
 			</otherwise>
 		</choice>
-		<logger level="INFO" doc:name="Logger" doc:id="aaa66c20-4c33-4155-bc33-cde3eb561d7f" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="orchestrator-tms-unigis-gps-update" doc:id="1887006c-2b33-4e2e-a7c9-fc16c7c2d1b7" >
+		<ee:transform doc:name="convert to JSON" doc:id="43379f04-9513-42fb-ac2f-226df87269c7">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+read(payload as String, "application/json")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="4a1ed90e-790c-4bf0-89a4-d6266a7f507d">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+ns soapenv http://schemas.xmlsoap.org/soap/envelope/
+ns unis http://unisolutions.com.ar/ 
+ns xsi http://www.w3.org/2001/XMLSchema-instance
+output application/xml
+---
+{
+	soapenv#Envelope:{
+		soapenv#Header:{},
+	    soapenv#Body:{
+	        unis#LoginYInsertarEvento:{
+	        	unis#SystemUser:"SystemUser",
+	        	unis#Password:"TRAXION2025",
+	            unis#Dominio:payload.plate,
+	            unis#NroSerie: -1,
+				unis#Codigo @(xsi#nil: "true"): null,
+	            unis#Latitud:payload.latitude,
+	            unis#Longitud:payload.longitude,
+	            unis#Altitud: 0,
+	            unis#Velocidad: 20,
+	            unis#FechaHoraEvento: payload.event_date,
+	            unis#FechaHoraRecepcion: payload.receipt_date
+	        }
+	    }
+    }
+}
+]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="plate"><![CDATA[payload.plate]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="f1375bd8-0a51-4b7f-a217-7b32fe456a73" message="#[payload]"/>
+		<flow-ref doc:name="call clients-ws-unigis-gps-update" doc:id="99f8bd60-3f40-4d82-9f22-dab1264c6b64" name="clients-ws-unigis-gps-update" />
+		<ee:transform doc:name="Transform Message" doc:id="b2cf780a-d98f-403d-8453-354bdaa15533">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+ns soap http://schemas.xmlsoap.org/soap/envelope/
+ns uni http://unisolutions.com.ar/
+---
+{
+    "traxion_response": {
+        "response": {
+            "message": "successful",
+            "data": {
+                "transactionId":vars.plate,
+                "result":payload.soap#Envelope.soap#Body.uni#LoginYInsertarEventoResponse.uni#LoginYInsertarEventoResult
+            }
+        },
+        "completedSuccessfully": true
+    }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger1" doc:id="9940077b-6fbb-479e-9fb0-200162f4744a" message="#[payload]" />
 	</sub-flow>
 </mule>

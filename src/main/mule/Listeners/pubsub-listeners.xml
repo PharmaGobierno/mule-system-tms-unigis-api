@@ -204,69 +204,7 @@ output application/json
 	<flow name="pubsub-listeners-gps-update" doc:id="7505043e-2e21-4ede-ac5c-f9d5a588bb9e" >
 		<pubsub:message-listener doc:name="On message listener" doc:id="05050fbd-4f5c-44f9-9d1f-2a50875f9aef" config-ref="Google_Pub_Sub_Configuration" projectId="${pubsub.project.id}" subscriptionName="${pubsub.subscription.gps.update}"/>
 		<logger level="INFO" doc:name="Logger" doc:id="07b14e1a-cb3c-4ae0-9be0-0e9418beb20b" message="#[payload]" />
-		<ee:transform doc:name="convert to JSON" doc:id="651e7a3e-852d-4ea1-a6e3-0f1ade7085e8">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-read(payload as String, "application/json")]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<ee:transform doc:name="Transform Message" doc:id="d2d3f86a-d415-4db6-b268-2e44f538dd1e" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-ns soapenv http://schemas.xmlsoap.org/soap/envelope/
-ns unis http://unisolutions.com.ar/ 
-ns xsi http://www.w3.org/2001/XMLSchema-instance
-output application/xml
----
-{
-	soapenv#Envelope:{
-		soapenv#Header:{},
-	    soapenv#Body:{
-	        unis#LoginYInsertarEvento:{
-	            unis#Dominio:payload.plate,
-	            unis#NroSerie: -1,
-				unis#Codigo @(xsi#nil: "true"): null,
-	            unis#Latitud:payload.latitude,
-	            unis#Longitud:payload.longitude,
-	            unis#Altitud: 0,
-	            unis#Velocidad: 20,
-	            unis#FechaHoraEvento: payload.event_date,
-	            unis#FechaHoraRecepcion: payload.receipt_date
-	        }
-	    }
-    }
-}
-]]></ee:set-payload>
-			</ee:message>
-			<ee:variables >
-				<ee:set-variable variableName="plate" ><![CDATA[payload.plate]]></ee:set-variable>
-			</ee:variables>
-		</ee:transform>
-		<flow-ref doc:name="call clients-ws-unigis-gps-update" doc:id="1ec54a47-c368-4434-9cbd-b562e7ff3391" name="clients-ws-unigis-gps-update"/>
-		<ee:transform doc:name="Transform Message" doc:id="18119e38-13d9-414f-abe1-28ed41d2d2eb" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
-ns soap http://schemas.xmlsoap.org/soap/envelope/
-ns uni http://unisolutions.com.ar/
----
-{
-    "traxion_response": {
-        "response": {
-            "message": "successful",
-            "data": {
-                "transactionId":vars.plate,
-                "result":payload.soap#Envelope.soap#Body.uni#LoginYInsertarEventoResponse.uni#LoginYInsertarEventoResult
-            }
-        },
-        "completedSuccessfully": true
-    }
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="88d861ff-0108-4424-b4d2-232c1cad7f07" message="#[payload]"/>
+		<flow-ref doc:name="call orchestrator-tms-unigis-gps-update" doc:id="2571bddb-2786-4cab-a4c7-a3427107aa1c" name="orchestrator-tms-unigis-gps-update"/>
 	</flow>
 	<flow name="kafa-gps-test" doc:id="fc74d0fd-9b19-40e7-b43f-14f29d73062e" >
 		<scheduler doc:name="Scheduler" doc:id="9ae895ed-2de1-4dd9-a6bf-ad015e5f908d" >
